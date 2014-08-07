@@ -1,0 +1,109 @@
+<!-- MAKE SURE TO RENAME THE PROJECT -->
+<project name="OpenBees" default="main">
+	<property environment="env"/>
+	<property name="src.dir" value="src/main/java"/>
+	<property name="api.dir" value="src/api/java"/>
+	<property name="utils.dir" value="utils"/>
+	<property name="deps.dir" value="deps"/>
+	<property name="download.dir" value="downloads"/>
+	<property name="build.dir" value="."/>
+	<property name="gradle.output.dir" value="${build.dir}/build/libs"/>
+	<property name="gradle.output" value="${gradle.output.dir}/modid-1.0.jar"/>
+	<property name="reobf.dir" value="${build.dir}/reobf"/>
+	<property name="bin.dir" value="${build.dir}/bin"/>
+	<property name="lib.dir" value="${build.dir}/libs"/>
+	<property name="forge.url" value="http://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.10-10.13.0.1187/forge-1.7.10-10.13.0.1187-src.zip"/>
+	
+	<target name="properties">
+		<available property="has.folders" type="dir" file="${download.dir}"/>
+		<available property="has.forge" file="${download.dir}/forge.zip"/>
+	</target>
+	
+	<target name="make.dirs" unless="has.folders" depends="properties">
+		<mkdir dir="${deps.dir}"/>
+		<mkdir dir="${api.dir}"/>
+		<mkdir dir="${download.dir}"/>
+		<mkdir dir="${reobf.dir}"/>
+		<mkdir dir="${bin.dir}"/>
+		<mkdir dir="${lib.dir}"/>
+	</target>
+	
+	<target name="setup.forge" depends="make.dirs" unless="has.forge">
+		<echo message="Downloading ForgeGradle..."/>
+		<get dest="${download.dir}/forge.zip">
+			<url url="${forge.url}"/>
+		</get>
+		<echo message="Unzipping ForgeGradle..."/>
+		<unzip src="${download.dir}/forge.zip" dest="${build.dir}" overwrite="false"/>
+		<echo message="Cleaning up ForgeGradle files..."/>
+		<delete>
+			<fileset dir="${build.dir}">
+				<include name="*.txt"/>
+			</fileset>
+		</delete>
+		<delete dir="${build.dir}/eclipse"/>
+		<delete dir="${build.dir}/src/main/java/com"/>
+		<delete file="${build.dir}/src/main/resources/mcmod.info"/>
+		<echo message="Running ForgeGradle Setup..."/>
+		<chmod dir="${build.dir}" perm="ugo+rx" includes="gradlew"/>
+		<exec dir="${build.dir}" executable="cmd" osfamily="windows">
+			<arg line="/c gradlew.bat setupDecompWorkspace setupDevWorkspace idea --refresh-dependencies"/>
+		</exec>
+	</target>
+	
+	<target name="setup" depends="setup.forge">
+		<echo message="Setup: Complete."/>
+	</target>
+	
+	<target name="compile" depends="setup">
+		<exec dir="${build.dir}" executable="cmd" osfamily="windows">
+			<arg line="/c gradlew.bat build"/>
+		</exec>
+		<exec dir="${build.dir}" executable="sh" osfamily="unix">
+			<arg line="gradlew build"/>
+		</exec>
+	</target>
+	
+	<target name="backup">
+		<delete file="./Backup.zip"/>
+		<zip basedir="." destfile="./Backup.zip"/>
+	</target>
+	
+	<target name="main" depends="compile">
+		<echo message="Build script execution complete."/>
+	</target>
+	
+	<target name="clean">
+		<exec dir="${build.dir}" executable="cmd" osfamily="windows">
+			<arg line="/c gradlew.bat cleanCache"/>
+		</exec>
+		<exec dir="${build.dir}" executable="sh" osfamily="unix">
+			<arg line="gradlew cleanCache"/>
+		</exec>
+		<delete dir="${deps.dir}"/>
+		<delete dir="${download.dir}"/>
+		<delete dir="${build.dir}/.gradle"/>
+		<delete dir="${build.dir}/build"/>
+		<delete dir="${build.dir}/eclipse"/>
+		<delete dir="${build.dir}/gradle"/>
+		<delete file="${build.dir}/gradlew"/>
+		<delete file="${build.dir}/gradlew.bat"/>
+		<delete dir="${reobf.dir}"/>
+		<delete dir="${bin.dir}"/>
+		<delete>
+			<fileset dir="." includes="**/*.iml"/>
+			<fileset dir="." includes="**/*.ipr"/>
+			<fileset dir="." includes="**/*.iws"/>
+		</delete>
+	</target>
+	
+	<target name="tests">
+		<exec dir="${build.dir}" executable="cmd" osfamily="windows">
+			<arg line="/c gradlew.bat test"/>
+		</exec>
+		<exec dir="${build.dir}" executable="sh" osfamily="unix">
+			<arg line="gradlew test"/>
+		</exec>
+	</target>
+
+</project>
