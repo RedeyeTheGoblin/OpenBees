@@ -1,5 +1,6 @@
 itemGroup.openbees.bees=OpenBees Bees
 itemGroup.openbees.combs=OpenBees Combs
+itemGroup.openbees.blocks=OpenBees Blocks
 
 allele.openbees.WORKSPEED.name=Workspeed
 allele.openbees.LIFESPAN.name=Lifespan
@@ -75,3 +76,5 @@ item.openbees.comb.name=Comb
 item.openbees.comb.honey.name=Honey
 
 species.openbees.forest.name=Forest
+
+tile.openbees.apiary.name=Apiary

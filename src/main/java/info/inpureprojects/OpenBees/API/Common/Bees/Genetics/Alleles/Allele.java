@@ -1,7 +1,5 @@
 package info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles;
 
-import net.minecraft.util.EnumChatFormatting;
-
 /**
  * Created by den on 8/6/2014.
  */

@@ -1,18 +1,17 @@
 package info.inpureprojects.OpenBees.Client;
 
-import info.inpureprojects.OpenBees.API.Common.Bees.IBeeManager;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
- * Created by den on 8/6/2014.
+ * Created by den on 8/7/2014.
  */
-public class CreativeTabBees extends CreativeTabs {
+public class CreativeTabBlocks extends CreativeTabs {
 
-    public CreativeTabBees() {
-        super("openbees.bees");
+    public CreativeTabBlocks() {
+        super("openbees.blocks");
     }
 
     @Override
@@ -22,6 +21,6 @@ public class CreativeTabBees extends CreativeTabs {
 
     @Override
     public ItemStack getIconItemStack() {
-        return OpenBeesAPI.getAPI().getCommonAPI().beeManager.getBeeBySpeciesTag("FOREST", IBeeManager.Type.QUEEN);
+        return OpenBeesAPI.getAPI().getCommonAPI().blocks.apiary.getStack(1);
     }
 }

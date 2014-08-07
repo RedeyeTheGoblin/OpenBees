@@ -9,7 +9,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
 import java.util.List;
@@ -54,7 +53,7 @@ public class ItemBee extends ItemGenetic {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
         for (Allele.AlleleTypes t : Allele.AlleleTypes.values()) {
-            list.add("§3" + LanguageRegistry.instance().getStringLocalization("allele.openbees." + t.toString() + ".name") + ": " + "\u00A7f" + LanguageRegistry.instance().getStringLocalization("allele." + stack.getTagCompound().getCompoundTag("genome").getString(t.toString()).replace("|",".") + ".name"));
+            list.add("§3" + LanguageRegistry.instance().getStringLocalization("allele.openbees." + t.toString() + ".name") + ": " + "\u00A7f" + LanguageRegistry.instance().getStringLocalization("allele." + stack.getTagCompound().getCompoundTag("genome").getString(t.toString()).replace("|", ".") + ".name"));
         }
     }
 

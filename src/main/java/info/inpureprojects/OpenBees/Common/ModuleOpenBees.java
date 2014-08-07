@@ -2,17 +2,23 @@ package info.inpureprojects.OpenBees.Common;
 
 import com.google.common.eventbus.Subscribe;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import info.inpureprojects.OpenBees.API.Common.Bees.Climate.ClimateDefinition;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.Allele;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.AlleleClimate;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.AlleleEffect;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.AlleleFlower;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.Generic.AlleleBoolean;
+import info.inpureprojects.OpenBees.API.Common.BlockWrapper;
 import info.inpureprojects.OpenBees.API.Common.Events.EventRegisterAlleles;
 import info.inpureprojects.OpenBees.API.Common.Events.EventRegisterBees;
 import info.inpureprojects.OpenBees.API.Common.ItemWrapper;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import info.inpureprojects.OpenBees.API.modInfo;
+import info.inpureprojects.OpenBees.Client.Gui.GuiHandler;
+import info.inpureprojects.OpenBees.Common.Blocks.BlockMachine;
+import info.inpureprojects.OpenBees.Common.Blocks.Tiles.TileApiary;
 import info.inpureprojects.OpenBees.Common.Config.ConfigHolder;
 import info.inpureprojects.OpenBees.Common.Events.EventSetupBlocks;
 import info.inpureprojects.OpenBees.Common.Events.EventSetupItems;
@@ -20,6 +26,7 @@ import info.inpureprojects.OpenBees.Common.Genetics.*;
 import info.inpureprojects.OpenBees.Common.Items.ItemBee;
 import info.inpureprojects.OpenBees.Common.Items.ItemComb;
 import info.inpureprojects.OpenBees.Common.Managers.SpeciesImpl;
+import info.inpureprojects.OpenBees.OpenBees;
 import info.inpureprojects.OpenBees.Proxy.Proxy;
 import info.inpureprojects.core.API.IINpureSubmodule;
 import net.minecraft.item.ItemStack;
@@ -66,7 +73,9 @@ public class ModuleOpenBees implements IINpureSubmodule {
 
     @Subscribe
     public void blockInit(EventSetupBlocks evt) {
-
+        GameRegistry.registerTileEntity(TileApiary.class, TileApiary.class.getName());
+        evt.getApi().getCommonAPI().blocks.apiary = new BlockWrapper(new BlockMachine("openbees.apiary"), 0);
+        NetworkRegistry.INSTANCE.registerGuiHandler(OpenBees.instance, new GuiHandler());
     }
 
     @Subscribe
