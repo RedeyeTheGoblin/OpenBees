@@ -17,6 +17,8 @@ public interface ISpecies {
 
     public int getBodyColor();
 
+    public int getOutlineColor();
+
     public HashMap<Allele.AlleleTypes, Allele> getGenome();
 
     public NBTTagCompound generateGenericGenome();

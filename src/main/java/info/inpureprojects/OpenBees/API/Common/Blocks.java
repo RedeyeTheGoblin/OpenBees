@@ -6,5 +6,6 @@ package info.inpureprojects.OpenBees.API.Common;
 public class Blocks {
 
     public BlockWrapper apiary;
+    public BlockWrapper beehive;
 
 }

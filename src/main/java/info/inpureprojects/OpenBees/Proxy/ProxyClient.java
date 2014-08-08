@@ -6,7 +6,6 @@ import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import info.inpureprojects.OpenBees.API.modInfo;
 import info.inpureprojects.OpenBees.Client.CreativeTabBees;
 import info.inpureprojects.OpenBees.Client.CreativeTabBlocks;
-import info.inpureprojects.OpenBees.Client.CreativeTabCombs;
 import info.inpureprojects.OpenBees.Client.EventHandlers.IconManager;
 
 /**
@@ -43,8 +42,14 @@ public class ProxyClient extends ProxyCommon {
         evt.getIconManager().registerTexture(modInfo.modid, "apiary.1", "apiary_top");
         evt.getIconManager().registerTexture(modInfo.modid, "apiary.4", "apiary_side");
         //
+        evt.getIconManager().registerTexture(modInfo.modid, "beehives/beehive.2.top", "beehive_top");
+        evt.getIconManager().registerTexture(modInfo.modid, "beehives/beehive.2.side", "beehive_side");
+        //
+        evt.getIconManager().registerIcon(modInfo.modid, "scoop", "scoop");
+        evt.getIconManager().registerIcon(modInfo.modid, "scoop_iron", "scoop_iron");
+        evt.getIconManager().registerIcon(modInfo.modid, "scoop_diamond", "scoop_diamond");
+        //
         OpenBeesAPI.getAPI().getClientAPI().creativeTabBees = new CreativeTabBees();
-        OpenBeesAPI.getAPI().getClientAPI().creativeTabCombs = new CreativeTabCombs();
         OpenBeesAPI.getAPI().getClientAPI().creativeTabBlocks = new CreativeTabBlocks();
     }
 }

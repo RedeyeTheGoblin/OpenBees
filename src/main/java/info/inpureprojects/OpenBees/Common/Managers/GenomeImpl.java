@@ -31,56 +31,56 @@ public class GenomeImpl implements IBeeGenome {
 
     @Override
     public AlleleInt getWorkspeed() {
-        return null;
+        return (AlleleInt) alleles.get(Allele.AlleleTypes.WORKSPEED);
     }
 
     @Override
     public AlleleInt getLifespan() {
-        return null;
+        return (AlleleInt) alleles.get(Allele.AlleleTypes.LIFESPAN);
     }
 
     @Override
     public AlleleInt getPollination() {
-        return null;
+        return (AlleleInt) alleles.get(Allele.AlleleTypes.POLLINATION);
     }
 
     @Override
     public AlleleFlower getFlower() {
-        return null;
+        return (AlleleFlower) alleles.get(Allele.AlleleTypes.FLOWER);
     }
 
     @Override
     public AlleleClimate getClimate() {
-        return null;
+        return (AlleleClimate) alleles.get(Allele.AlleleTypes.CLIMATE);
     }
 
     @Override
     public AlleleInt getFertility() {
-        return null;
+        return (AlleleInt) alleles.get(Allele.AlleleTypes.FERTILITY);
     }
 
     @Override
     public AlleleInt getTerritory() {
-        return null;
+        return (AlleleInt) alleles.get(Allele.AlleleTypes.TERRITORY);
     }
 
     @Override
     public AlleleBoolean getNocturnal() {
-        return null;
+        return (AlleleBoolean) alleles.get(Allele.AlleleTypes.NOCTURNAL);
     }
 
     @Override
     public AlleleBoolean getCave() {
-        return null;
+        return (AlleleBoolean) alleles.get(Allele.AlleleTypes.CAVE);
     }
 
     @Override
     public AlleleBoolean getRain() {
-        return null;
+        return (AlleleBoolean) alleles.get(Allele.AlleleTypes.RAIN);
     }
 
     @Override
     public AlleleEffect getEffect() {
-        return null;
+        return (AlleleEffect) alleles.get(Allele.AlleleTypes.EFFECT);
     }
 }

@@ -21,18 +21,18 @@ public class GuiHandler implements IGuiHandler {
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        switch(ID){
+        switch (ID) {
             case 0:
-                return new ContainerApiary();
+                return new ContainerApiary(player);
         }
         return null;
     }
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        switch(ID){
+        switch (ID) {
             case 0:
-                return new GuiApiary(new ContainerApiary(), backgrounds.get(ID));
+                return new GuiApiary(new ContainerApiary(player), backgrounds.get(ID));
         }
         return null;
     }

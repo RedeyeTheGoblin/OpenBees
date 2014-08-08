@@ -10,7 +10,6 @@ public class ClientAPI {
 
     public IIconManager icons;
     public CreativeTabs creativeTabBees;
-    public CreativeTabs creativeTabCombs;
     public CreativeTabs creativeTabBlocks;
 
 }

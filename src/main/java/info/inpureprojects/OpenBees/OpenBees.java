@@ -35,8 +35,8 @@ public class OpenBees {
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent evt) {
         // Needed to do it this way so the items show up as being from OpenBees and not INpureCore.
-        OpenBeesAPI.getAPI().getCommonAPI().events.post(new EventSetupItems());
         OpenBeesAPI.getAPI().getCommonAPI().events.post(new EventSetupBlocks());
+        OpenBeesAPI.getAPI().getCommonAPI().events.post(new EventSetupItems());
     }
 
 }

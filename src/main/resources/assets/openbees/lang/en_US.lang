@@ -1,5 +1,4 @@
-itemGroup.openbees.bees=OpenBees Bees
-itemGroup.openbees.combs=OpenBees Combs
+itemGroup.openbees.bees=OpenBees Items
 itemGroup.openbees.blocks=OpenBees Blocks
 
 allele.openbees.WORKSPEED.name=Workspeed
@@ -78,3 +77,8 @@ item.openbees.comb.honey.name=Honey
 species.openbees.forest.name=Forest
 
 tile.openbees.apiary.name=Apiary
+tile.openbees.hive.name=Bee Hive
+
+item.openbees.scoop.0.name=Wooden Scoop
+item.openbees.scoop.1.name=Iron Scoop
+item.openbees.scoop.2.name=Diamond Scoop

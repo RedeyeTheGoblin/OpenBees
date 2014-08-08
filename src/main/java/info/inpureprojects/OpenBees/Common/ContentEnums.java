@@ -13,7 +13,7 @@ public class ContentEnums {
 
     public static enum Bees {
 
-        FOREST("species.openbees.forest.name", 0x55FFFF, new String[]{
+        FOREST("species.openbees.forest.name", 0xFFFF00, 0x00CCFF, new String[]{
                 "openbees|WorkspeedSLOW",
                 "openbees|LifespanSHORT",
                 "openbees|PollinationSLOW",
@@ -29,12 +29,14 @@ public class ContentEnums {
 
         private String unloc;
         private int bodyColor;
+        private int outlineColor;
         private String[] genome;
         private List<BeeProduct> products;
 
-        Bees(String unloc, int bodyColor, String[] genome, List<BeeProduct> products) {
+        Bees(String unloc, int bodyColor, int outlineColor, String[] genome, List<BeeProduct> products) {
             this.unloc = unloc;
             this.bodyColor = bodyColor;
+            this.outlineColor = outlineColor;
             this.genome = genome;
             this.products = products;
         }
@@ -53,6 +55,10 @@ public class ContentEnums {
 
         public List<BeeProduct> getProducts() {
             return products;
+        }
+
+        public int getOutlineColor() {
+            return outlineColor;
         }
     }
 

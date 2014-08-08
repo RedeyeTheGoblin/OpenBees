@@ -13,6 +13,8 @@ import java.util.Map;
  */
 public interface IBeeManager {
 
+    public IBeeLogic getCurrentLogic();
+
     // Register a species. Make sure your tag is unique.
     public void registerSpecies(ISpecies species);
 
@@ -33,6 +35,8 @@ public interface IBeeManager {
 
     // This pretty much only exists for the creative tab icon.
     public ItemStack getBeeBySpeciesTag(String tag, Type type);
+
+    public ItemStack getBeeBySpecies(ISpecies species, Type type);
 
     public IAlleleManager getAlleleManager();
 

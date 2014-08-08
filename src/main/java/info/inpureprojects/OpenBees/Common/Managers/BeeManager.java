@@ -4,6 +4,7 @@ import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.Allele;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.IAlleleManager;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.ISpecies;
 import info.inpureprojects.OpenBees.API.Common.Bees.IBee;
+import info.inpureprojects.OpenBees.API.Common.Bees.IBeeLogic;
 import info.inpureprojects.OpenBees.API.Common.Bees.IBeeManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,6 +26,11 @@ public class BeeManager implements IBeeManager {
     public void registerSpecies(ISpecies species) {
         beeSpecies.put(species.getTag(), species);
         templates.put(species.getTag(), new BeeImpl(species.generateGenericGenome()));
+    }
+
+    @Override
+    public IBeeLogic getCurrentLogic() {
+        return null;
     }
 
     @Override
@@ -54,8 +60,13 @@ public class BeeManager implements IBeeManager {
 
     @Override
     public ItemStack getBeeBySpeciesTag(String tag, Type type) {
+        return this.getBeeBySpecies(this.getSpeciesByTag(tag), type);
+    }
+
+    @Override
+    public ItemStack getBeeBySpecies(ISpecies species, Type type) {
         ItemStack bee = type.createStack();
-        IBee ibee = this.getTemplate(this.getSpeciesByTag(tag));
+        IBee ibee = this.getTemplate(species);
         bee.setTagCompound(ibee.getNBT());
         return bee;
     }

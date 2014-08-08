@@ -31,4 +31,7 @@ public abstract class ItemBase extends Item {
     public boolean requiresMultipleRenderPasses() {
         return true;
     }
+
+    @Override
+    public abstract int getRenderPasses(int metadata);
 }

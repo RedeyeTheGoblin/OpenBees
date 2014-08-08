@@ -16,13 +16,15 @@ public class SpeciesImpl implements ISpecies {
     private String tag;
     private String unloc;
     private int bodyColor;
+    private int outlineColor;
     private HashMap<Allele.AlleleTypes, Allele> alleles;
     private List<BeeProduct> products;
 
-    public SpeciesImpl(String tag, String unloc, int bodyColor, HashMap<Allele.AlleleTypes, Allele> alleles, List<BeeProduct> products) {
+    public SpeciesImpl(String tag, String unloc, int bodyColor, int outlineColor, HashMap<Allele.AlleleTypes, Allele> alleles, List<BeeProduct> products) {
         this.tag = tag;
         this.unloc = unloc;
         this.bodyColor = bodyColor;
+        this.outlineColor = outlineColor;
         this.alleles = alleles;
         this.products = products;
     }
@@ -40,6 +42,11 @@ public class SpeciesImpl implements ISpecies {
     @Override
     public int getBodyColor() {
         return this.bodyColor;
+    }
+
+    @Override
+    public int getOutlineColor() {
+        return this.outlineColor;
     }
 
     @Override

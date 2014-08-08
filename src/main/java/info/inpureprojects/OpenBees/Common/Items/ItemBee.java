@@ -46,6 +46,8 @@ public class ItemBee extends ItemGenetic {
         switch (pass) {
             case 0:
                 return OpenBeesAPI.getAPI().getCommonAPI().beeManager.convertStackToBee(stack).getGenome().getSpecies().getBodyColor();
+            case 2:
+                return OpenBeesAPI.getAPI().getCommonAPI().beeManager.convertStackToBee(stack).getGenome().getSpecies().getOutlineColor();
         }
         return 0xFFFFFF;
     }
@@ -70,5 +72,10 @@ public class ItemBee extends ItemGenetic {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return LanguageRegistry.instance().getStringLocalization(OpenBeesAPI.getAPI().getCommonAPI().beeManager.convertStackToBee(stack).getGenome().getSpecies().getUnlocalizedName()) + " " + LanguageRegistry.instance().getStringLocalization(this.tr);
+    }
+
+    @Override
+    public int getRenderPasses(int metadata) {
+        return 3;
     }
 }

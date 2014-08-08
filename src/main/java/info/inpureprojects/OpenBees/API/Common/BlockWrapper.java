@@ -26,23 +26,8 @@ public class BlockWrapper {
         return block;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BlockWrapper)) return false;
-
-        BlockWrapper that = (BlockWrapper) o;
-
-        if (meta != that.meta) return false;
-        if (!block.equals(that.block)) return false;
-
-        return true;
+    public boolean isEqual(Block b, int meta) {
+        return b == this.block && this.meta == meta;
     }
 
-    @Override
-    public int hashCode() {
-        int result = block.hashCode();
-        result = 31 * result + meta;
-        return result;
-    }
 }

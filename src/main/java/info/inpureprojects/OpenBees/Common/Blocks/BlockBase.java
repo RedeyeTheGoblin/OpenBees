@@ -14,11 +14,22 @@ import net.minecraft.world.World;
  */
 public abstract class BlockBase extends BlockContainer {
 
+    private boolean hasGUI;
+    private int idShift = 0;
+
     public BlockBase(String unloc) {
         super(Material.clay);
         this.setHardness(1.0f);
         this.setBlockName(unloc);
         this.setCreativeTab(OpenBeesAPI.getAPI().getClientAPI().creativeTabBlocks);
+    }
+
+    public void setHasGUI(boolean hasGUI) {
+        this.hasGUI = hasGUI;
+    }
+
+    public void setIdShift(int idShift) {
+        this.idShift = idShift;
     }
 
     @Override
@@ -29,7 +40,9 @@ public abstract class BlockBase extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
-        player.openGui(OpenBees.instance, world.getBlockMetadata(x, y, z), world, x, y, z);
+        if (this.hasGUI) {
+            player.openGui(OpenBees.instance, (this.idShift + world.getBlockMetadata(x, y, z)), world, x, y, z);
+        }
         return super.onBlockActivated(world, x, y, z, player, p_149727_6_, p_149727_7_, p_149727_8_, p_149727_9_);
     }
 }

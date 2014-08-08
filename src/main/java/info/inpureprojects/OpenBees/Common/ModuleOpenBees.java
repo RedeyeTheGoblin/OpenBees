@@ -17,21 +17,26 @@ import info.inpureprojects.OpenBees.API.Common.ItemWrapper;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import info.inpureprojects.OpenBees.API.modInfo;
 import info.inpureprojects.OpenBees.Client.Gui.GuiHandler;
+import info.inpureprojects.OpenBees.Common.Blocks.BlockHive;
 import info.inpureprojects.OpenBees.Common.Blocks.BlockMachine;
 import info.inpureprojects.OpenBees.Common.Blocks.Tiles.TileApiary;
 import info.inpureprojects.OpenBees.Common.Config.ConfigHolder;
 import info.inpureprojects.OpenBees.Common.Events.EventSetupBlocks;
 import info.inpureprojects.OpenBees.Common.Events.EventSetupItems;
+import info.inpureprojects.OpenBees.Common.Events.ForgeHandler;
 import info.inpureprojects.OpenBees.Common.Genetics.*;
 import info.inpureprojects.OpenBees.Common.Items.ItemBee;
 import info.inpureprojects.OpenBees.Common.Items.ItemComb;
+import info.inpureprojects.OpenBees.Common.Items.ItemScoop;
 import info.inpureprojects.OpenBees.Common.Managers.SpeciesImpl;
 import info.inpureprojects.OpenBees.OpenBees;
 import info.inpureprojects.OpenBees.Proxy.Proxy;
 import info.inpureprojects.core.API.IINpureSubmodule;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
 import java.util.HashMap;
@@ -60,6 +65,7 @@ public class ModuleOpenBees implements IINpureSubmodule {
     @Override
     public void post() {
         OpenBeesAPI.getAPI().getCommonAPI().events.post(new EventRegisterBees());
+        MinecraftForge.EVENT_BUS.register(new ForgeHandler());
     }
 
     @Subscribe
@@ -69,6 +75,9 @@ public class ModuleOpenBees implements IINpureSubmodule {
         evt.getApi().getCommonAPI().items.queen = new ItemWrapper(new ItemBee("openbees.bee.queen", 1, "queen"), 0);
         evt.getApi().getCommonAPI().items.base_comb = new ItemComb("openbees.comb", 64);
         evt.getApi().getCommonAPI().items.honey_comb = new ItemWrapper(evt.getApi().getCommonAPI().items.base_comb, 0);
+        evt.getApi().getCommonAPI().items.scoop_wood = new ItemWrapper(new ItemScoop("openbees.scoop.0", Item.ToolMaterial.WOOD, "scoop"), 0);
+        evt.getApi().getCommonAPI().items.scoop_iron = new ItemWrapper(new ItemScoop("openbees.scoop.1", Item.ToolMaterial.IRON, "scoop_iron"), 0);
+        evt.getApi().getCommonAPI().items.scoop_diamond = new ItemWrapper(new ItemScoop("openbees.scoop.2", Item.ToolMaterial.EMERALD, "scoop_diamond"), 0);
     }
 
     @Subscribe
@@ -76,6 +85,7 @@ public class ModuleOpenBees implements IINpureSubmodule {
         GameRegistry.registerTileEntity(TileApiary.class, TileApiary.class.getName());
         evt.getApi().getCommonAPI().blocks.apiary = new BlockWrapper(new BlockMachine("openbees.apiary"), 0);
         NetworkRegistry.INSTANCE.registerGuiHandler(OpenBees.instance, new GuiHandler());
+        evt.getApi().getCommonAPI().blocks.beehive = new BlockWrapper(new BlockHive("openbees.hive"), 0);
     }
 
     @Subscribe
@@ -87,9 +97,8 @@ public class ModuleOpenBees implements IINpureSubmodule {
                 for (Allele.AlleleTypes t : Allele.AlleleTypes.values()) {
                     Allele a = OpenBeesAPI.getAPI().getCommonAPI().beeManager.getAlleleManager().getAlleleByTag(b.getGenome()[t.ordinal()]);
                     map.put(t, a);
-                    proxy.print(t.toString() + ", " + a.getTag());
                 }
-                evt.getBeeManager().registerSpecies(new SpeciesImpl(b.toString(), b.getUnloc(), b.getBodyColor(), map, b.getProducts()));
+                evt.getBeeManager().registerSpecies(new SpeciesImpl(b.toString(), b.getUnloc(), b.getBodyColor(), b.getOutlineColor(), map, b.getProducts()));
             }
             proxy.print("Bee setup complete!");
         } catch (Throwable t) {

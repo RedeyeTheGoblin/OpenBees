@@ -21,7 +21,7 @@ public class ItemComb extends ItemBase {
     public ItemComb(String unloc, int maxStack) {
         super(unloc, maxStack);
         this.unloc = unloc;
-        this.setCreativeTab(OpenBeesAPI.getAPI().getClientAPI().creativeTabCombs);
+        this.setCreativeTab(OpenBeesAPI.getAPI().getClientAPI().creativeTabBees);
     }
 
     @Override
@@ -63,5 +63,8 @@ public class ItemComb extends ItemBase {
         }
     }
 
-
+    @Override
+    public int getRenderPasses(int metadata) {
+        return 2;
+    }
 }
