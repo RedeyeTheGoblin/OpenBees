@@ -4,6 +4,10 @@ import junit.framework.TestCase;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 
 public class ImageScannerTest extends TestCase {
 
@@ -15,6 +19,16 @@ public class ImageScannerTest extends TestCase {
             for (ImageScanner.PixelData d : i.findTargets()){
                 System.out.println("X: " + d.getX() + ", Y: " + d.getY());
             }
+        }catch(Throwable t){
+            t.printStackTrace();
+        }
+    }
+
+    public void testMap() throws Exception{
+        ImageScanner i = new ImageScanner();
+        try{
+            BufferedImage buf = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("gui_apiary.png"));
+            i.drawMeAMap(buf);
         }catch(Throwable t){
             t.printStackTrace();
         }

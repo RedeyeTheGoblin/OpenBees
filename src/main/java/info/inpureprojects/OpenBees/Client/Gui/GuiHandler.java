@@ -2,7 +2,9 @@ package info.inpureprojects.OpenBees.Client.Gui;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import info.inpureprojects.OpenBees.API.modInfo;
+import info.inpureprojects.OpenBees.Common.Blocks.Tiles.TileApiary;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -16,23 +18,25 @@ public class GuiHandler implements IGuiHandler {
     public HashMap<Integer, ResourceLocation> backgrounds = new HashMap();
 
     public GuiHandler() {
-        backgrounds.put(0, new ResourceLocation(modInfo.modid, "textures/gui/apiary.png"));
+        backgrounds.put(0, new ResourceLocation(modInfo.modid, "textures/gui/gui_apiary.png"));
     }
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        TileEntity t = world.getTileEntity(x, y, z);
         switch (ID) {
             case 0:
-                return new ContainerApiary(player);
+                return new ContainerApiary(player, (TileApiary) t);
         }
         return null;
     }
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        TileEntity t = world.getTileEntity(x, y, z);
         switch (ID) {
             case 0:
-                return new GuiApiary(new ContainerApiary(player), backgrounds.get(ID));
+                return new GuiApiary(new ContainerApiary(player, (TileApiary) t), backgrounds.get(ID));
         }
         return null;
     }

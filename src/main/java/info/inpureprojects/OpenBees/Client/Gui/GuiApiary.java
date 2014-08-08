@@ -11,7 +11,6 @@ public class GuiApiary extends GuiBaseAdv {
 
     public GuiApiary(Container container, ResourceLocation resourceLocation) {
         super(container, resourceLocation);
-        this.ySize = this.ySize + 10;
     }
 
     @Override

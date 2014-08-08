@@ -13,6 +13,7 @@ public class BlockMachine extends BlockBase {
 
     public BlockMachine(String unloc) {
         super(unloc);
+        this.setHasGUI(true);
     }
 
     @Override
