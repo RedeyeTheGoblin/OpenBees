@@ -47,4 +47,19 @@ public class ProxyCommon extends Proxy {
     public void print(String msg) {
         FMLLog.info("[OpenBees]: " + msg);
     }
+
+    @Override
+    public boolean isShiftKey() {
+        return false;
+    }
+
+    @Override
+    public boolean isShiftCtrlKey() {
+        return false;
+    }
+
+    @Override
+    public boolean isCtrlKey() {
+        return false;
+    }
 }

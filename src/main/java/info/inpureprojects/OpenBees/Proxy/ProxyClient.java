@@ -7,6 +7,7 @@ import info.inpureprojects.OpenBees.API.modInfo;
 import info.inpureprojects.OpenBees.Client.CreativeTabBees;
 import info.inpureprojects.OpenBees.Client.CreativeTabBlocks;
 import info.inpureprojects.OpenBees.Client.EventHandlers.IconManager;
+import org.lwjgl.input.Keyboard;
 
 /**
  * Created by den on 8/6/2014.
@@ -51,5 +52,20 @@ public class ProxyClient extends ProxyCommon {
         //
         OpenBeesAPI.getAPI().getClientAPI().creativeTabBees = new CreativeTabBees();
         OpenBeesAPI.getAPI().getClientAPI().creativeTabBlocks = new CreativeTabBlocks();
+    }
+
+    @Override
+    public boolean isShiftKey() {
+        return (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) && !(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL));
+    }
+
+    @Override
+    public boolean isShiftCtrlKey() {
+        return (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) && (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL));
+    }
+
+    @Override
+    public boolean isCtrlKey() {
+        return (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL));
     }
 }

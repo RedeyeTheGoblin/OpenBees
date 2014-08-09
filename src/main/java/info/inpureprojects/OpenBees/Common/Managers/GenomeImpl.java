@@ -8,8 +8,11 @@ import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.Generic.All
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.Generic.AlleleInt;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.IBeeGenome;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.ISpecies;
+import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by den on 8/6/2014.
@@ -30,8 +33,18 @@ public class GenomeImpl implements IBeeGenome {
     }
 
     @Override
+    public void setSpecies(ISpecies species) {
+        this.species = species;
+    }
+
+    @Override
     public AlleleInt getWorkspeed() {
         return (AlleleInt) alleles.get(Allele.AlleleTypes.WORKSPEED);
+    }
+
+    @Override
+    public void setWorkspeed(Allele allele) {
+        alleles.put(Allele.AlleleTypes.WORKSPEED, allele);
     }
 
     @Override
@@ -40,8 +53,18 @@ public class GenomeImpl implements IBeeGenome {
     }
 
     @Override
+    public void setLifespan(Allele allele) {
+        this.alleles.put(Allele.AlleleTypes.LIFESPAN, allele);
+    }
+
+    @Override
     public AlleleInt getPollination() {
         return (AlleleInt) alleles.get(Allele.AlleleTypes.POLLINATION);
+    }
+
+    @Override
+    public void setPollination(Allele allele) {
+        this.alleles.put(Allele.AlleleTypes.POLLINATION, allele);
     }
 
     @Override
@@ -50,8 +73,18 @@ public class GenomeImpl implements IBeeGenome {
     }
 
     @Override
+    public void setFlower(Allele allele) {
+        this.alleles.put(Allele.AlleleTypes.FLOWER, allele);
+    }
+
+    @Override
     public AlleleClimate getClimate() {
         return (AlleleClimate) alleles.get(Allele.AlleleTypes.CLIMATE);
+    }
+
+    @Override
+    public void setClimate(Allele allele) {
+        this.alleles.put(Allele.AlleleTypes.CLIMATE, allele);
     }
 
     @Override
@@ -60,8 +93,18 @@ public class GenomeImpl implements IBeeGenome {
     }
 
     @Override
+    public void setFertility(Allele allele) {
+        this.alleles.put(Allele.AlleleTypes.FERTILITY, allele);
+    }
+
+    @Override
     public AlleleInt getTerritory() {
         return (AlleleInt) alleles.get(Allele.AlleleTypes.TERRITORY);
+    }
+
+    @Override
+    public void setTerritory(Allele allele) {
+        this.alleles.put(Allele.AlleleTypes.TERRITORY, allele);
     }
 
     @Override
@@ -70,8 +113,18 @@ public class GenomeImpl implements IBeeGenome {
     }
 
     @Override
+    public void setNocturnal(boolean isNocturnal) {
+        this.alleles.put(Allele.AlleleTypes.NOCTURNAL, OpenBeesAPI.getAPI().getCommonAPI().beeManager.getAlleleManager().getAlleleByTag("openbees|Boolean" + String.valueOf(isNocturnal).toUpperCase()));
+    }
+
+    @Override
     public AlleleBoolean getCave() {
         return (AlleleBoolean) alleles.get(Allele.AlleleTypes.CAVE);
+    }
+
+    @Override
+    public void setCave(boolean isCave) {
+        this.alleles.put(Allele.AlleleTypes.CAVE, OpenBeesAPI.getAPI().getCommonAPI().beeManager.getAlleleManager().getAlleleByTag("openbees|Boolean" + String.valueOf(isCave).toUpperCase()));
     }
 
     @Override
@@ -80,7 +133,22 @@ public class GenomeImpl implements IBeeGenome {
     }
 
     @Override
+    public void setRain(boolean isRain) {
+        this.alleles.put(Allele.AlleleTypes.RAIN, OpenBeesAPI.getAPI().getCommonAPI().beeManager.getAlleleManager().getAlleleByTag("openbees|Boolean" + String.valueOf(isRain).toUpperCase()));
+    }
+
+    @Override
     public AlleleEffect getEffect() {
         return (AlleleEffect) alleles.get(Allele.AlleleTypes.EFFECT);
+    }
+
+    @Override
+    public void setEffect(Allele allele) {
+        this.alleles.put(Allele.AlleleTypes.EFFECT, allele);
+    }
+
+    @Override
+    public Map<Allele.AlleleTypes, Allele> getRawGenome() {
+        return Collections.unmodifiableMap(this.alleles);
     }
 }

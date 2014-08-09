@@ -82,3 +82,5 @@ tile.openbees.hive.name=Bee Hive
 item.openbees.scoop.0.name=Wooden Scoop
 item.openbees.scoop.1.name=Iron Scoop
 item.openbees.scoop.2.name=Diamond Scoop
+
+modifier.openbees.hybrid=Hybrid

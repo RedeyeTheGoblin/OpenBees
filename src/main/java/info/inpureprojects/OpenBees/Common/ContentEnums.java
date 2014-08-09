@@ -25,7 +25,7 @@ public class ContentEnums {
                 "openbees|BooleanFALSE",
                 "openbees|BooleanFALSE",
                 "openbees|TerritoryNORMAL"},
-                Arrays.asList(new BeeProduct[]{new BeeProduct(OpenBeesAPI.getAPI().getCommonAPI().items.honey_comb.getStack(1), 1.0f)}));
+                Arrays.asList(new BeeProduct[]{new BeeProduct(OpenBeesAPI.getAPI().getCommonAPI().items.honey_comb.getStack(1), 100)}));
 
         private String unloc;
         private int bodyColor;

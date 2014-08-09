@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by den on 8/8/2014.
  */
-public class SlotFrame extends SlotCustom{
+public class SlotFrame extends SlotCustom {
 
     public SlotFrame(IInventory inv, int index, int x, int y) {
         super(inv, index, x, y);
@@ -15,7 +15,7 @@ public class SlotFrame extends SlotCustom{
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        if (stack.getItem() instanceof IFrameItem){
+        if (stack.getItem() instanceof IFrameItem) {
             return true;
         }
         return false;

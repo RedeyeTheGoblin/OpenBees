@@ -21,6 +21,28 @@ public class Allele {
         this.canBeInherited = canBeInherited;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Allele)) return false;
+
+        Allele allele = (Allele) o;
+
+        if (canBeInherited != allele.canBeInherited) return false;
+        if (!tag.equals(allele.tag)) return false;
+        if (!unloc.equals(allele.unloc)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = tag.hashCode();
+        result = 31 * result + unloc.hashCode();
+        result = 31 * result + (canBeInherited ? 1 : 0);
+        return result;
+    }
+
     public static enum AlleleTypes {
 
         // This is a general map of the genome.

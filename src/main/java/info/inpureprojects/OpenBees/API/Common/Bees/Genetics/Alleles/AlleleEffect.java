@@ -13,4 +13,6 @@ public abstract class AlleleEffect extends Allele {
     }
 
     public abstract void doEffect(World world, int x, int y, int z, ItemStack bee);
+
+
 }

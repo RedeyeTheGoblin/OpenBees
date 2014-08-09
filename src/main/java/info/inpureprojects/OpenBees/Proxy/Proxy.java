@@ -13,4 +13,10 @@ public abstract class Proxy {
 
     public abstract void print(String msg);
 
+    public abstract boolean isShiftKey();
+
+    public abstract boolean isShiftCtrlKey();
+
+    public abstract boolean isCtrlKey();
+
 }

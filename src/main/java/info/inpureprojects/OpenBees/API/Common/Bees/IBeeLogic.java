@@ -11,7 +11,7 @@ public interface IBeeLogic {
 
     public ItemStack combine(ItemStack princess, ItemStack drone);
 
-    public List<ItemStack> produceOffspring(ItemStack queen);
+    public ItemStack produceOffspring(ItemStack queen, boolean princess);
 
     public List<ItemStack> produceItemsOnTick(ItemStack queen, int tick);
 

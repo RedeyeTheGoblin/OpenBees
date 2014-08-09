@@ -2,6 +2,7 @@ package info.inpureprojects.OpenBees.Common.Managers;
 
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.Allele;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.BeeProduct;
+import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.BeeUtils;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.ISpecies;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -56,14 +57,7 @@ public class SpeciesImpl implements ISpecies {
 
     @Override
     public NBTTagCompound generateGenericGenome() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("species", this.getTag());
-        NBTTagCompound genome = new NBTTagCompound();
-        for (Allele.AlleleTypes t : Allele.AlleleTypes.values()) {
-            genome.setString(t.toString(), alleles.get(t).getTag());
-        }
-        tag.setTag("genome", genome);
-        return tag;
+        return BeeUtils.instance.generateGenome(this, this, this.getGenome(), this.getGenome(), false, BeeUtils.GENERATE_NEW_LIFE_FLAG, null);
     }
 
     @Override

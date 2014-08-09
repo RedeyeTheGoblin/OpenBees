@@ -1,12 +1,12 @@
 package info.inpureprojects.OpenBees.Client.Gui;
 
 import cofh.gui.GuiBase;
-import cofh.gui.element.TabBase;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import info.inpureprojects.OpenBees.Client.Gui.Tabs.TabStatus;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 /**
  * Created by den on 8/7/2014.
@@ -32,6 +32,10 @@ public class GuiApiary extends GuiBase {
     @Override
     protected void drawGuiContainerForegroundLayer(int i, int i2) {
         status.backgroundColor = colors[container.getTile().getStatusCode()];
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.getTextureManager().bindTexture(this.texture);
+        this.drawTexturedModalRect(22, 38, 176, 0, 6, 7 - this.container.getTile().getBreedingProgress() / 20);
+        this.drawTexturedModalRect(38, 19, 182, 0, 1, this.container.getTile().getLifeProgress());
     }
 
     @Override

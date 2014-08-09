@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by den on 8/8/2014.
  */
-public abstract class SlotCustom extends Slot{
+public abstract class SlotCustom extends Slot {
 
     public SlotCustom(IInventory inv, int index, int x, int y) {
         super(inv, index, x, y);

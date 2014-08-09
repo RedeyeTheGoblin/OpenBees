@@ -6,7 +6,7 @@ import cofh.gui.element.TabBase;
 /**
  * Created by den on 8/8/2014.
  */
-public class TabStatus extends TabBase{
+public class TabStatus extends TabBase {
 
     public TabStatus(GuiBase guiBase) {
         super(guiBase);
