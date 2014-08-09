@@ -1,10 +1,15 @@
 package info.inpureprojects.OpenBees.Client.Gui;
 
+import info.inpureprojects.OpenBees.Client.Gui.Slots.SlotDrone;
+import info.inpureprojects.OpenBees.Client.Gui.Slots.SlotDroneOrComb;
+import info.inpureprojects.OpenBees.Client.Gui.Slots.SlotFrame;
+import info.inpureprojects.OpenBees.Client.Gui.Slots.SlotPrincessOrQueen;
 import info.inpureprojects.OpenBees.Client.ImageScanner;
 import info.inpureprojects.OpenBees.Common.Blocks.Tiles.TileApiary;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -15,8 +20,10 @@ public class ContainerApiary extends Container {
 
     public static final int adjustmentX = 0;
     public static final int adjustmentY = -6;
+    private TileApiary tile;
 
     public ContainerApiary(EntityPlayer player, TileApiary tile) {
+        this.tile = tile;
         this.bindPlayerInventory(player.inventory);
         ImageScanner i = new ImageScanner();
         i.load("assets/openbees/textures/gui/gui_apiary_map.png");
@@ -26,9 +33,33 @@ public class ContainerApiary extends Container {
                 this.addSlotToContainer(new SlotPrincessOrQueen(tile, index++, d.getX(), d.getY()));
             } else if (index == 8) {
                 this.addSlotToContainer(new SlotDrone(tile, index++, d.getX(), d.getY()));
+            }else if (index == 1 || index == 2 || index == 5 || index == 6 || index == 7 || index == 9 || index == 10) {
+                this.addSlotToContainer(new SlotDroneOrComb(tile, index++, d.getX(), d.getY()));
+            }else if (index == 0 || index == 4 || index == 11){
+                this.addSlotToContainer(new SlotFrame(tile, index++, d.getX(), d.getY()));
             } else {
                 this.addSlotToContainer(new Slot(tile, index++, d.getX(), d.getY()));
             }
+        }
+    }
+
+    public TileApiary getTile() {
+        return tile;
+    }
+
+    @Override
+    public void addCraftingToCrafters(ICrafting player) {
+        super.addCraftingToCrafters(player);
+        player.sendProgressBarUpdate(this, 0, tile.getStatusCode());
+    }
+
+    @Override
+    public void updateProgressBar(int c, int d) {
+        super.updateProgressBar(c, d);
+        switch(c){
+            case 0:
+                tile.setStatusCode(d);
+                break;
         }
     }
 

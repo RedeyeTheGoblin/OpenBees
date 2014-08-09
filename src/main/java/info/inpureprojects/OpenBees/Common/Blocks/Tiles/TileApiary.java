@@ -13,9 +13,21 @@ public class TileApiary extends TileEntity implements IInventory {
 
     public int size = 12;
     public ItemStack[] stacks;
+    public static final int code_allGood = 0;
+    public static final int code_missingBee = 1;
+    public static final int code_inventoryFull = 2;
+    private int statusCode = 0;
 
     public TileApiary() {
         this.stacks = new ItemStack[size];
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
     @Override

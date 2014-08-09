@@ -1,6 +1,7 @@
 package info.inpureprojects.OpenBees.Common.Items;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import info.inpureprojects.OpenBees.API.Common.Bees.CombItem;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import info.inpureprojects.OpenBees.Common.ContentEnums;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * Created by den on 8/6/2014.
  */
+@CombItem
 public class ItemComb extends ItemBase {
 
     private String unloc;

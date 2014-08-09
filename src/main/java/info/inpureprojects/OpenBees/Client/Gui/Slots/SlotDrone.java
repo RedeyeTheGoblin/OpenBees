@@ -1,4 +1,4 @@
-package info.inpureprojects.OpenBees.Client.Gui;
+package info.inpureprojects.OpenBees.Client.Gui.Slots;
 
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import net.minecraft.inventory.IInventory;
