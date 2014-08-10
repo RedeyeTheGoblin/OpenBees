@@ -5,7 +5,10 @@ import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.ISpecies;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeDictionary;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +16,11 @@ import java.util.Map;
  */
 public interface IBeeManager {
 
+    public void registerBeeForHive(ISpecies species, List<BiomeDictionary.Type> biomes);
+
     public IBeeLogic getCurrentLogic();
+
+    public List<ISpecies> getSpeciesForBiome(BiomeGenBase biome);
 
     // Register a species. Make sure your tag is unique.
     public void registerSpecies(ISpecies species);

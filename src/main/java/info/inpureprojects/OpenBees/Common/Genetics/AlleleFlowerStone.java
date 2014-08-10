@@ -2,6 +2,7 @@ package info.inpureprojects.OpenBees.Common.Genetics;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.AlleleFlower;
+import info.inpureprojects.OpenBees.API.Common.Bees.IBee;
 import info.inpureprojects.OpenBees.API.modInfo;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,7 @@ public class AlleleFlowerStone extends AlleleFlower {
     }
 
     @Override
-    public boolean isValid(World world, int x, int y, int z, ItemStack bee) {
+    public boolean isValid(World world, int x, int y, int z, IBee bee) {
         for (ItemStack i : OreDictionary.getOres("stone")) {
             BlockIdentifier b = new BlockIdentifier(GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(i.getItem())).toString(), i.getItemDamage());
             if (validBlocks.contains(b)) {

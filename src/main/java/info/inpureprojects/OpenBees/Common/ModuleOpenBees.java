@@ -5,10 +5,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import info.inpureprojects.OpenBees.API.Common.Bees.Climate.ClimateDefinition;
-import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.Allele;
-import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.AlleleClimate;
-import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.AlleleEffect;
-import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.AlleleFlower;
+import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.*;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.Generic.AlleleBoolean;
 import info.inpureprojects.OpenBees.API.Common.BlockWrapper;
 import info.inpureprojects.OpenBees.API.Common.Events.EventRegisterAlleles;
@@ -21,6 +18,7 @@ import info.inpureprojects.OpenBees.Common.Blocks.BlockHive;
 import info.inpureprojects.OpenBees.Common.Blocks.BlockMachine;
 import info.inpureprojects.OpenBees.Common.Blocks.Tiles.TileApiary;
 import info.inpureprojects.OpenBees.Common.Config.ConfigHolder;
+import info.inpureprojects.OpenBees.Common.Config.JsonBee;
 import info.inpureprojects.OpenBees.Common.Events.EventSetupBlocks;
 import info.inpureprojects.OpenBees.Common.Events.EventSetupItems;
 import info.inpureprojects.OpenBees.Common.Events.ForgeHandler;
@@ -99,6 +97,10 @@ public class ModuleOpenBees implements IINpureSubmodule {
                     map.put(t, a);
                 }
                 evt.getBeeManager().registerSpecies(new SpeciesImpl(b.toString(), b.getUnloc(), b.getBodyColor(), b.getOutlineColor(), map, b.getProducts()));
+                evt.getBeeManager().registerBeeForHive(evt.getBeeManager().getSpeciesByTag(b.toString()), b.getSpawnIn());
+                JsonBee j = new JsonBee(b.getUnloc(), b.getBodyColor(), b.getOutlineColor(), b.getGenome(), JsonBee.convert(b.getProducts()), b.getSpawnIn());
+                String jb = JsonBee.json.toJson(j);
+                proxy.print(jb);
             }
             proxy.print("Bee setup complete!");
         } catch (Throwable t) {
@@ -138,6 +140,7 @@ public class ModuleOpenBees implements IINpureSubmodule {
         });
         evt.getAlleleManager().registerAllele(new AlleleBoolean("openbees|BooleanTRUE", true));
         evt.getAlleleManager().registerAllele(new AlleleBoolean("openbees|BooleanFALSE", false));
+        evt.getAlleleManager().registerAllele(new AlleleClimateTemperate("openbees|ClimateTEMPERATE"));
         proxy.print("Allele setup complete!");
     }
 }

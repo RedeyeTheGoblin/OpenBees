@@ -7,6 +7,8 @@ import info.inpureprojects.OpenBees.API.Common.Bees.Climate.ClimateDefinition;
  */
 public class AlleleClimate extends Allele {
 
+    // This can require a specific biome or a temperature like hot or cold.
+    // OpenBees registers one of these labeled TEMPERATE that counts as between hot and cold.
     private ClimateDefinition requiredClimate;
 
     public AlleleClimate(String tag, ClimateDefinition requiredClimate) {

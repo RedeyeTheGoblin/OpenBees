@@ -1,6 +1,6 @@
 package info.inpureprojects.OpenBees.Client.Gui.Slots;
 
-import info.inpureprojects.OpenBees.API.OpenBeesAPI;
+import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.BeeUtils;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -15,12 +15,6 @@ public class SlotPrincessOrQueen extends SlotCustom {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        if (OpenBeesAPI.getAPI().getCommonAPI().items.princess.getItem() == stack.getItem()) {
-            return true;
-        }
-        if (OpenBeesAPI.getAPI().getCommonAPI().items.queen.getItem() == stack.getItem()) {
-            return true;
-        }
-        return false;
+        return BeeUtils.instance.isPrincess(stack) || BeeUtils.instance.isQueen(stack);
     }
 }

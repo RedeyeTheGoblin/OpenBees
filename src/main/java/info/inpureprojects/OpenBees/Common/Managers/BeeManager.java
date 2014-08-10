@@ -11,6 +11,8 @@ import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import info.inpureprojects.OpenBees.Common.Genetics.PunnettSquare;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.*;
 
@@ -23,6 +25,28 @@ public class BeeManager implements IBeeManager {
     private HashMap<String, IBee> templates = new HashMap();
     private IAlleleManager alleles = new AlleleManager();
     private IBeeLogic logic = new BeeLogic();
+    private HashMap<BiomeDictionary.Type, ArrayList<ISpecies>> hiveMap = new HashMap();
+
+    @Override
+    public List<ISpecies> getSpeciesForBiome(BiomeGenBase biome) {
+        ArrayList<ISpecies> r = new ArrayList();
+        for (BiomeDictionary.Type t : BiomeDictionary.getTypesForBiome(biome)) {
+            if (hiveMap.containsKey(t)) {
+                r.addAll(hiveMap.get(t));
+            }
+        }
+        return r;
+    }
+
+    @Override
+    public void registerBeeForHive(ISpecies species, List<BiomeDictionary.Type> biomes) {
+        for (BiomeDictionary.Type t : biomes) {
+            if (!hiveMap.containsKey(t)) {
+                hiveMap.put(t, new ArrayList());
+            }
+            hiveMap.get(t).add(species);
+        }
+    }
 
     @Override
     public void registerSpecies(ISpecies species) {

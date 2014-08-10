@@ -66,6 +66,7 @@ allele.openbees.ClimateDESERT.name=Desert
 allele.openbees.ClimateHOT.name=Hot
 allele.openbees.ClimateSPARSE.name=Sparse
 allele.openbees.ClimateWATER.name=Water
+allele.openbees.ClimateTEMPERATE.name=Temperate
 
 item.openbees.bee.drone.name=Drone
 item.openbees.bee.princess.name=Princess
@@ -75,6 +76,7 @@ item.openbees.comb.name=Comb
 item.openbees.comb.honey.name=Honey
 
 species.openbees.forest.name=Forest
+species.openbees.meadows.name=Meadows
 
 tile.openbees.apiary.name=Apiary
 tile.openbees.hive.name=Bee Hive
@@ -84,3 +86,12 @@ item.openbees.scoop.1.name=Iron Scoop
 item.openbees.scoop.2.name=Diamond Scoop
 
 modifier.openbees.hybrid=Hybrid
+
+status.openbees.0=All good!
+status.openbees.1=Missing bee!
+status.openbees.2=Output full!
+status.openbees.3=This bee is not nocturnal!
+status.openbees.4=Wrong Biome!
+status.openbees.5=This bee cannot work in rain!
+status.openbees.6=This bee needs to be outside!
+status.openbees.7=This bee needs a flower!

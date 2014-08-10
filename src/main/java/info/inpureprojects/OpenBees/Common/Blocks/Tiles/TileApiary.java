@@ -3,12 +3,13 @@ package info.inpureprojects.OpenBees.Common.Blocks.Tiles;
 import cofh.lib.inventory.IInventoryManager;
 import cofh.lib.inventory.InventoryManager;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.position.BlockPosition;
 import info.inpureprojects.OpenBees.API.Common.Bees.CombItem;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.BeeProduct;
+import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.BeeUtils;
 import info.inpureprojects.OpenBees.API.Common.Bees.IBee;
 import info.inpureprojects.OpenBees.API.Common.Tools.IFrameItem;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
-import info.inpureprojects.OpenBees.Common.ModuleOpenBees;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -20,9 +21,8 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -33,6 +33,12 @@ public class TileApiary extends TileEntity implements IInventory {
     public static final int code_allGood = 0;
     public static final int code_missingBee = 1;
     public static final int code_inventoryFull = 2;
+    public static final int code_Night = 3;
+    public static final int code_wrongBiome = 4;
+    public static final int code_rain = 5;
+    public static final int code_sky = 6;
+    public static final int code_flower = 7;
+    //----------------------------------------------
     // Why 45? There are 45 pixels in the life display bar.
     public static final int baseLifeTicks = 45;
     private static int breedingDelay = 20 * 7;
@@ -52,6 +58,14 @@ public class TileApiary extends TileEntity implements IInventory {
     public TileApiary() {
         this.stacks = new ItemStack[size];
         manager = InventoryManager.create(this, ForgeDirection.UNKNOWN);
+    }
+
+    public void onRemoval() {
+        for (ItemStack i : stacks) {
+            if (i != null) {
+                this.getWorldObj().spawnEntityInWorld(new EntityItem(this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord, i));
+            }
+        }
     }
 
     public int getStatusCode() {
@@ -94,7 +108,7 @@ public class TileApiary extends TileEntity implements IInventory {
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (ServerHelper.isClientWorld(this.worldObj)){
+        if (ServerHelper.isClientWorld(this.worldObj)) {
             return;
         }
         // Setting up the status flag for the GUI.
@@ -104,13 +118,13 @@ public class TileApiary extends TileEntity implements IInventory {
         if (this.getStackInSlot(queenSlot) == null) {
             this.setStatusCode(code_missingBee);
         } else {
-            if (this.getStackInSlot(queenSlot).getItem() == OpenBeesAPI.getAPI().getCommonAPI().items.princess.getItem()) {
+            if (BeeUtils.instance.isPrincess(this.getStackInSlot(queenSlot))) {
                 hasPrincess = true;
-            } else {
+            } else if (BeeUtils.instance.isQueen(this.getStackInSlot(queenSlot))) {
                 hasQueen = true;
             }
         }
-        if (this.getStackInSlot(droneSlot) != null) {
+        if (BeeUtils.instance.isDrone(this.getStackInSlot(droneSlot))) {
             hasDrone = true;
         }
         boolean emptySlot = false;
@@ -146,20 +160,51 @@ public class TileApiary extends TileEntity implements IInventory {
             if (!hasQueen) {
                 return;
             }
-            // Process this life tick.
             IBee queen = OpenBeesAPI.getAPI().getCommonAPI().beeManager.convertStackToBee(this.getStackInSlot(queenSlot));
+            // Night time
+            if (!this.getWorldObj().isDaytime()) {
+                if (!queen.getDominantGenome().getNocturnal().isBool()) {
+                    this.setStatusCode(code_Night);
+                    return;
+                }
+            }
+            // Climate
+            if (!queen.getDominantGenome().getClimate().getRequiredClimate().isBiomeCompatible(this.getWorldObj().getBiomeGenForCoords(this.xCoord, this.zCoord))) {
+                this.setStatusCode(code_wrongBiome);
+                return;
+            }
+            // Rain
+            if (this.getWorldObj().isRaining()) {
+                if (!queen.getDominantGenome().getRain().isBool()) {
+                    this.setStatusCode(code_rain);
+                    return;
+                }
+            }
+            // Sky
+            if (!this.getWorldObj().canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord)) {
+                if (!queen.getDominantGenome().getCave().isBool()) {
+                    this.setStatusCode(code_sky);
+                    return;
+                }
+            }
+            // Flowers
+            if (!hasFlowers(queen)) {
+                this.setStatusCode(code_flower);
+                return;
+            }
+            // Process this life tick.
             int ticks = queen.getLifeTicks();
             ticks--;
             this.getStackInSlot(queenSlot).getTagCompound().setInteger("life", ticks);
             this.setLifeProgress(ticks / queen.getDominantGenome().getLifespan().getNumber());
             // Produce combs.
             Random r = new Random();
-            for (BeeProduct p : queen.getDominantGenome().getSpecies().getPotentialProducts()){
-                int odds = r.nextInt(p.getChance());
-                if (odds <= 100){
+            for (BeeProduct p : queen.getDominantGenome().getSpecies().getPotentialProducts()) {
+                float odds = r.nextFloat();
+                if (odds < p.getChance()) {
                     ItemStack comb = p.getStack().copy();
                     ItemStack s = manager.addItem(comb);
-                    if (s != null){
+                    if (s != null) {
                         this.throwStacks(s);
                     }
                 }
@@ -168,15 +213,9 @@ public class TileApiary extends TileEntity implements IInventory {
             if (ticks <= 0) {
                 int drones = 3 * queen.getDominantGenome().getFertility().getNumber();
                 for (int i = 0; i < drones; i++) {
-                    ItemStack s = manager.addItem(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this.getStackInSlot(queenSlot), false));
-                    if (s != null){
-                        this.throwStacks(s);
-                    }
+                    throwStacks(manager.addItem(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this.getStackInSlot(queenSlot), false)));
                 }
-                ItemStack s = manager.addItem(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this.getStackInSlot(queenSlot), true));
-                if (s != null){
-                    this.throwStacks(s);
-                }
+                throwStacks(manager.addItem(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this.getStackInSlot(queenSlot), true)));
                 this.setInventorySlotContents(queenSlot, null);
             } else {
                 queen.setLifeTicks(ticks);
@@ -186,8 +225,23 @@ public class TileApiary extends TileEntity implements IInventory {
         }
     }
 
-    private void throwStacks(ItemStack stack){
-        this.getWorldObj().spawnEntityInWorld(new EntityItem(this.getWorldObj(), this.xCoord, this.yCoord + 1, this.zCoord, stack));
+    public boolean hasFlowers(IBee queen) {
+        BlockPosition b = new BlockPosition(this.xCoord, this.yCoord, this.zCoord);
+        List<BlockPosition> list = b.getAdjacent(true);
+        for (BlockPosition p : list) {
+            if (p.blockExists(this.worldObj)) {
+                if (queen.getDominantGenome().getFlower().isValid(this.worldObj, p.x, p.y, p.z, queen)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void throwStacks(ItemStack stack) {
+        if (stack != null) {
+            this.getWorldObj().spawnEntityInWorld(new EntityItem(this.getWorldObj(), this.xCoord, this.yCoord + 1, this.zCoord, stack));
+        }
     }
 
     @Override
@@ -294,27 +348,27 @@ public class TileApiary extends TileEntity implements IInventory {
 
     @Override
     public boolean isItemValidForSlot(int i, ItemStack stack) {
-        if (i == outputSlots[0] || i == outputSlots[1] || i == outputSlots[2] || i == outputSlots[3] || i == outputSlots[4] || i == outputSlots[5] || i == outputSlots[6]){
-            if (stack.getItem().getClass().isAnnotationPresent(CombItem.class)){
+        if (i == outputSlots[0] || i == outputSlots[1] || i == outputSlots[2] || i == outputSlots[3] || i == outputSlots[4] || i == outputSlots[5] || i == outputSlots[6]) {
+            if (stack.getItem().getClass().isAnnotationPresent(CombItem.class)) {
                 return true;
-            }else{
-                if (stack.getItem() == OpenBeesAPI.getAPI().getCommonAPI().items.drone.getItem() || stack.getItem() == OpenBeesAPI.getAPI().getCommonAPI().items.princess.getItem()){
+            } else {
+                if (BeeUtils.instance.isDrone(stack) || BeeUtils.instance.isPrincess(stack)) {
                     return true;
                 }
             }
         }
-        if (i == queenSlot){
-            if (stack.getItem() == OpenBeesAPI.getAPI().getCommonAPI().items.queen.getItem() || stack.getItem() == OpenBeesAPI.getAPI().getCommonAPI().items.princess.getItem()){
+        if (i == queenSlot) {
+            if (BeeUtils.instance.isQueen(stack) || BeeUtils.instance.isPrincess(stack)) {
                 return true;
             }
         }
-        if (Arrays.asList(frameSlots).contains(i)){
-            if (stack.getItem() instanceof IFrameItem){
+        if (Arrays.asList(frameSlots).contains(i)) {
+            if (stack.getItem() instanceof IFrameItem) {
                 return true;
             }
         }
-        if (i == droneSlot){
-            if (stack.getItem() == OpenBeesAPI.getAPI().getCommonAPI().items.drone.getItem()){
+        if (i == droneSlot) {
+            if (BeeUtils.instance.isDrone(stack)) {
                 return true;
             }
         }

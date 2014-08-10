@@ -1,5 +1,6 @@
 package info.inpureprojects.OpenBees.API.Common.Bees.Climate;
 
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 
 /**
@@ -17,6 +18,10 @@ public class ClimateDefinition {
 
     public String getTag() {
         return tag;
+    }
+
+    public boolean isBiomeCompatible(BiomeGenBase biome) {
+        return BiomeDictionary.isBiomeOfType(biome, this.type);
     }
 
     public BiomeDictionary.Type getType() {

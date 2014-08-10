@@ -8,9 +8,9 @@ import net.minecraft.item.ItemStack;
 public class BeeProduct {
 
     private ItemStack stack;
-    private int chance;
+    private float chance;
 
-    public BeeProduct(ItemStack stack, int chance) {
+    public BeeProduct(ItemStack stack, float chance) {
         this.stack = stack;
         this.chance = chance;
     }
@@ -19,7 +19,7 @@ public class BeeProduct {
         return stack;
     }
 
-    public int getChance() {
+    public float getChance() {
         return chance;
     }
 }

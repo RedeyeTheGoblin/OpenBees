@@ -3,7 +3,9 @@ package info.inpureprojects.OpenBees.API.Common.Bees.Genetics;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.Allele;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.Generic.AlleleInt;
 import info.inpureprojects.OpenBees.API.Common.Bees.IBee;
+import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import info.inpureprojects.OpenBees.Common.Blocks.Tiles.TileApiary;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.Map;
@@ -15,6 +17,27 @@ public class BeeUtils {
 
     public static final int GENERATE_NEW_LIFE_FLAG = -42;
     public static BeeUtils instance = new BeeUtils();
+
+    public boolean isQueen(ItemStack stack) {
+        if (stack == null) {
+            return false;
+        }
+        return stack.getItem() == OpenBeesAPI.getAPI().getCommonAPI().items.queen.getItem();
+    }
+
+    public boolean isPrincess(ItemStack stack) {
+        if (stack == null) {
+            return false;
+        }
+        return stack.getItem() == OpenBeesAPI.getAPI().getCommonAPI().items.princess.getItem();
+    }
+
+    public boolean isDrone(ItemStack stack) {
+        if (stack == null) {
+            return false;
+        }
+        return stack.getItem() == OpenBeesAPI.getAPI().getCommonAPI().items.drone.getItem();
+    }
 
     public NBTTagCompound generateGenome(IBee bee) {
         return this.generateGenome(bee.getDominantGenome().getSpecies(), bee.getRecessiveGenome().getSpecies(), bee.getDominantGenome().getRawGenome(), bee.getRecessiveGenome().getRawGenome(), bee.isHybrid(), bee.getLifeTicks(), bee.getMate());

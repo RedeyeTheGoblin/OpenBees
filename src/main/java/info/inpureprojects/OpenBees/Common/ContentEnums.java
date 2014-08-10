@@ -2,6 +2,7 @@ package info.inpureprojects.OpenBees.Common;
 
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.BeeProduct;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
+import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,27 +19,45 @@ public class ContentEnums {
                 "openbees|LifespanSHORT",
                 "openbees|PollinationSLOW",
                 "openbees|FlowerYELLOW",
-                "openbees|ClimateFOREST",
+                "openbees|ClimateTEMPERATE",
                 "openbees|FertilityLOW",
                 "openbees|EffectNONE",
                 "openbees|BooleanFALSE",
                 "openbees|BooleanFALSE",
                 "openbees|BooleanFALSE",
                 "openbees|TerritoryNORMAL"},
-                Arrays.asList(new BeeProduct[]{new BeeProduct(OpenBeesAPI.getAPI().getCommonAPI().items.honey_comb.getStack(1), 100)}));
+                Arrays.asList(new BeeProduct[]{new BeeProduct(OpenBeesAPI.getAPI().getCommonAPI().items.honey_comb.getStack(1), 0.25f)}),
+                Arrays.asList(new BiomeDictionary.Type[]{BiomeDictionary.Type.FOREST})),
+        MEADOWS("species.openbees.meadows.name", 0xFFFF00, 0xFF6600, new String[]{
+                "openbees|WorkspeedSLOW",
+                "openbees|LifespanSHORT",
+                "openbees|PollinationSLOW",
+                "openbees|FlowerYELLOW",
+                "openbees|ClimateTEMPERATE",
+                "openbees|FertilityLOW",
+                "openbees|EffectNONE",
+                "openbees|BooleanFALSE",
+                "openbees|BooleanFALSE",
+                "openbees|BooleanFALSE",
+                "openbees|TerritoryNORMAL"},
+                Arrays.asList(new BeeProduct[]{new BeeProduct(OpenBeesAPI.getAPI().getCommonAPI().items.honey_comb.getStack(1), 0.25f)}),
+                Arrays.asList(new BiomeDictionary.Type[]{BiomeDictionary.Type.PLAINS}));
+
 
         private String unloc;
         private int bodyColor;
         private int outlineColor;
         private String[] genome;
         private List<BeeProduct> products;
+        private List<BiomeDictionary.Type> spawnIn;
 
-        Bees(String unloc, int bodyColor, int outlineColor, String[] genome, List<BeeProduct> products) {
+        Bees(String unloc, int bodyColor, int outlineColor, String[] genome, List<BeeProduct> products, List<BiomeDictionary.Type> spawnIn) {
             this.unloc = unloc;
             this.bodyColor = bodyColor;
             this.outlineColor = outlineColor;
             this.genome = genome;
             this.products = products;
+            this.spawnIn = spawnIn;
         }
 
         public String getUnloc() {
@@ -59,6 +78,10 @@ public class ContentEnums {
 
         public int getOutlineColor() {
             return outlineColor;
+        }
+
+        public List<BiomeDictionary.Type> getSpawnIn() {
+            return spawnIn;
         }
     }
 

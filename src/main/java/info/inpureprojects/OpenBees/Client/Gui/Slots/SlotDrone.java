@@ -1,6 +1,6 @@
 package info.inpureprojects.OpenBees.Client.Gui.Slots;
 
-import info.inpureprojects.OpenBees.API.OpenBeesAPI;
+import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.BeeUtils;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -15,7 +15,7 @@ public class SlotDrone extends SlotCustom {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        if (OpenBeesAPI.getAPI().getCommonAPI().items.drone.getItem() == stack.getItem()) {
+        if (BeeUtils.instance.isDrone(stack)) {
             return true;
         }
         return false;

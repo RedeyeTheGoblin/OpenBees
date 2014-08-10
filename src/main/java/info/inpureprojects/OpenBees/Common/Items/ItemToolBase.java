@@ -1,12 +1,18 @@
 package info.inpureprojects.OpenBees.Common.Items;
 
+import cofh.api.block.IDismantleable;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 import java.util.Set;
@@ -45,6 +51,31 @@ public abstract class ItemToolBase extends ItemTool {
     @Override
     public int getRenderPasses(int metadata) {
         return 1;
+    }
+
+    // I completely ripped this off from Thermal Expansion.
+    // Sorry, Lemming!
+    public boolean onItemUseFirst(ItemStack paramItemStack, EntityPlayer paramEntityPlayer, World paramWorld, int paramInt1, int paramInt2, int paramInt3, int paramInt4, float paramFloat1, float paramFloat2, float paramFloat3) {
+        Block localBlock = paramWorld.getBlock(paramInt1, paramInt2, paramInt3);
+        if ((ServerHelper.isServerWorld(paramWorld)) && (paramEntityPlayer.isSneaking()) && ((localBlock instanceof IDismantleable)) && (((IDismantleable) localBlock).canDismantle(paramEntityPlayer, paramWorld, paramInt1, paramInt2, paramInt3))) {
+            ((IDismantleable) localBlock).dismantleBlock(paramEntityPlayer, paramWorld, paramInt1, paramInt2, paramInt3, false);
+            return true;
+        }
+        if (BlockHelper.canRotate(localBlock)) {
+            if (paramEntityPlayer.isSneaking()) {
+                paramWorld.setBlockMetadataWithNotify(paramInt1, paramInt2, paramInt3, BlockHelper.rotateVanillaBlockAlt(paramWorld, localBlock, paramInt1, paramInt2, paramInt3), 3);
+                paramWorld.playSoundEffect(paramInt1 + 0.5D, paramInt2 + 0.5D, paramInt3 + 0.5D, localBlock.stepSound.getBreakSound(), 1.0F, 0.6F);
+            } else {
+                paramWorld.setBlockMetadataWithNotify(paramInt1, paramInt2, paramInt3, BlockHelper.rotateVanillaBlock(paramWorld, localBlock, paramInt1, paramInt2, paramInt3), 3);
+                paramWorld.playSoundEffect(paramInt1 + 0.5D, paramInt2 + 0.5D, paramInt3 + 0.5D, localBlock.stepSound.getBreakSound(), 1.0F, 0.8F);
+            }
+            return ServerHelper.isServerWorld(paramWorld);
+        }
+        if ((!paramEntityPlayer.isSneaking()) && (localBlock != null) && (localBlock.rotateBlock(paramWorld, paramInt1, paramInt2, paramInt3, ForgeDirection.getOrientation(paramInt4)))) {
+            paramEntityPlayer.swingItem();
+            return ServerHelper.isServerWorld(paramWorld);
+        }
+        return false;
     }
 
 }

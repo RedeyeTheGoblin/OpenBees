@@ -1,18 +1,13 @@
 package info.inpureprojects.OpenBees.Common.Events;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.Allele;
-import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.AlleleClimate;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.ISpecies;
 import info.inpureprojects.OpenBees.API.Common.Bees.IBeeManager;
 import info.inpureprojects.OpenBees.API.Common.Tools.ScoopItem;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.world.BlockEvent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -30,14 +25,7 @@ public class ForgeHandler {
             if (!evt.harvester.getCurrentEquippedItem().getItem().getClass().isAnnotationPresent(ScoopItem.class)) {
                 return;
             }
-            List<BiomeDictionary.Type> types = Arrays.asList(BiomeDictionary.getTypesForBiome(evt.world.getBiomeGenForCoords(evt.x, evt.z)));
-            List<ISpecies> potential = new ArrayList<ISpecies>();
-            for (ISpecies s : OpenBeesAPI.getAPI().getCommonAPI().beeManager.getSpeciesMap().values()) {
-                AlleleClimate c = (AlleleClimate) s.getGenome().get(Allele.AlleleTypes.CLIMATE);
-                if (types.contains(c.getRequiredClimate().getType())) {
-                    potential.add(s);
-                }
-            }
+            List<ISpecies> potential = OpenBeesAPI.getAPI().getCommonAPI().beeManager.getSpeciesForBiome(evt.world.getBiomeGenForCoords(evt.x, evt.z));
             if (potential.isEmpty()) {
                 return;
             }
