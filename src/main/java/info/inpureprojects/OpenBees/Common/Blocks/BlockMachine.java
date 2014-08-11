@@ -35,6 +35,8 @@ public class BlockMachine extends BlockBase implements IDismantleable {
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         super.onNeighborBlockChange(world, x, y, z, block);
+        TileApiary a = (TileApiary) world.getTileEntity(x, y, z);
+        a.onNeighborsChanged();
     }
 
     @Override
@@ -44,13 +46,20 @@ public class BlockMachine extends BlockBase implements IDismantleable {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        switch (side) {
+        switch(meta){
             case 0:
-                return OpenBeesAPI.getAPI().getClientAPI().icons.getIcon("apiary_bottom");
-            case 1:
-                return OpenBeesAPI.getAPI().getClientAPI().icons.getIcon("apiary_top");
+                switch (side) {
+                    case 0:
+                        return OpenBeesAPI.getAPI().getClientAPI().icons.getIcon("apiary_bottom");
+                    case 1:
+                        return OpenBeesAPI.getAPI().getClientAPI().icons.getIcon("apiary_top");
 
+                }
+                return OpenBeesAPI.getAPI().getClientAPI().icons.getIcon("apiary_side");
+            case 1:
+                break;
         }
+        // Just return something here so the client does not crash. Something is horribly wrong if the code makes it down this far.
         return OpenBeesAPI.getAPI().getClientAPI().icons.getIcon("apiary_side");
     }
 

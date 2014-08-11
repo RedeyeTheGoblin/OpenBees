@@ -41,7 +41,21 @@ public class ContentEnums {
                 "openbees|BooleanFALSE",
                 "openbees|TerritoryNORMAL"},
                 Arrays.asList(new BeeProduct[]{new BeeProduct(OpenBeesAPI.getAPI().getCommonAPI().items.honey_comb.getStack(1), 0.25f)}),
-                Arrays.asList(new BiomeDictionary.Type[]{BiomeDictionary.Type.PLAINS}));
+                Arrays.asList(new BiomeDictionary.Type[]{BiomeDictionary.Type.PLAINS})),
+        COMMON("species.openbees.common.name", 0xFFFF00, 0xFFFFFF, new String[]{
+                "openbees|WorkspeedSLOW",
+                "openbees|LifespanSHORT",
+                "openbees|PollinationSLOW",
+                "openbees|FlowerYELLOW",
+                "openbees|ClimateTEMPERATE",
+                "openbees|FertilityLOW",
+                "openbees|EffectNONE",
+                "openbees|BooleanFALSE",
+                "openbees|BooleanFALSE",
+                "openbees|BooleanFALSE",
+                "openbees|TerritoryNORMAL"},
+                Arrays.asList(new BeeProduct[]{new BeeProduct(OpenBeesAPI.getAPI().getCommonAPI().items.honey_comb.getStack(1), 0.25f)}),
+                Arrays.asList(new BiomeDictionary.Type[0]));
 
 
         private String unloc;

@@ -23,4 +23,6 @@ public interface IBeeKeepingTile {
 
     public BlockPosition getPosition();
 
+    public void onNeighborsChanged();
+
 }

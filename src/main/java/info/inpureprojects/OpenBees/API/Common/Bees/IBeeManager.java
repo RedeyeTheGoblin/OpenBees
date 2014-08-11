@@ -25,6 +25,8 @@ public interface IBeeManager {
 
     public ModifierBlock getModifierBlock(Block block, int meta);
 
+    public void registerMutation(String species1, String species2, String outcome, float chance);
+
     public void registerMutation(ISpecies species1, ISpecies species2, ISpecies outcome, float chance);
 
     public void registerCustomMutation(Mutation mut);

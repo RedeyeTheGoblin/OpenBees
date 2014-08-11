@@ -63,6 +63,11 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
     }
 
     @Override
+    public void onNeighborsChanged() {
+
+    }
+
+    @Override
     public IBee getDrone() {
         return OpenBeesAPI.getAPI().getCommonAPI().beeManager.convertStackToBee(this.getStackInSlot(droneSlot));
     }
@@ -249,7 +254,7 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
             }
             // Long live the Queen... oh wait.
             if (ticks <= 0) {
-                int drones = (3 * queen.getDominantGenome().getFertility().getNumber()) * mods.getFertilityModifier();
+                int drones = (3 * queen.getDominantGenome().getFertility().getNumber()) + mods.getFertilityModifier();
                 for (int i = 0; i < drones; i++) {
                     throwStacks(manager.addItem(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this, modifiers, false)));
                 }

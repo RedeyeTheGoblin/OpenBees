@@ -102,10 +102,8 @@ public class ModuleOpenBees implements IINpureSubmodule {
                 }
                 evt.getBeeManager().registerSpecies(new SpeciesImpl(b.toString(), b.getUnloc(), b.getBodyColor(), b.getOutlineColor(), map, b.getProducts()));
                 evt.getBeeManager().registerBeeForHive(evt.getBeeManager().getSpeciesByTag(b.toString()), b.getSpawnIn());
-                JsonBee j = new JsonBee(b.getUnloc(), b.getBodyColor(), b.getOutlineColor(), b.getGenome(), JsonBee.convert(b.getProducts()), b.getSpawnIn());
-                String jb = JsonBee.json.toJson(j);
-                proxy.print(jb);
             }
+            evt.getBeeManager().registerMutation("FOREST", "MEADOWS", "COMMON", 0.25f);
             proxy.print("Bee setup complete!");
         } catch (Throwable t) {
             t.printStackTrace();

@@ -77,6 +77,7 @@ item.openbees.comb.honey.name=Honey
 
 species.openbees.forest.name=Forest
 species.openbees.meadows.name=Meadows
+species.openbees.common.name=Common
 
 tile.openbees.apiary.name=Apiary
 tile.openbees.hive.name=Bee Hive

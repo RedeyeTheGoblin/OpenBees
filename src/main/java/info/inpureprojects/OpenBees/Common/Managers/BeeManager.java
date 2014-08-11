@@ -33,6 +33,11 @@ public class BeeManager implements IBeeManager {
     private HashMap<String, ModifierBlock> modBlocks = new HashMap();
 
     @Override
+    public void registerMutation(String species1, String species2, String outcome, float chance) {
+        this.registerMutation(this.getSpeciesByTag(species1), this.getSpeciesByTag(species2), this.getSpeciesByTag(outcome), chance);
+    }
+
+    @Override
     public void registerModifierBlock(ModifierBlock block) {
         modBlocks.put(block.getTag(), block);
     }
@@ -203,7 +208,7 @@ public class BeeManager implements IBeeManager {
             List<Mutation> potentialMutations = OpenBeesAPI.getAPI().getCommonAPI().beeManager.getMutations(q.getDominantGenome().getSpecies(), q.getMate().getDominantGenome().getSpecies());
             if (!potentialMutations.isEmpty()) {
                 // If multiple possible mutations random roll one.
-                int selectMutation = r.nextInt(potentialMutations.size() - 1);
+                int selectMutation = r.nextInt(potentialMutations.size());
                 Mutation mut = potentialMutations.get(selectMutation);
                 float chance = mut.getChance();
                 // Give frames a chance to modify the chances.
