@@ -6,7 +6,7 @@ import net.minecraft.init.Blocks;
 /**
  * Created by den on 8/10/2014.
  */
-public class ModifierBlockTest extends ModifierBlock{
+public class ModifierBlockTest extends ModifierBlock {
 
     public ModifierBlockTest() {
         super(Blocks.glowstone, 0);

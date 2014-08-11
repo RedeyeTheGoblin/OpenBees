@@ -33,6 +33,11 @@ public class BlockMachine extends BlockBase implements IDismantleable {
     }
 
     @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+        super.onNeighborBlockChange(world, x, y, z, block);
+    }
+
+    @Override
     public boolean canDismantle(EntityPlayer entityPlayer, World world, int i, int i2, int i3) {
         return true;
     }

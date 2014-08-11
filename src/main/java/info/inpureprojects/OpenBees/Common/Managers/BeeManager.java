@@ -40,7 +40,7 @@ public class BeeManager implements IBeeManager {
     @Override
     public ModifierBlock getModifierBlock(Block block, int meta) {
         ModifierBlockComparison c = new ModifierBlockComparison(block, meta);
-        if (modBlocks.containsKey(c.getTag())){
+        if (modBlocks.containsKey(c.getTag())) {
             return modBlocks.get(c.getTag());
         }
         return null;
@@ -141,10 +141,10 @@ public class BeeManager implements IBeeManager {
     @Override
     public List<ModifierBlock> getModifierBlocksNear(IBeeKeepingTile tile) {
         List<ModifierBlock> blocks = new ArrayList();
-        for (BlockPosition b : tile.getSurroundingBlocks()){
-            if (b.blockExists(tile.getWorld())){
+        for (BlockPosition b : tile.getSurroundingBlocks()) {
+            if (b.blockExists(tile.getWorld())) {
                 ModifierBlock block = OpenBeesAPI.getAPI().getCommonAPI().beeManager.getModifierBlock(tile.getWorld().getBlock(b.x, b.y, b.z), tile.getWorld().getBlockMetadata(b.x, b.y, b.z));
-                if (block != null){
+                if (block != null) {
                     blocks.add(block);
                 }
             }
@@ -183,10 +183,10 @@ public class BeeManager implements IBeeManager {
             IBee p = tile.getQueen();
             IBee d = tile.getDrone();
             p.setMate(d);
-            for (IFrameItem i : tile.getFrames()){
+            for (IFrameItem i : tile.getFrames()) {
                 p.setLifeTicks(p.getLifeTicks() + i.getLifespanModifier());
             }
-            for (ModifierBlock b : OpenBeesAPI.getAPI().getCommonAPI().beeManager.getModifierBlocksNear(tile)){
+            for (ModifierBlock b : OpenBeesAPI.getAPI().getCommonAPI().beeManager.getModifierBlocksNear(tile)) {
                 p.setLifeTicks(p.getLifeTicks() + b.getLifespanModifier());
             }
             ItemStack q = Type.QUEEN.createStack();
@@ -207,7 +207,7 @@ public class BeeManager implements IBeeManager {
                 Mutation mut = potentialMutations.get(selectMutation);
                 float chance = mut.getChance();
                 // Give frames a chance to modify the chances.
-                for (IFrameItem i : allModifiers){
+                for (IFrameItem i : allModifiers) {
                     chance = chance + (chance * i.getMutationModifer());
                 }
                 // Roll for if the mutation happens.

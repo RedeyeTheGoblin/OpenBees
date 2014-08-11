@@ -1,13 +1,11 @@
 package info.inpureprojects.OpenBees.API.Common.Tools;
 
-import net.minecraft.block.Block;
-
 import java.util.List;
 
 /**
  * Created by den on 8/10/2014.
  */
-public class ModifierCompute extends ModifierBlock{
+public class ModifierCompute extends ModifierBlock {
 
     private boolean rain = false;
     private boolean outdoor = false;
@@ -18,23 +16,23 @@ public class ModifierCompute extends ModifierBlock{
 
     public ModifierCompute(List<IFrameItem> modifiers) {
         super(null, -1);
-        for (IFrameItem b : modifiers){
-            if (b.canBypassOutdoorRequirement()){
+        for (IFrameItem b : modifiers) {
+            if (b.canBypassOutdoorRequirement()) {
                 outdoor = true;
             }
-            if (b.canBypassBiomeRequirement()){
+            if (b.canBypassBiomeRequirement()) {
                 biome = true;
             }
-            if (b.canBypassFlowerRequirement()){
+            if (b.canBypassFlowerRequirement()) {
                 flower = true;
             }
-            if (b.canBypassNocturnal()){
+            if (b.canBypassNocturnal()) {
                 night = true;
             }
-            if (b.canBypassRain()){
+            if (b.canBypassRain()) {
                 rain = true;
             }
-            totalFertMod+=b.getFertilityModifier();
+            totalFertMod += b.getFertilityModifier();
         }
     }
 

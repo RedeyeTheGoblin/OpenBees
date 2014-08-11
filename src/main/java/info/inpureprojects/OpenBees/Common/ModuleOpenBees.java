@@ -28,6 +28,7 @@ import info.inpureprojects.OpenBees.Common.Items.ItemComb;
 import info.inpureprojects.OpenBees.Common.Items.ItemScoop;
 import info.inpureprojects.OpenBees.Common.Managers.ModifierBlockTest;
 import info.inpureprojects.OpenBees.Common.Managers.SpeciesImpl;
+import info.inpureprojects.OpenBees.Common.WorldGen.WorldGenHives;
 import info.inpureprojects.OpenBees.OpenBees;
 import info.inpureprojects.OpenBees.Proxy.Proxy;
 import info.inpureprojects.core.API.IINpureSubmodule;
@@ -65,6 +66,7 @@ public class ModuleOpenBees implements IINpureSubmodule {
     public void post() {
         OpenBeesAPI.getAPI().getCommonAPI().events.post(new EventRegisterBees());
         MinecraftForge.EVENT_BUS.register(new ForgeHandler());
+        WorldGenHives.init();
     }
 
     @Subscribe
