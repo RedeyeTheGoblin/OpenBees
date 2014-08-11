@@ -3,7 +3,6 @@ package info.inpureprojects.OpenBees.Common.WorldGen;
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.registry.GameRegistry;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
-import info.inpureprojects.OpenBees.Common.ModuleOpenBees;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -49,32 +48,24 @@ public class WorldGenHives implements IWorldGenerator {
                 // Is something under us?
                 if (!world.isAirBlock(randX, randY - 1, randZ)) {
                     // What is it?
-                    Block thing = world.getBlock(randX, randY - 1, randZ);
                     int meta = world.getBlockMetadata(randX, randY - 1, randZ);
-                    for (ItemStack stack : canSitOn) {
-                        Block b = Block.getBlockFromItem(stack.getItem());
-                        boolean disregardMeta = stack.getItemDamage() == OreDictionary.WILDCARD_VALUE;
-                        if (b == thing && (meta == stack.getItemDamage() || disregardMeta)) {
-                            world.setBlock(randX, randY, randZ, OpenBeesAPI.getAPI().getCommonAPI().blocks.beehive.getBlock());
-                            world.setBlockMetadataWithNotify(randX, randY, randZ, 0, 3);
-                            break;
-                        }
-                    }
+                    this.genAt(world, randX, randY, randZ, world.getBlock(randX, randY - 1, randZ), meta, meta == OreDictionary.WILDCARD_VALUE, canSitOn);
                 }
             } else {
                 // Can we replace it?
-                Block thing = world.getBlock(randX, randY, randZ);
                 int meta = world.getBlockMetadata(randX, randY, randZ);
-                for (ItemStack stack : replaceable) {
-                    Block b = Block.getBlockFromItem(stack.getItem());
-                    boolean disregardMeta = stack.getItemDamage() == OreDictionary.WILDCARD_VALUE;
-                    if (b == thing && (meta == stack.getItemDamage() || disregardMeta)) {
-                        ModuleOpenBees.proxy.print("Replacing block: " + thing.getUnlocalizedName() + "." + String.valueOf(meta) + " with beehive.");
-                        world.setBlock(randX, randY, randZ, OpenBeesAPI.getAPI().getCommonAPI().blocks.beehive.getBlock());
-                        world.setBlockMetadataWithNotify(randX, randY, randZ, 0, 3);
-                        break;
-                    }
-                }
+                this.genAt(world, randX, randY, randZ, world.getBlock(randX, randY, randZ), meta, meta == OreDictionary.WILDCARD_VALUE, replaceable);
+            }
+        }
+    }
+
+    private void genAt(World world, int targetX, int targetY, int targetZ, Block currentThing, int meta, boolean disregardMeta, List<ItemStack> stacks) {
+        for (ItemStack stack : stacks) {
+            Block b = Block.getBlockFromItem(stack.getItem());
+            if (b == currentThing && (meta == stack.getItemDamage() || disregardMeta)) {
+                world.setBlock(targetX, targetY, targetZ, OpenBeesAPI.getAPI().getCommonAPI().blocks.beehive.getBlock());
+                world.setBlockMetadataWithNotify(targetX, targetY, targetZ, 0, 3);
+                break;
             }
         }
     }
