@@ -1,5 +1,6 @@
 package info.inpureprojects.OpenBees.Common.Items;
 
+import info.inpureprojects.OpenBees.Common.NeedsMovedToCore;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * Created by den on 8/6/2014.
  */
+@NeedsMovedToCore
 public abstract class ItemBase extends Item {
 
     public ItemBase(String unloc, int maxStack) {

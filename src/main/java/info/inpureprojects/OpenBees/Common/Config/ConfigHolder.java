@@ -1,5 +1,6 @@
 package info.inpureprojects.OpenBees.Common.Config;
 
+import info.inpureprojects.OpenBees.Common.NeedsMovedToCore;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
@@ -7,6 +8,7 @@ import java.io.File;
 /**
  * Created by den on 8/6/2014.
  */
+@NeedsMovedToCore
 public class ConfigHolder {
 
     private File configFolder;

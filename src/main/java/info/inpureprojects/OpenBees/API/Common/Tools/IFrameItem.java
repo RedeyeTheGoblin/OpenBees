@@ -1,12 +1,28 @@
 package info.inpureprojects.OpenBees.API.Common.Tools;
 
-import net.minecraft.item.ItemStack;
-
 /**
  * Created by den on 8/8/2014.
  */
 public interface IFrameItem {
 
-    public void onTick(ItemStack queen, ItemStack frame);
+    // For reference: 1.0f = double the current chance.
+    public float getMutationModifer();
+
+    // This is in bee-ticks. There are 45 bee-ticks in the lowest life-span.
+    public int getLifespanModifier();
+
+    public int getFertilityModifier();
+
+    public void damageItem(int dmg);
+
+    public boolean canBypassNocturnal();
+
+    public boolean canBypassRain();
+
+    public boolean canBypassFlowerRequirement();
+
+    public boolean canBypassOutdoorRequirement();
+
+    public boolean canBypassBiomeRequirement();
 
 }

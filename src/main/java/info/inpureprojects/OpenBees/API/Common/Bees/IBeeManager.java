@@ -2,12 +2,16 @@ package info.inpureprojects.OpenBees.API.Common.Bees;
 
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.IAlleleManager;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.ISpecies;
+import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Mutation;
+import info.inpureprojects.OpenBees.API.Common.Tools.ModifierBlock;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +19,18 @@ import java.util.Map;
  * Created by den on 8/6/2014.
  */
 public interface IBeeManager {
+
+    public List<ModifierBlock> getModifierBlocksNear(IBeeKeepingTile tile);
+
+    public void registerModifierBlock(ModifierBlock block);
+
+    public ModifierBlock getModifierBlock(Block block, int meta);
+
+    public void registerMutation(ISpecies species1, ISpecies species2, ISpecies outcome, float chance);
+
+    public void registerCustomMutation(Mutation mut);
+
+    public List<Mutation> getMutations(ISpecies species1, ISpecies species2);
 
     public void registerBeeForHive(ISpecies species, List<BiomeDictionary.Type> biomes);
 

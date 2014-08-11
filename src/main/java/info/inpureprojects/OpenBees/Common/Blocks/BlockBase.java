@@ -1,6 +1,7 @@
 package info.inpureprojects.OpenBees.Common.Blocks;
 
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
+import info.inpureprojects.OpenBees.Common.NeedsMovedToCore;
 import info.inpureprojects.OpenBees.OpenBees;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -12,6 +13,7 @@ import net.minecraft.world.World;
 /**
  * Created by den on 8/7/2014.
  */
+@NeedsMovedToCore(needsCleanedUp = true)
 public abstract class BlockBase extends BlockContainer {
 
     private boolean hasGUI;

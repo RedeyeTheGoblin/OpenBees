@@ -1,5 +1,7 @@
 package info.inpureprojects.OpenBees.Client;
 
+import info.inpureprojects.OpenBees.Common.NeedsMovedToCore;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,6 +14,7 @@ import java.util.List;
 /**
  * Created by den on 8/7/2014.
  */
+@NeedsMovedToCore
 public class ImageScanner {
 
     public static final PixelData target = new PixelData(-1, -1, -6075996);

@@ -5,10 +5,11 @@ import cofh.lib.inventory.InventoryManager;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.position.BlockPosition;
 import info.inpureprojects.OpenBees.API.Common.Bees.CombItem;
-import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.BeeProduct;
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.BeeUtils;
 import info.inpureprojects.OpenBees.API.Common.Bees.IBee;
+import info.inpureprojects.OpenBees.API.Common.Bees.IBeeKeepingTile;
 import info.inpureprojects.OpenBees.API.Common.Tools.IFrameItem;
+import info.inpureprojects.OpenBees.API.Common.Tools.ModifierCompute;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,16 +20,17 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by den on 8/7/2014.
  */
-public class TileApiary extends TileEntity implements IInventory {
+public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTile {
 
     public static final int code_allGood = 0;
     public static final int code_missingBee = 1;
@@ -58,6 +60,44 @@ public class TileApiary extends TileEntity implements IInventory {
     public TileApiary() {
         this.stacks = new ItemStack[size];
         manager = InventoryManager.create(this, ForgeDirection.UNKNOWN);
+    }
+
+    @Override
+    public IBee getDrone() {
+        return OpenBeesAPI.getAPI().getCommonAPI().beeManager.convertStackToBee(this.getStackInSlot(droneSlot));
+    }
+
+    @Override
+    public List<BlockPosition> getSurroundingBlocks() {
+        return this.getPosition().getAdjacent(true);
+    }
+
+    @Override
+    public World getWorld() {
+        return this.getWorldObj();
+    }
+
+    @Override
+    public BlockPosition getPosition() {
+        return new BlockPosition(this.xCoord, this.yCoord, this.zCoord);
+    }
+
+    @Override
+    public List<IFrameItem> getFrames() {
+        ArrayList<IFrameItem> frames = new ArrayList();
+        for (int i = 0; i < size; i++) {
+            if (i == 0 || i == 4 || i == 11) {
+                if (this.getStackInSlot(i) != null) {
+                    frames.add((IFrameItem) this.getStackInSlot(i).getItem());
+                }
+            }
+        }
+        return frames;
+    }
+
+    @Override
+    public IBee getQueen() {
+        return OpenBeesAPI.getAPI().getCommonAPI().beeManager.convertStackToBee(this.getStackInSlot(queenSlot));
     }
 
     public void onRemoval() {
@@ -148,7 +188,7 @@ public class TileApiary extends TileEntity implements IInventory {
         if (hasPrincess && hasDrone) {
             breedingProgress++;
             if (breedingProgress >= breedingDelay) {
-                this.setInventorySlotContents(queenSlot, OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().combine(this.getStackInSlot(queenSlot), this.getStackInSlot(droneSlot)));
+                this.setInventorySlotContents(queenSlot, OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().combine(this));
                 this.decrStackSize(droneSlot, 1);
                 breedingProgress = 0;
                 return;
@@ -161,34 +201,40 @@ public class TileApiary extends TileEntity implements IInventory {
                 return;
             }
             IBee queen = OpenBeesAPI.getAPI().getCommonAPI().beeManager.convertStackToBee(this.getStackInSlot(queenSlot));
+            // External modifiers
+            List<BlockPosition> nearby = this.getSurroundingBlocks();
+            List<IFrameItem> modifiers = new ArrayList();
+            modifiers.addAll(this.getFrames());
+            modifiers.addAll(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getModifierBlocksNear(this));
+            ModifierCompute mods = new ModifierCompute(modifiers);
             // Night time
             if (!this.getWorldObj().isDaytime()) {
-                if (!queen.getDominantGenome().getNocturnal().isBool()) {
+                if (!queen.getDominantGenome().getNocturnal().isBool() && !mods.canBypassNocturnal()) {
                     this.setStatusCode(code_Night);
                     return;
                 }
             }
             // Climate
-            if (!queen.getDominantGenome().getClimate().getRequiredClimate().isBiomeCompatible(this.getWorldObj().getBiomeGenForCoords(this.xCoord, this.zCoord))) {
+            if (!queen.getDominantGenome().getClimate().getRequiredClimate().isBiomeCompatible(this.getWorldObj().getBiomeGenForCoords(this.xCoord, this.zCoord)) && !mods.canBypassBiomeRequirement()) {
                 this.setStatusCode(code_wrongBiome);
                 return;
             }
             // Rain
-            if (this.getWorldObj().isRaining()) {
+            if (this.getWorldObj().isRaining() && !mods.canBypassRain()) {
                 if (!queen.getDominantGenome().getRain().isBool()) {
                     this.setStatusCode(code_rain);
                     return;
                 }
             }
             // Sky
-            if (!this.getWorldObj().canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord)) {
+            if (!this.getWorldObj().canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && !mods.canBypassOutdoorRequirement()) {
                 if (!queen.getDominantGenome().getCave().isBool()) {
                     this.setStatusCode(code_sky);
                     return;
                 }
             }
             // Flowers
-            if (!hasFlowers(queen)) {
+            if (!hasFlowers(queen, nearby) && !mods.canBypassFlowerRequirement()) {
                 this.setStatusCode(code_flower);
                 return;
             }
@@ -198,24 +244,16 @@ public class TileApiary extends TileEntity implements IInventory {
             this.getStackInSlot(queenSlot).getTagCompound().setInteger("life", ticks);
             this.setLifeProgress(ticks / queen.getDominantGenome().getLifespan().getNumber());
             // Produce combs.
-            Random r = new Random();
-            for (BeeProduct p : queen.getDominantGenome().getSpecies().getPotentialProducts()) {
-                float odds = r.nextFloat();
-                if (odds < p.getChance()) {
-                    ItemStack comb = p.getStack().copy();
-                    ItemStack s = manager.addItem(comb);
-                    if (s != null) {
-                        this.throwStacks(s);
-                    }
-                }
+            for (ItemStack i : OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceItemsOnTick(this)) {
+                this.throwStacks(manager.addItem(i));
             }
             // Long live the Queen... oh wait.
             if (ticks <= 0) {
-                int drones = 3 * queen.getDominantGenome().getFertility().getNumber();
+                int drones = (3 * queen.getDominantGenome().getFertility().getNumber()) * mods.getFertilityModifier();
                 for (int i = 0; i < drones; i++) {
-                    throwStacks(manager.addItem(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this.getStackInSlot(queenSlot), false)));
+                    throwStacks(manager.addItem(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this, modifiers, false)));
                 }
-                throwStacks(manager.addItem(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this.getStackInSlot(queenSlot), true)));
+                throwStacks(manager.addItem(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this, modifiers, true)));
                 this.setInventorySlotContents(queenSlot, null);
             } else {
                 queen.setLifeTicks(ticks);
@@ -225,9 +263,7 @@ public class TileApiary extends TileEntity implements IInventory {
         }
     }
 
-    public boolean hasFlowers(IBee queen) {
-        BlockPosition b = new BlockPosition(this.xCoord, this.yCoord, this.zCoord);
-        List<BlockPosition> list = b.getAdjacent(true);
+    public boolean hasFlowers(IBee queen, List<BlockPosition> list) {
         for (BlockPosition p : list) {
             if (p.blockExists(this.worldObj)) {
                 if (queen.getDominantGenome().getFlower().isValid(this.worldObj, p.x, p.y, p.z, queen)) {

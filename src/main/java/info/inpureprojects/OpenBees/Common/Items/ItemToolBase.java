@@ -4,6 +4,7 @@ import cofh.api.block.IDismantleable;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
+import info.inpureprojects.OpenBees.Common.NeedsMovedToCore;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +21,7 @@ import java.util.Set;
 /**
  * Created by den on 8/8/2014.
  */
+@NeedsMovedToCore(needsCleanedUp = true)
 public abstract class ItemToolBase extends ItemTool {
 
     protected ItemToolBase(String unloc, ToolMaterial material, Set set, String toolClass, int level) {

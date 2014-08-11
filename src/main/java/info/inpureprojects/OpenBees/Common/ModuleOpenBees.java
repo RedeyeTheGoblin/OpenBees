@@ -26,6 +26,7 @@ import info.inpureprojects.OpenBees.Common.Genetics.*;
 import info.inpureprojects.OpenBees.Common.Items.ItemBee;
 import info.inpureprojects.OpenBees.Common.Items.ItemComb;
 import info.inpureprojects.OpenBees.Common.Items.ItemScoop;
+import info.inpureprojects.OpenBees.Common.Managers.ModifierBlockTest;
 import info.inpureprojects.OpenBees.Common.Managers.SpeciesImpl;
 import info.inpureprojects.OpenBees.OpenBees;
 import info.inpureprojects.OpenBees.Proxy.Proxy;
@@ -84,6 +85,7 @@ public class ModuleOpenBees implements IINpureSubmodule {
         evt.getApi().getCommonAPI().blocks.apiary = new BlockWrapper(new BlockMachine("openbees.apiary"), 0);
         NetworkRegistry.INSTANCE.registerGuiHandler(OpenBees.instance, new GuiHandler());
         evt.getApi().getCommonAPI().blocks.beehive = new BlockWrapper(new BlockHive("openbees.hive"), 0);
+        evt.getApi().getCommonAPI().beeManager.registerModifierBlock(new ModifierBlockTest());
     }
 
     @Subscribe

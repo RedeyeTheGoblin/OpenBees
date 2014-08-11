@@ -20,7 +20,7 @@ public class AlleleFlower extends Allele {
     }
 
     public boolean isValid(World world, int x, int y, int z, IBee queen) {
-        if (GameRegistry.findUniqueIdentifierFor(world.getBlock(x, y, z)).equals(GameRegistry.findUniqueIdentifierFor(this.requiredBlock)) && world.getBlockMetadata(x, y, z) == this.meta) {
+        if (requiredBlock == world.getBlock(x, y, z) && world.getBlockMetadata(x, y, z) == this.meta) {
             return true;
         }
         return false;

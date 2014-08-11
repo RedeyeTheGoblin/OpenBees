@@ -1,5 +1,6 @@
 package info.inpureprojects.OpenBees.API.Common.Bees;
 
+import info.inpureprojects.OpenBees.API.Common.Tools.IFrameItem;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
@@ -9,10 +10,10 @@ import java.util.List;
  */
 public interface IBeeLogic {
 
-    public ItemStack combine(ItemStack princess, ItemStack drone);
+    public ItemStack combine(IBeeKeepingTile tile);
 
-    public ItemStack produceOffspring(ItemStack queen, boolean princess);
+    public ItemStack produceOffspring(IBeeKeepingTile tile, List<IFrameItem> allModifiers, boolean princess);
 
-    public List<ItemStack> produceItemsOnTick(ItemStack queen, int tick);
+    public List<ItemStack> produceItemsOnTick(IBeeKeepingTile tile);
 
 }
