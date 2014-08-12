@@ -16,9 +16,9 @@ import info.inpureprojects.OpenBees.API.modInfo;
 import info.inpureprojects.OpenBees.Client.Gui.GuiHandler;
 import info.inpureprojects.OpenBees.Common.Blocks.BlockHive;
 import info.inpureprojects.OpenBees.Common.Blocks.BlockMachine;
+import info.inpureprojects.OpenBees.Common.Blocks.ItemBlockMachine;
 import info.inpureprojects.OpenBees.Common.Blocks.Tiles.TileApiary;
 import info.inpureprojects.OpenBees.Common.Config.ConfigHolder;
-import info.inpureprojects.OpenBees.Common.Config.JsonBee;
 import info.inpureprojects.OpenBees.Common.Events.EventSetupBlocks;
 import info.inpureprojects.OpenBees.Common.Events.EventSetupItems;
 import info.inpureprojects.OpenBees.Common.Events.ForgeHandler;
@@ -84,9 +84,13 @@ public class ModuleOpenBees implements IINpureSubmodule {
     @Subscribe
     public void blockInit(EventSetupBlocks evt) {
         GameRegistry.registerTileEntity(TileApiary.class, TileApiary.class.getName());
-        evt.getApi().getCommonAPI().blocks.apiary = new BlockWrapper(new BlockMachine("openbees.apiary"), 0);
+        evt.getApi().getCommonAPI().blocks.machine = new BlockMachine("openbees.apiary");
+        GameRegistry.registerBlock(evt.getApi().getCommonAPI().blocks.machine, ItemBlockMachine.class, evt.getApi().getCommonAPI().blocks.machine.getUnlocalizedName());
+        evt.getApi().getCommonAPI().blocks.apiary = new BlockWrapper(evt.getApi().getCommonAPI().blocks.machine, 0);
+        evt.getApi().getCommonAPI().blocks.carpenter = new BlockWrapper(evt.getApi().getCommonAPI().blocks.machine, 1);
         NetworkRegistry.INSTANCE.registerGuiHandler(OpenBees.instance, new GuiHandler());
         evt.getApi().getCommonAPI().blocks.beehive = new BlockWrapper(new BlockHive("openbees.hive"), 0);
+        GameRegistry.registerBlock(evt.getApi().getCommonAPI().blocks.beehive.getBlock(), evt.getApi().getCommonAPI().blocks.beehive.getBlock().getUnlocalizedName());
         evt.getApi().getCommonAPI().beeManager.registerModifierBlock(new ModifierBlockTest());
     }
 

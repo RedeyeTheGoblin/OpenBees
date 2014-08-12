@@ -8,4 +8,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ScoopItem {
+
+    // Register your tool with toolClass "scoop" as well as using this interface for best results.
+
 }

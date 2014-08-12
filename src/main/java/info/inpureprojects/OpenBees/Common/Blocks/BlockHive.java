@@ -1,6 +1,8 @@
 package info.inpureprojects.OpenBees.Common.Blocks;
 
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -8,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by den on 8/8/2014.
@@ -43,5 +46,10 @@ public class BlockHive extends BlockBase {
     @Override
     protected boolean canSilkHarvest() {
         return false;
+    }
+
+    @Override
+    public void getSubBlocks(Item item, CreativeTabs tabs, List list) {
+        list.add(new ItemStack(this, 1, 0));
     }
 }

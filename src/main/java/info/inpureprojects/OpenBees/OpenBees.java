@@ -1,6 +1,7 @@
 package info.inpureprojects.OpenBees;
 
 import com.google.common.eventbus.Subscribe;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
@@ -30,6 +31,9 @@ public class OpenBees {
     @Subscribe
     public void onEvent(EventPreloaderRegister evt) {
         PreloaderAPI.modules.register("info.inpureprojects.OpenBees.Common.ModuleOpenBees");
+        if (Loader.isModLoaded("Waila")) {
+            PreloaderAPI.modules.register("info.inpureprojects.OpenBees.Integration.ModuleWaila");
+        }
     }
 
     @Mod.EventHandler

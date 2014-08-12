@@ -79,7 +79,8 @@ species.openbees.forest.name=Forest
 species.openbees.meadows.name=Meadows
 species.openbees.common.name=Common
 
-tile.openbees.apiary.name=Apiary
+tile.openbees.apiary.0.name=Apiary
+tile.openbees.apiary.1.name=Carpenter
 tile.openbees.hive.name=Bee Hive
 
 item.openbees.scoop.0.name=Wooden Scoop

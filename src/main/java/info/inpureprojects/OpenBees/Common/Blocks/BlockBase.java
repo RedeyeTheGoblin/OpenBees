@@ -5,10 +5,14 @@ import info.inpureprojects.OpenBees.Common.NeedsMovedToCore;
 import info.inpureprojects.OpenBees.OpenBees;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 /**
  * Created by den on 8/7/2014.
@@ -46,5 +50,13 @@ public abstract class BlockBase extends BlockContainer {
             player.openGui(OpenBees.instance, (this.idShift + world.getBlockMetadata(x, y, z)), world, x, y, z);
         }
         return super.onBlockActivated(world, x, y, z, player, p_149727_6_, p_149727_7_, p_149727_8_, p_149727_9_);
+    }
+
+    @Override
+    public abstract void getSubBlocks(Item item, CreativeTabs tabs, List list);
+
+    @Override
+    public int damageDropped(int meta) {
+        return meta;
     }
 }

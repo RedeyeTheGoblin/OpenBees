@@ -119,6 +119,7 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
 
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
+        this.getWorld().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
     }
 
     public int getLifeProgress() {
@@ -299,6 +300,7 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
         }
         this.setLifeProgress(tag.getInteger("lifeProgress"));
         this.setBreedingProgress(tag.getInteger("breedingProgress"));
+        this.setStatusCode(tag.getInteger("status"));
     }
 
     @Override
@@ -312,6 +314,7 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
         }
         tag.setInteger("breedingProgress", this.getBreedingProgress());
         tag.setInteger("lifeProgress", this.getLifeProgress());
+        tag.setInteger("status", this.getStatusCode());
     }
 
     @Override

@@ -50,6 +50,14 @@ public class ProxyClient extends ProxyCommon {
         evt.getIconManager().registerIcon(modInfo.modid, "scoop_iron", "scoop_iron");
         evt.getIconManager().registerIcon(modInfo.modid, "scoop_diamond", "scoop_diamond");
         //
+        evt.getIconManager().registerTexture(modInfo.modid, "carpenter_side_off", "carpenter_side_off");
+        evt.getIconManager().registerTexture(modInfo.modid, "carpenter_side_on", "carpenter_side_on");
+        evt.getIconManager().registerTexture(modInfo.modid, "carpenter_top_off", "carpenter_top_off");
+        evt.getIconManager().registerTexture(modInfo.modid, "carpenter_top_on", "carpenter_top_on");
+        evt.getIconManager().registerTexture(modInfo.modid, "forestfire_machine_bottom", "forestfire_machine_bottom");
+        evt.getIconManager().registerTexture(modInfo.modid, "forestfire_machine_side", "forestfire_machine_side");
+        evt.getIconManager().registerTexture(modInfo.modid, "forestfire_machine_top", "forestfire_machine_top");
+        //
         OpenBeesAPI.getAPI().getClientAPI().creativeTabBees = new CreativeTabBees();
         OpenBeesAPI.getAPI().getClientAPI().creativeTabBlocks = new CreativeTabBlocks();
     }
