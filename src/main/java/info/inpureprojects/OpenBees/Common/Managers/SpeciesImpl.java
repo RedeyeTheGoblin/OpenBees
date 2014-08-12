@@ -64,4 +64,28 @@ public class SpeciesImpl implements ISpecies {
     public List<BeeProduct> getPotentialProducts() {
         return this.products;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SpeciesImpl)) return false;
+
+        SpeciesImpl species = (SpeciesImpl) o;
+
+        if (bodyColor != species.bodyColor) return false;
+        if (outlineColor != species.outlineColor) return false;
+        if (!alleles.equals(species.alleles)) return false;
+        if (!products.equals(species.products)) return false;
+        if (!tag.equals(species.tag)) return false;
+        if (!unloc.equals(species.unloc)) return false;
+
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "SpeciesImpl{" +
+                "tag='" + tag + '\'' +
+                '}';
+    }
 }

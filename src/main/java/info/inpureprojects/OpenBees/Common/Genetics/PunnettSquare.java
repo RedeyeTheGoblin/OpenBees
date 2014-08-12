@@ -2,6 +2,7 @@ package info.inpureprojects.OpenBees.Common.Genetics;
 
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.Allele;
 import info.inpureprojects.OpenBees.API.Common.Bees.IBee;
+import info.inpureprojects.OpenBees.Common.ModuleOpenBees;
 
 import java.util.*;
 
@@ -13,10 +14,18 @@ public class PunnettSquare {
     private List<Object[]> potential = new ArrayList<Object[]>();
 
     public PunnettSquare(Object[] queen, Object[] mate) {
+        // LEFT-TOP QUAD
+        potential.add(new Object[]{mate[0], queen[0]});
         potential.add(new Object[]{queen[0], mate[0]});
-        potential.add(new Object[]{queen[1], mate[1]});
-        potential.add(new Object[]{queen[0], mate[1]});
+        // RIGHT-TOP QUAD
         potential.add(new Object[]{queen[1], mate[0]});
+        potential.add(new Object[]{mate[1], queen[0]});
+        // LEFT-BOTTOM QUAD
+        potential.add(new Object[]{queen[0], mate[1]});
+        potential.add(new Object[]{mate[0], queen[1]});
+        // RIGHT-BOTTOM QUAD
+        potential.add(new Object[]{mate[1], queen[1]});
+        potential.add(new Object[]{queen[1], mate[1]});
     }
 
     public static Map<Allele.AlleleTypes, PunnettSquare> getGeneticPotentials(IBee queen) {

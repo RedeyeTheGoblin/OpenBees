@@ -1,7 +1,5 @@
 package info.inpureprojects.OpenBees.Common.Blocks.Tiles;
 
-import cofh.lib.inventory.IInventoryManager;
-import cofh.lib.inventory.InventoryManager;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.position.BlockPosition;
 import info.inpureprojects.OpenBees.API.Common.Bees.CombItem;
@@ -11,6 +9,7 @@ import info.inpureprojects.OpenBees.API.Common.Bees.IBeeKeepingTile;
 import info.inpureprojects.OpenBees.API.Common.Tools.IFrameItem;
 import info.inpureprojects.OpenBees.API.Common.Tools.ModifierCompute;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
+import info.inpureprojects.OpenBees.Common.Managers.InventoryManager;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -30,7 +29,7 @@ import java.util.List;
 /**
  * Created by den on 8/7/2014.
  */
-public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTile {
+public class TileApiary extends TileBase implements IBeeKeepingTile {
 
     public static final int code_allGood = 0;
     public static final int code_missingBee = 1;
@@ -49,23 +48,28 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
     private static int[] frameSlots = new int[]{0, 4, 11};
     private static int[] outputSlots = new int[]{1, 2, 5, 6, 7, 9, 10};
     private static int delay = 20 * 4;
-    public int size = 12;
-    public ItemStack[] stacks;
     private int statusCode = 0;
     private int breedingProgress = 0;
     private int lifeProgress = 0;
     private int count = 0;
-    private IInventoryManager manager;
+    private InventoryManager output;
     private boolean recheckFlowers = true;
+    private ArrayList<IFrameItem> modifiers = new ArrayList();
+    private ModifierCompute mods = new ModifierCompute(modifiers);
 
     public TileApiary() {
-        this.stacks = new ItemStack[size];
-        manager = InventoryManager.create(this, ForgeDirection.UNKNOWN);
+        super(12);
+        output = new InventoryManager(outputSlots, this);
     }
 
     @Override
     public void onNeighborsChanged() {
         recheckFlowers = true;
+        modifiers.clear();
+        modifiers.trimToSize();
+        modifiers.addAll(this.getFrames());
+        modifiers.addAll(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getModifierBlocksNear(this));
+        mods = new ModifierCompute(modifiers);
     }
 
     @Override
@@ -91,7 +95,7 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
     @Override
     public List<IFrameItem> getFrames() {
         ArrayList<IFrameItem> frames = new ArrayList();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < this.size; i++) {
             if (i == 0 || i == 4 || i == 11) {
                 if (this.getStackInSlot(i) != null) {
                     frames.add((IFrameItem) this.getStackInSlot(i).getItem());
@@ -120,7 +124,9 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
 
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
-        this.getWorld().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        if (this.getWorld() != null) {
+            this.getWorld().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        }
     }
 
     public int getLifeProgress() {
@@ -140,24 +146,13 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound tag = new NBTTagCompound();
-        this.writeToNBT(tag);
-        S35PacketUpdateTileEntity packet = new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, tag);
-        return packet;
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.func_148857_g());
+    public void init() {
+        this.onNeighborsChanged();
     }
 
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (ServerHelper.isClientWorld(this.worldObj)) {
-            return;
-        }
         // Setting up the status flag for the GUI.
         boolean hasQueen = false;
         boolean hasPrincess = false;
@@ -209,11 +204,7 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
             }
             IBee queen = OpenBeesAPI.getAPI().getCommonAPI().beeManager.convertStackToBee(this.getStackInSlot(queenSlot));
             // External modifiers
-            List<BlockPosition> nearby = this.getSurroundingBlocks();
-            List<IFrameItem> modifiers = new ArrayList();
-            modifiers.addAll(this.getFrames());
-            modifiers.addAll(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getModifierBlocksNear(this));
-            ModifierCompute mods = new ModifierCompute(modifiers);
+
             // Night time
             if (!this.getWorldObj().isDaytime()) {
                 if (!queen.getDominantGenome().getNocturnal().isBool() && !mods.canBypassNocturnal()) {
@@ -241,8 +232,8 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
                 }
             }
             // Flowers
-            if (this.recheckFlowers){
-                if (!hasFlowers(queen, nearby) && !mods.canBypassFlowerRequirement()) {
+            if (this.recheckFlowers) {
+                if (!hasFlowers(queen, this.getSurroundingBlocks()) && !mods.canBypassFlowerRequirement()) {
                     this.setStatusCode(code_flower);
                     return;
                 }
@@ -255,16 +246,17 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
             this.setLifeProgress(ticks / queen.getDominantGenome().getLifespan().getNumber());
             // Produce combs.
             for (ItemStack i : OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceItemsOnTick(this)) {
-                this.throwStacks(manager.addItem(i));
+                this.throwStacks(output.addStack(i));
             }
             // Long live the Queen... oh wait.
             if (ticks <= 0) {
                 int drones = (3 * queen.getDominantGenome().getFertility().getNumber()) + mods.getFertilityModifier();
                 for (int i = 0; i < drones; i++) {
-                    throwStacks(manager.addItem(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this, modifiers, false)));
+                    throwStacks(output.addStack(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this, modifiers, false)));
                 }
-                throwStacks(manager.addItem(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this, modifiers, true)));
+                throwStacks(output.addStack(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this, modifiers, true)));
                 this.setInventorySlotContents(queenSlot, null);
+                this.lifeProgress = 0;
             } else {
                 queen.setLifeTicks(ticks);
                 this.getStackInSlot(queenSlot).setTagCompound(queen.getNBT());
@@ -284,24 +276,9 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
         return false;
     }
 
-    private void throwStacks(ItemStack stack) {
-        if (stack != null) {
-            this.getWorldObj().spawnEntityInWorld(new EntityItem(this.getWorldObj(), this.xCoord, this.yCoord + 1, this.zCoord, stack));
-        }
-    }
-
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        for (int i = 0; i < stacks.length; i++) {
-            String key = "inventory" + String.valueOf(i);
-            if (tag.hasKey(key)) {
-                NBTTagCompound temp = tag.getCompoundTag(key);
-                stacks[i] = ItemStack.loadItemStackFromNBT(temp);
-            } else {
-                stacks[i] = null;
-            }
-        }
         this.setLifeProgress(tag.getInteger("lifeProgress"));
         this.setBreedingProgress(tag.getInteger("breedingProgress"));
         this.setStatusCode(tag.getInteger("status"));
@@ -310,88 +287,9 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        for (int i = 0; i < stacks.length; i++) {
-            String key = "inventory" + String.valueOf(i);
-            if (stacks[i] != null) {
-                tag.setTag(key, stacks[i].writeToNBT(new NBTTagCompound()));
-            }
-        }
         tag.setInteger("breedingProgress", this.getBreedingProgress());
         tag.setInteger("lifeProgress", this.getLifeProgress());
         tag.setInteger("status", this.getStatusCode());
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return this.size;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int i) {
-        return stacks[i];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int slot, int amt) {
-        ItemStack stack = getStackInSlot(slot);
-        if (stack != null) {
-            if (stack.stackSize <= amt) {
-                setInventorySlotContents(slot, null);
-            } else {
-                stack = stack.splitStack(amt);
-                if (stack.stackSize == 0) {
-                    setInventorySlotContents(slot, null);
-                }
-            }
-        }
-        return stack;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
-        ItemStack stack = getStackInSlot(slot);
-        if (stack != null) {
-            setInventorySlotContents(slot, null);
-        }
-        return stack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack stack) {
-        stacks[slot] = stack;
-        if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-            stack.stackSize = getInventoryStackLimit();
-        }
-    }
-
-    @Override
-    public String getInventoryName() {
-        return this.getClass().getName();
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return worldObj.getTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
-    }
-
-    @Override
-    public void openInventory() {
-
-    }
-
-    @Override
-    public void closeInventory() {
-
     }
 
     @Override

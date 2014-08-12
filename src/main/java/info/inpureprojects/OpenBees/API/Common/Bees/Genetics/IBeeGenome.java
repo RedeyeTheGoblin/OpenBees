@@ -64,4 +64,5 @@ public interface IBeeGenome {
 
     public Map<Allele.AlleleTypes, Allele> getRawGenome();
 
+    public boolean isIdentical(IBeeGenome genome2);
 }

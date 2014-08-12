@@ -11,6 +11,7 @@ import info.inpureprojects.OpenBees.API.Common.Tools.IFrameItem;
 import info.inpureprojects.OpenBees.API.Common.Tools.ModifierBlock;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import info.inpureprojects.OpenBees.Common.Genetics.PunnettSquare;
+import info.inpureprojects.OpenBees.Common.ModuleOpenBees;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -201,6 +202,8 @@ public class BeeManager implements IBeeManager {
 
         @Override
         public ItemStack produceOffspring(IBeeKeepingTile tile, List<IFrameItem> allModifiers, boolean princess) {
+            ItemStack b;
+            NBTTagCompound newBee;
             Random r = new Random();
             IBee q = tile.getQueen();
             Mutation selectedMutation = null;
@@ -208,7 +211,12 @@ public class BeeManager implements IBeeManager {
             List<Mutation> potentialMutations = OpenBeesAPI.getAPI().getCommonAPI().beeManager.getMutations(q.getDominantGenome().getSpecies(), q.getMate().getDominantGenome().getSpecies());
             if (!potentialMutations.isEmpty()) {
                 // If multiple possible mutations random roll one.
-                int selectMutation = r.nextInt(potentialMutations.size());
+                int selectMutation;
+                if (potentialMutations.size() == 1){
+                    selectMutation = 0;
+                }else{
+                    selectMutation = r.nextInt(potentialMutations.size() - 1);
+                }
                 Mutation mut = potentialMutations.get(selectMutation);
                 float chance = mut.getChance();
                 // Give frames a chance to modify the chances.
@@ -238,8 +246,7 @@ public class BeeManager implements IBeeManager {
             int sRoll = r.nextInt(speciesRoll.getPotential().size() - 1);
             ISpecies i1 = (ISpecies) speciesRoll.getPotential().get(sRoll)[0];
             ISpecies i2 = (ISpecies) speciesRoll.getPotential().get(sRoll)[1];
-            NBTTagCompound newBee = BeeUtils.instance.generateGenome(i1, i2, dominant, recessive, i1 != i2, BeeUtils.GENERATE_NEW_LIFE_FLAG, null);
-            ItemStack b;
+            newBee = BeeUtils.instance.generateGenome(i1, i2, dominant, recessive, i1 != i2, BeeUtils.GENERATE_NEW_LIFE_FLAG, null);
             if (princess) {
                 b = Type.PRINCESS.createStack();
             } else {

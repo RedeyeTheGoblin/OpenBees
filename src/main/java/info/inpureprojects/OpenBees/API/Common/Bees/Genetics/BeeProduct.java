@@ -22,4 +22,24 @@ public class BeeProduct {
     public float getChance() {
         return chance;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BeeProduct)) return false;
+
+        BeeProduct that = (BeeProduct) o;
+
+        if (Float.compare(that.chance, chance) != 0) return false;
+        if (!stack.isItemEqual(that.stack)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = stack.hashCode();
+        result = 31 * result + (chance != +0.0f ? Float.floatToIntBits(chance) : 0);
+        return result;
+    }
 }

@@ -18,6 +18,10 @@ public class BeeUtils {
     public static final int GENERATE_NEW_LIFE_FLAG = -42;
     public static BeeUtils instance = new BeeUtils();
 
+    public boolean areBeesIdentical(IBee bee1, IBee bee2) {
+        return bee1.getDominantGenome().isIdentical(bee2.getDominantGenome()) && bee1.getRecessiveGenome().isIdentical(bee2.getRecessiveGenome());
+    }
+
     public boolean isQueen(ItemStack stack) {
         if (stack == null) {
             return false;

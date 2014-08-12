@@ -151,4 +151,18 @@ public class GenomeImpl implements IBeeGenome {
     public Map<Allele.AlleleTypes, Allele> getRawGenome() {
         return Collections.unmodifiableMap(this.alleles);
     }
+
+    @Override
+    public boolean isIdentical(IBeeGenome o) {
+        if (this == o) return true;
+        if (!(o instanceof GenomeImpl)) return false;
+
+        GenomeImpl genome = (GenomeImpl) o;
+
+        if (!alleles.equals(genome.alleles)) return false;
+        if (!species.equals(genome.species)) return false;
+
+        return true;
+    }
+
 }

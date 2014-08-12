@@ -22,6 +22,13 @@ public class Allele {
     }
 
     @Override
+    public String toString() {
+        return "Allele{" +
+                "tag='" + tag + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Allele)) return false;
@@ -33,14 +40,6 @@ public class Allele {
         if (!unloc.equals(allele.unloc)) return false;
 
         return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = tag.hashCode();
-        result = 31 * result + unloc.hashCode();
-        result = 31 * result + (canBeInherited ? 1 : 0);
-        return result;
     }
 
     public static enum AlleleTypes {

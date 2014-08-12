@@ -19,7 +19,7 @@ public class ModifierBlockTest extends ModifierBlock {
 
     @Override
     public int getLifespanModifier() {
-        return 0;
+        return -40;
     }
 
     @Override

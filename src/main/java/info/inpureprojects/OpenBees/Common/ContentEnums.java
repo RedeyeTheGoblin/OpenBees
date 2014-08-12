@@ -29,7 +29,7 @@ public class ContentEnums {
                 Arrays.asList(new BeeProduct[]{new BeeProduct(OpenBeesAPI.getAPI().getCommonAPI().items.honey_comb.getStack(1), 0.25f)}),
                 Arrays.asList(new BiomeDictionary.Type[]{BiomeDictionary.Type.FOREST})),
         MEADOWS("species.openbees.meadows.name", 0xFFFF00, 0xFF6600, new String[]{
-                "openbees|WorkspeedSLOW",
+                "openbees|WorkspeedFAST",
                 "openbees|LifespanSHORT",
                 "openbees|PollinationSLOW",
                 "openbees|FlowerYELLOW",
