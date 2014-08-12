@@ -56,6 +56,7 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
     private int lifeProgress = 0;
     private int count = 0;
     private IInventoryManager manager;
+    private boolean recheckFlowers = true;
 
     public TileApiary() {
         this.stacks = new ItemStack[size];
@@ -64,7 +65,7 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
 
     @Override
     public void onNeighborsChanged() {
-
+        recheckFlowers = true;
     }
 
     @Override
@@ -240,9 +241,12 @@ public class TileApiary extends TileEntity implements IInventory, IBeeKeepingTil
                 }
             }
             // Flowers
-            if (!hasFlowers(queen, nearby) && !mods.canBypassFlowerRequirement()) {
-                this.setStatusCode(code_flower);
-                return;
+            if (this.recheckFlowers){
+                if (!hasFlowers(queen, nearby) && !mods.canBypassFlowerRequirement()) {
+                    this.setStatusCode(code_flower);
+                    return;
+                }
+                this.recheckFlowers = false;
             }
             // Process this life tick.
             int ticks = queen.getLifeTicks();
