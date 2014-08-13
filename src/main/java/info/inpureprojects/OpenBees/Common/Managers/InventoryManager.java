@@ -1,11 +1,13 @@
 package info.inpureprojects.OpenBees.Common.Managers;
 
+import info.inpureprojects.OpenBees.Common.NeedsMovedToCore;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
 /**
  * Created by den on 8/12/2014.
  */
+@NeedsMovedToCore
 public class InventoryManager {
 
     private int[] slots;
