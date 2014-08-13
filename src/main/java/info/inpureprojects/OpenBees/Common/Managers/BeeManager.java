@@ -184,6 +184,9 @@ public class BeeManager implements IBeeManager {
     }
 
     public static class BeeLogic implements IBeeLogic {
+
+        public static boolean recessiveCanTriggerMutations = true;
+
         @Override
         public ItemStack combine(IBeeKeepingTile tile) {
             IBee p = tile.getQueen();
@@ -210,7 +213,9 @@ public class BeeManager implements IBeeManager {
             // Process potential mutations.
             List<Mutation> potentialMutations = new ArrayList();
             potentialMutations.addAll(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getMutations(q.getDominantGenome().getSpecies(), q.getMate().getDominantGenome().getSpecies()));
-            potentialMutations.addAll(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getMutations(q.getRecessiveGenome().getSpecies(), q.getMate().getRecessiveGenome().getSpecies()));
+            if (recessiveCanTriggerMutations){
+                potentialMutations.addAll(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getMutations(q.getRecessiveGenome().getSpecies(), q.getMate().getRecessiveGenome().getSpecies()));
+            }
             if (!potentialMutations.isEmpty()) {
                 // If multiple possible mutations random roll one.
                 int selectMutation;
