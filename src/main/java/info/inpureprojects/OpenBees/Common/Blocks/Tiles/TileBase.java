@@ -4,17 +4,19 @@ import cofh.lib.util.helpers.ServerHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Created by den on 8/12/2014.
  */
-public abstract class TileBase extends TileEntity implements IInventory {
+public abstract class TileBase extends TileEntity implements ISidedInventory {
 
     public ItemStack[] stacks;
     public int size;
@@ -38,6 +40,26 @@ public abstract class TileBase extends TileEntity implements IInventory {
         this.size = size;
         this.stacks = new ItemStack[this.size];
     }
+
+    public abstract int[] getOutputSlotNumbers();
+
+    public abstract int[] getInputSlotForTop();
+
+    @Override
+    public int[] getAccessibleSlotsFromSide(int side) {
+        switch(side){
+            case 1:
+                return this.getInputSlotForTop();
+
+        }
+        return this.getOutputSlotNumbers();
+    }
+
+    @Override
+    public abstract boolean canInsertItem(int slot, ItemStack stack, int side);
+
+    @Override
+    public abstract boolean canExtractItem(int slot, ItemStack stack, int side);
 
     @Override
     public int getSizeInventory() {
@@ -80,7 +102,10 @@ public abstract class TileBase extends TileEntity implements IInventory {
         if (stack != null && stack.stackSize > getInventoryStackLimit()) {
             stack.stackSize = getInventoryStackLimit();
         }
+        this.onSlotChanged(slot);
     }
+
+    public abstract void onSlotChanged(int slot);
 
     @Override
     public String getInventoryName() {

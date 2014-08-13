@@ -63,6 +63,16 @@ public class TileApiary extends TileBase implements IBeeKeepingTile {
     }
 
     @Override
+    public int[] getOutputSlotNumbers() {
+        return outputSlots;
+    }
+
+    @Override
+    public int[] getInputSlotForTop() {
+        return new int[]{queenSlot, droneSlot, frameSlots[0], frameSlots[1], frameSlots[2]};
+    }
+
+    @Override
     public void onNeighborsChanged() {
         recheckFlowers = true;
         modifiers.clear();
@@ -148,6 +158,13 @@ public class TileApiary extends TileBase implements IBeeKeepingTile {
     @Override
     public void init() {
         this.onNeighborsChanged();
+    }
+
+    @Override
+    public void onSlotChanged(int slot) {
+        if (Arrays.asList(frameSlots).contains(slot)){
+            this.onNeighborsChanged();
+        }
     }
 
     @Override
@@ -290,6 +307,26 @@ public class TileApiary extends TileBase implements IBeeKeepingTile {
         tag.setInteger("breedingProgress", this.getBreedingProgress());
         tag.setInteger("lifeProgress", this.getLifeProgress());
         tag.setInteger("status", this.getStatusCode());
+    }
+
+    @Override
+    public boolean canInsertItem(int slot, ItemStack stack, int side) {
+        if (side == ForgeDirection.UP.ordinal()){
+            if (this.isItemValidForSlot(slot, stack)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canExtractItem(int slot, ItemStack stack, int side) {
+        if (side != ForgeDirection.UP.ordinal()){
+            if (this.getStackInSlot(slot) != null){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
