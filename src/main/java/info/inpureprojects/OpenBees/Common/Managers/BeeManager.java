@@ -208,7 +208,9 @@ public class BeeManager implements IBeeManager {
             IBee q = tile.getQueen();
             Mutation selectedMutation = null;
             // Process potential mutations.
-            List<Mutation> potentialMutations = OpenBeesAPI.getAPI().getCommonAPI().beeManager.getMutations(q.getDominantGenome().getSpecies(), q.getMate().getDominantGenome().getSpecies());
+            List<Mutation> potentialMutations = new ArrayList();
+            potentialMutations.addAll(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getMutations(q.getDominantGenome().getSpecies(), q.getMate().getDominantGenome().getSpecies()));
+            potentialMutations.addAll(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getMutations(q.getRecessiveGenome().getSpecies(), q.getMate().getRecessiveGenome().getSpecies()));
             if (!potentialMutations.isEmpty()) {
                 // If multiple possible mutations random roll one.
                 int selectMutation;

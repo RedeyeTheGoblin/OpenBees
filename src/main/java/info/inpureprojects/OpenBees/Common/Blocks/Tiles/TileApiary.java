@@ -52,14 +52,13 @@ public class TileApiary extends TileBase implements IBeeKeepingTile {
     private int breedingProgress = 0;
     private int lifeProgress = 0;
     private int count = 0;
-    private InventoryManager output;
+
     private boolean recheckFlowers = true;
     private ArrayList<IFrameItem> modifiers = new ArrayList();
     private ModifierCompute mods = new ModifierCompute(modifiers);
 
     public TileApiary() {
         super(12);
-        output = new InventoryManager(outputSlots, this);
     }
 
     @Override
@@ -170,6 +169,9 @@ public class TileApiary extends TileBase implements IBeeKeepingTile {
     @Override
     public void updateEntity() {
         super.updateEntity();
+        if (ServerHelper.isClientWorld(this.worldObj)) {
+            return;
+        }
         // Setting up the status flag for the GUI.
         boolean hasQueen = false;
         boolean hasPrincess = false;

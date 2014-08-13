@@ -1,6 +1,7 @@
 package info.inpureprojects.OpenBees.Common.Blocks.Tiles;
 
 import cofh.lib.util.helpers.ServerHelper;
+import info.inpureprojects.OpenBees.Common.Managers.InventoryManager;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -21,15 +22,18 @@ public abstract class TileBase extends TileEntity implements ISidedInventory {
     public ItemStack[] stacks;
     public int size;
     private boolean init = false;
+    protected InventoryManager output;
 
     public abstract void init();
 
     @Override
     public void updateEntity() {
         super.updateEntity();
+        // This needs to be copied into each sub-class as well.
         if (ServerHelper.isClientWorld(this.worldObj)) {
             return;
         }
+        //
         if (!init){
             this.init();
             init = true;
@@ -39,6 +43,7 @@ public abstract class TileBase extends TileEntity implements ISidedInventory {
     protected TileBase(int size) {
         this.size = size;
         this.stacks = new ItemStack[this.size];
+        output = new InventoryManager(this.getOutputSlotNumbers(), this);
     }
 
     public abstract int[] getOutputSlotNumbers();
