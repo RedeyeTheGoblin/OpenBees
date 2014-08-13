@@ -192,12 +192,14 @@ public class BeeManager implements IBeeManager {
             IBee p = tile.getQueen();
             IBee d = tile.getDrone();
             p.setMate(d);
+            float hpMod = 0.0f;
             for (IFrameItem i : tile.getFrames()) {
-                p.setLifeTicks(p.getLifeTicks() + i.getLifespanModifier());
+                hpMod+=i.getLifespanModifier();
             }
             for (ModifierBlock b : OpenBeesAPI.getAPI().getCommonAPI().beeManager.getModifierBlocksNear(tile)) {
-                p.setLifeTicks(p.getLifeTicks() + b.getLifespanModifier());
+                hpMod+=b.getLifespanModifier();
             }
+            p.setLifeTicks(Math.round(p.getLifeTicks() * hpMod));
             ItemStack q = Type.QUEEN.createStack();
             q.setTagCompound(p.getNBT());
             return q;

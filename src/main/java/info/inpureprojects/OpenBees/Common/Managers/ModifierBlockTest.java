@@ -14,17 +14,17 @@ public class ModifierBlockTest extends ModifierBlock {
 
     @Override
     public float getMutationModifer() {
-        return 0;
+        return 1.0f;
     }
 
     @Override
-    public int getLifespanModifier() {
-        return -40;
+    public float getLifespanModifier() {
+        return 0.1f;
     }
 
     @Override
-    public int getFertilityModifier() {
-        return 0;
+    public float getFertilityModifier() {
+        return 1.0f;
     }
 
     @Override

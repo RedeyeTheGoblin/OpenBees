@@ -12,7 +12,7 @@ public class ModifierCompute extends ModifierBlock {
     private boolean biome = false;
     private boolean flower = false;
     private boolean night = false;
-    private int totalFertMod = 0;
+    private float totalFertMod = 0;
 
     public ModifierCompute(List<IFrameItem> modifiers) {
         super(null, -1);
@@ -42,12 +42,12 @@ public class ModifierCompute extends ModifierBlock {
     }
 
     @Override
-    public int getLifespanModifier() {
+    public float getLifespanModifier() {
         return 0;
     }
 
     @Override
-    public int getFertilityModifier() {
+    public float getFertilityModifier() {
         return this.totalFertMod;
     }
 

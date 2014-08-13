@@ -269,7 +269,7 @@ public class TileApiary extends TileBase implements IBeeKeepingTile {
             }
             // Long live the Queen... oh wait.
             if (ticks <= 0) {
-                int drones = (3 * queen.getDominantGenome().getFertility().getNumber()) + mods.getFertilityModifier();
+                int drones = (3 * Math.round(queen.getDominantGenome().getFertility().getNumber() * mods.getFertilityModifier()));
                 for (int i = 0; i < drones; i++) {
                     throwStacks(output.addStack(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getCurrentLogic().produceOffspring(this, modifiers, false)));
                 }

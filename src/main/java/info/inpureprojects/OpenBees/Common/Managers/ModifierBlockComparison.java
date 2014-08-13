@@ -18,7 +18,7 @@ public class ModifierBlockComparison extends ModifierBlock {
     }
 
     @Override
-    public int getLifespanModifier() {
+    public float getLifespanModifier() {
         return 0;
     }
 
@@ -28,7 +28,7 @@ public class ModifierBlockComparison extends ModifierBlock {
     }
 
     @Override
-    public int getFertilityModifier() {
+    public float getFertilityModifier() {
         return 0;
     }
 

@@ -9,9 +9,9 @@ public interface IFrameItem {
     public float getMutationModifer();
 
     // This is in bee-ticks. There are 45 bee-ticks in the lowest life-span.
-    public int getLifespanModifier();
+    public float getLifespanModifier();
 
-    public int getFertilityModifier();
+    public float getFertilityModifier();
 
     public void damageItem(int dmg);
 
