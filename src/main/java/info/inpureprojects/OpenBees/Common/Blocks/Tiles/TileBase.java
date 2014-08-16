@@ -116,6 +116,21 @@ public abstract class TileBase extends TileEntity implements ISidedInventory, IR
         return stack;
     }
 
+    public ItemStack decrStackSizeNoNotify(int slot, int amt){
+        ItemStack stack = stacks[slot];
+        if (stack != null) {
+            if (stack.stackSize <= amt) {
+                stacks[slot] = null;
+            } else {
+                stack = stack.splitStack(amt);
+                if (stack.stackSize == 0) {
+                    stacks[slot] = null;
+                }
+            }
+        }
+        return stack;
+    }
+
     @Override
     public ItemStack getStackInSlotOnClosing(int slot) {
         ItemStack stack = getStackInSlot(slot);

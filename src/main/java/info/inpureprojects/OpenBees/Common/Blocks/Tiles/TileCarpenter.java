@@ -21,15 +21,19 @@ import java.util.List;
  */
 public class TileCarpenter extends TileBasePoweredTank implements IGhostSlotTile, IPreviewSlotTile {
 
+    private static int maxRFt = 20;
     private ICarpenterRecipe currentRecipe;
     private int recipeProgess = 0;
     private int recipeTime = 0;
     private InventoryManager manager;
     private boolean jammed = false;
-    private static int maxRFt = 20;
     private int currentRF = 0;
-    private int count = 0;
-    private static int delay = 3 * 20;
+    private int matched = 0;
+    private ArrayList<Integer> targets = new ArrayList();
+
+    public TileCarpenter() {
+        super(30, 10000, ContainerCarpenter.canSlot, 10000);
+    }
 
     @Override
     public int getInfoMaxEnergyPerTick() {
@@ -45,14 +49,11 @@ public class TileCarpenter extends TileBasePoweredTank implements IGhostSlotTile
         return currentRF;
     }
 
-    public TileCarpenter() {
-        super(30, 10000, ContainerCarpenter.canSlot, 10000);
-    }
-
     @Override
     public void init() {
         manager = new InventoryManager(new int[]{ContainerCarpenter.outputSlot}, this);
         CarpenterCraftingManager.getInstance().validateRecipe(this);
+        this.calculate();
     }
 
     public void setCurrentRecipe(ICarpenterRecipe currentRecipe) {
@@ -63,9 +64,10 @@ public class TileCarpenter extends TileBasePoweredTank implements IGhostSlotTile
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         int i = super.fill(from, resource, doFill);
-        if (i > 0){
+        if (i > 0) {
             CarpenterCraftingManager.getInstance().validateRecipe(this);
             this.getWorldObj().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.calculate();
         }
         return i;
     }
@@ -73,9 +75,10 @@ public class TileCarpenter extends TileBasePoweredTank implements IGhostSlotTile
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         FluidStack f = super.drain(from, resource, doDrain);
-        if (f != null){
+        if (f != null) {
             CarpenterCraftingManager.getInstance().validateRecipe(this);
             this.getWorldObj().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            this.calculate();
         }
         return f;
     }
@@ -96,21 +99,11 @@ public class TileCarpenter extends TileBasePoweredTank implements IGhostSlotTile
         this.recipeProgess = recipeProgess;
     }
 
-    @Override
-    public void updateEntity() {
-        super.updateEntity();
-        if (ServerHelper.isClientWorld(this.worldObj)) {
-            return;
-        }
-        if (count <= delay){
-            count++;
-            return;
-        }
-        count = 0;
-        //System.out.println(this.getTank().getFluidAmount());
+    public void calculate(){
+        this.matched = 0;
         if (this.currentRecipe != null) {
-            int matched = 0;
-            List<Integer> targets = new ArrayList();
+            targets.clear();
+            targets.trimToSize();
             List<ItemStack> list = this.currentRecipe.getItemsToRemove(this);
             for (ItemStack i : list) {
                 for (Integer n : ContainerCarpenter.inputSlots) {
@@ -129,52 +122,62 @@ public class TileCarpenter extends TileBasePoweredTank implements IGhostSlotTile
             }
             if (this.currentRecipe.getFluidToRemove() == null) {
                 matched++;
-            }else{
+            } else {
                 if (this.getTank().getFluid() != null) {
                     if (this.getTank().getFluid().containsFluid(this.currentRecipe.getFluidToRemove())) {
                         matched++;
                     }
                 }
             }
-            if (matched == 10) {
-                // Recipe is good.
-                // Are we jammed?
-                if (this.getStackInSlot(ContainerCarpenter.outputSlot) != null) {
-                    if (!this.getStackInSlot(ContainerCarpenter.outputSlot).isItemEqual(this.currentRecipe.getResult())) {
-                        jammed = true;
-                    }
-                    if ((this.getStackInSlot(ContainerCarpenter.outputSlot).stackSize + this.currentRecipe.getResult().stackSize) > this.getStackInSlot(ContainerCarpenter.outputSlot).getMaxStackSize()) {
-                        jammed = true;
-                    }
-                }else{
-                    jammed = false;
+        }
+    }
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+        if (ServerHelper.isClientWorld(this.worldObj)) {
+            return;
+        }
+        //System.out.println(this.getTank().getFluidAmount());
+        if (matched == 10) {
+            // Recipe is good.
+            // Are we jammed?
+            if (this.getStackInSlot(ContainerCarpenter.outputSlot) != null) {
+                if (!this.getStackInSlot(ContainerCarpenter.outputSlot).isItemEqual(this.currentRecipe.getResult())) {
+                    jammed = true;
                 }
-                if (jammed) {
-                    return;
+                if ((this.getStackInSlot(ContainerCarpenter.outputSlot).stackSize + this.currentRecipe.getResult().stackSize) > this.getStackInSlot(ContainerCarpenter.outputSlot).getMaxStackSize()) {
+                    jammed = true;
                 }
-                if (this.extractEnergy(ForgeDirection.UNKNOWN, 20, true) < maxRFt){
-                    this.currentRF = 0;
-                    return;
-                }else{
-                    this.currentRF = 20;
-                }
-                this.recipeTime = this.currentRecipe.getRecipeDelayInSeconds() * 20;
-                if (this.recipeProgess >= this.recipeTime) {
-                    if (this.currentRecipe.getFluidToRemove() != null) {
-                        this.getTank().drain(this.currentRecipe.getFluidToRemove().amount, true);
-                    }
-                    for (Integer i : targets) {
-                        this.decrStackSize(i, 1);
-                    }
-                    this.throwStacks(this.manager.addStack(this.currentRecipe.getResultCopy()));
-                    this.recipeProgess = 0;
-                } else {
-                    this.extractEnergy(ForgeDirection.UNKNOWN, this.currentRF, false);
-                    this.recipeProgess++;
-                }
-            }else{
-                this.currentRF = 0;
+            } else {
+                jammed = false;
             }
+            if (jammed) {
+                return;
+            }
+            if (this.extractEnergy(ForgeDirection.UNKNOWN, 20, true) < maxRFt) {
+                this.currentRF = 0;
+                return;
+            } else {
+                this.currentRF = 20;
+            }
+            this.recipeTime = this.currentRecipe.getRecipeDelayInSeconds() * 20;
+            if (this.recipeProgess >= this.recipeTime) {
+                if (this.currentRecipe.getFluidToRemove() != null) {
+                    this.getTank().drain(this.currentRecipe.getFluidToRemove().amount, true);
+                }
+                for (Integer i : targets) {
+                    this.decrStackSizeNoNotify(i, 1);
+                }
+                this.onSlotChanged(-1);
+                this.throwStacks(this.manager.addStack(this.currentRecipe.getResultCopy()));
+                this.recipeProgess = 0;
+            } else {
+                this.extractEnergy(ForgeDirection.UNKNOWN, this.currentRF, false);
+                this.recipeProgess++;
+            }
+        } else {
+            this.currentRF = 0;
         }
     }
 
@@ -213,6 +216,7 @@ public class TileCarpenter extends TileBasePoweredTank implements IGhostSlotTile
 
     @Override
     public void onSlotChanged(int slot) {
+        this.calculate();
     }
 
     @Override
@@ -220,7 +224,7 @@ public class TileCarpenter extends TileBasePoweredTank implements IGhostSlotTile
         if (ContainerCarpenter.inputSlots.contains(i)) {
             return true;
         }
-        if (ContainerCarpenter.outputSlot == i){
+        if (ContainerCarpenter.outputSlot == i) {
             return true;
         }
         return false;

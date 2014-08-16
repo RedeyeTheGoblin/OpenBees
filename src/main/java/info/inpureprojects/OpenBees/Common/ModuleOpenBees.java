@@ -28,7 +28,9 @@ import info.inpureprojects.OpenBees.Common.Genetics.*;
 import info.inpureprojects.OpenBees.Common.Items.ItemBee;
 import info.inpureprojects.OpenBees.Common.Items.ItemComb;
 import info.inpureprojects.OpenBees.Common.Items.ItemScoop;
-import info.inpureprojects.OpenBees.Common.Managers.*;
+import info.inpureprojects.OpenBees.Common.Managers.CarpenterCraftingManager;
+import info.inpureprojects.OpenBees.Common.Managers.ModifierBlockTest;
+import info.inpureprojects.OpenBees.Common.Managers.SpeciesImpl;
 import info.inpureprojects.OpenBees.Common.Network.NetworkManager;
 import info.inpureprojects.OpenBees.Common.WorldGen.WorldGenHives;
 import info.inpureprojects.OpenBees.OpenBees;
@@ -40,9 +42,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.io.File;
 import java.util.HashMap;
@@ -163,5 +162,6 @@ public class ModuleOpenBees implements IINpureSubmodule {
 
     @Subscribe
     public void setupRecipes(EventSetupRecipes evt) {
+        evt.getApi().getCommonAPI().carpenterRecipes.register(new Object[]{null, null, null, null, "plankWood", null, null, "plankWood", null}, null, new ItemStack(Items.stick, 4, 0), 1);
     }
 }

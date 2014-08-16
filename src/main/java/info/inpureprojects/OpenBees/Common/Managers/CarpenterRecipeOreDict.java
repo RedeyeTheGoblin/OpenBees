@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by den on 8/16/2014.
  */
-public class CarpenterRecipeOreDict implements ICarpenterRecipe{
+public class CarpenterRecipeOreDict implements ICarpenterRecipe {
 
     public OreDictWrapper topLeft;
     public OreDictWrapper topMiddle;
@@ -99,18 +99,18 @@ public class CarpenterRecipeOreDict implements ICarpenterRecipe{
             for (Field f : this.getClass().getDeclaredFields()) {
                 if (f.getType().equals(OreDictWrapper.class)) {
                     OreDictWrapper i = (OreDictWrapper) f.get(this);
-                    if (i.isNull()){
+                    if (i.isNull()) {
                         items.add(null);
                         continue;
                     }
-                    if (i.isItemStack()){
+                    if (i.isItemStack()) {
                         items.add(i.getStack());
-                    }else if (i.isString()){
+                    } else if (i.isString()) {
                         List<ItemStack> list = OreDictionary.getOres(i.getString());
                         outerLoop:
-                        for (Integer index : ContainerCarpenter.inputSlots){
-                            for (ItemStack stack : list){
-                                if (OreDictionary.itemMatches(stack, inv.getStackInSlot(index), false)){
+                        for (Integer index : ContainerCarpenter.inputSlots) {
+                            for (ItemStack stack : list) {
+                                if (OreDictionary.itemMatches(stack, inv.getStackInSlot(index), false)) {
                                     items.add(stack);
                                     break outerLoop;
                                 }
@@ -135,7 +135,7 @@ public class CarpenterRecipeOreDict implements ICarpenterRecipe{
         return this.delay;
     }
 
-    public static class OreDictWrapper{
+    public static class OreDictWrapper {
 
         private Object obj;
 
@@ -143,52 +143,52 @@ public class CarpenterRecipeOreDict implements ICarpenterRecipe{
             this.obj = obj;
         }
 
-        public boolean isItemStack(){
-            if (this.isNull()){
+        public boolean isItemStack() {
+            if (this.isNull()) {
                 return false;
             }
             return this.obj instanceof ItemStack;
         }
 
-        public boolean isString(){
-            if (this.isNull()){
+        public boolean isString() {
+            if (this.isNull()) {
                 return false;
             }
             return this.obj instanceof String;
         }
 
-        public ItemStack getStack(){
-            if (this.isNull()){
+        public ItemStack getStack() {
+            if (this.isNull()) {
                 return null;
             }
             return (ItemStack) this.obj;
         }
 
-        public String getString(){
-            if (this.isNull()){
+        public String getString() {
+            if (this.isNull()) {
                 return null;
             }
             return this.obj.toString();
         }
 
-        public boolean isNull(){
+        public boolean isNull() {
             return this.obj == null;
         }
 
-        public boolean isEqual(OreDictWrapper two){
-            if (this.isNull() && two.isNull()){
+        public boolean isEqual(OreDictWrapper two) {
+            if (this.isNull() && two.isNull()) {
                 return true;
             }
-            if (this.isItemStack()){
+            if (this.isItemStack()) {
                 return ItemStack.areItemStacksEqual(this.getStack(), two.getStack());
             }
-            if (this.isString()){
-                if (two.isNull()){
+            if (this.isString()) {
+                if (two.isNull()) {
                     return false;
                 }
                 List<ItemStack> list = OreDictionary.getOres(this.getString());
-                for (ItemStack i : list){
-                    if (OreDictionary.itemMatches(i, two.getStack(), false)){
+                for (ItemStack i : list) {
+                    if (OreDictionary.itemMatches(i, two.getStack(), false)) {
                         return true;
                     }
                 }

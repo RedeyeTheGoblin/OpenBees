@@ -3,7 +3,6 @@ package info.inpureprojects.OpenBees.Common.Managers;
 import info.inpureprojects.OpenBees.API.Common.ICarpenterManager;
 import info.inpureprojects.OpenBees.Client.Gui.ContainerCarpenter;
 import info.inpureprojects.OpenBees.Common.Blocks.Tiles.TileCarpenter;
-import info.inpureprojects.OpenBees.Common.ModuleOpenBees;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by den on 8/16/2014.
  */
-public class CarpenterCraftingManager implements ICarpenterManager{
+public class CarpenterCraftingManager implements ICarpenterManager {
 
     private static final CarpenterCraftingManager instance = new CarpenterCraftingManager();
     private ArrayList<ICarpenterRecipe> recipes = new ArrayList();

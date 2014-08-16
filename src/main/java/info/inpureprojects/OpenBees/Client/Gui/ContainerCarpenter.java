@@ -101,7 +101,7 @@ public class ContainerCarpenter extends ContainerBase {
             if (this.tile.getRecipeTime() != this.lastTime) {
                 i.sendProgressBarUpdate(this, 1, this.tile.getRecipeTime());
             }
-            if (this.tile.getInfoEnergyPerTick() != this.lastRFt){
+            if (this.tile.getInfoEnergyPerTick() != this.lastRFt) {
                 i.sendProgressBarUpdate(this, 2, this.tile.getInfoEnergyPerTick());
             }
         }
