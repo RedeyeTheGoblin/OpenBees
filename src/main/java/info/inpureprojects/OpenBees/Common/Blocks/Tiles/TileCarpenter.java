@@ -28,6 +28,8 @@ public class TileCarpenter extends TileBasePoweredTank implements IGhostSlotTile
     private boolean jammed = false;
     private static int maxRFt = 20;
     private int currentRF = 0;
+    private int count = 0;
+    private static int delay = 3 * 20;
 
     @Override
     public int getInfoMaxEnergyPerTick() {
@@ -100,6 +102,11 @@ public class TileCarpenter extends TileBasePoweredTank implements IGhostSlotTile
         if (ServerHelper.isClientWorld(this.worldObj)) {
             return;
         }
+        if (count <= delay){
+            count++;
+            return;
+        }
+        count = 0;
         //System.out.println(this.getTank().getFluidAmount());
         if (this.currentRecipe != null) {
             int matched = 0;
