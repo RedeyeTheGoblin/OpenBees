@@ -2,7 +2,11 @@ package info.inpureprojects.OpenBees.Common.Blocks;
 
 import cofh.api.block.IDismantleable;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
+import info.inpureprojects.OpenBees.Common.Blocks.Tiles.IRemoveTile;
 import info.inpureprojects.OpenBees.Common.Blocks.Tiles.TileApiary;
+import info.inpureprojects.OpenBees.Common.Blocks.Tiles.TileCarpenter;
+import info.inpureprojects.OpenBees.OpenBees;
+import info.inpureprojects.core.API.Block.BlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
@@ -28,15 +32,10 @@ public class BlockMachine extends BlockBase implements IDismantleable {
 
     @Override
     public ArrayList<ItemStack> dismantleBlock(EntityPlayer entityPlayer, World world, int i, int i2, int i3, boolean b) {
-        int meta = world.getBlockMetadata(i, i2, i3);
-        switch (meta) {
-            case 0:
-                TileApiary a = (TileApiary) world.getTileEntity(i, i2, i3);
-                a.onRemoval();
-                world.spawnEntityInWorld(new EntityItem(world, i, i2, i3, new ItemStack(world.getBlock(i, i2, i3), 1, world.getBlockMetadata(i, i2, i3))));
-                world.setBlockToAir(i, i2, i3);
-                break;
-        }
+        IRemoveTile a = (IRemoveTile) world.getTileEntity(i, i2, i3);
+        a.onRemoval();
+        world.spawnEntityInWorld(new EntityItem(world, i, i2, i3, new ItemStack(world.getBlock(i, i2, i3), 1, world.getBlockMetadata(i, i2, i3))));
+        world.setBlockToAir(i, i2, i3);
         return null;
     }
 
@@ -50,6 +49,12 @@ public class BlockMachine extends BlockBase implements IDismantleable {
                 a.onNeighborsChanged();
                 break;
         }
+    }
+
+    @Override
+    public void setup() {
+        this.setCreativeTab(OpenBeesAPI.getAPI().getClientAPI().creativeTabBlocks);
+        this.setModInstance(OpenBees.instance);
     }
 
     @Override
@@ -84,13 +89,9 @@ public class BlockMachine extends BlockBase implements IDismantleable {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        switch (meta) {
-            case 0:
-                TileApiary a = (TileApiary) world.getTileEntity(x, y, z);
-                a.onRemoval();
-                world.removeTileEntity(x, y, z);
-                break;
-        }
+        IRemoveTile a = (IRemoveTile) world.getTileEntity(x, y, z);
+        a.onRemoval();
+        world.removeTileEntity(x, y, z);
     }
 
     @Override
@@ -98,6 +99,8 @@ public class BlockMachine extends BlockBase implements IDismantleable {
         switch (meta) {
             case 0:
                 return new TileApiary();
+            case 1:
+                return new TileCarpenter();
         }
         return null;
     }

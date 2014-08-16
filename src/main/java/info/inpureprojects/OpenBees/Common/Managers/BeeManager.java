@@ -11,7 +11,6 @@ import info.inpureprojects.OpenBees.API.Common.Tools.IFrameItem;
 import info.inpureprojects.OpenBees.API.Common.Tools.ModifierBlock;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
 import info.inpureprojects.OpenBees.Common.Genetics.PunnettSquare;
-import info.inpureprojects.OpenBees.Common.ModuleOpenBees;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -194,10 +193,10 @@ public class BeeManager implements IBeeManager {
             p.setMate(d);
             float hpMod = 0.0f;
             for (IFrameItem i : tile.getFrames()) {
-                hpMod+=i.getLifespanModifier();
+                hpMod += i.getLifespanModifier();
             }
             for (ModifierBlock b : OpenBeesAPI.getAPI().getCommonAPI().beeManager.getModifierBlocksNear(tile)) {
-                hpMod+=b.getLifespanModifier();
+                hpMod += b.getLifespanModifier();
             }
             p.setLifeTicks(Math.round(p.getLifeTicks() * hpMod));
             ItemStack q = Type.QUEEN.createStack();
@@ -215,15 +214,15 @@ public class BeeManager implements IBeeManager {
             // Process potential mutations.
             List<Mutation> potentialMutations = new ArrayList();
             potentialMutations.addAll(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getMutations(q.getDominantGenome().getSpecies(), q.getMate().getDominantGenome().getSpecies()));
-            if (recessiveCanTriggerMutations){
+            if (recessiveCanTriggerMutations) {
                 potentialMutations.addAll(OpenBeesAPI.getAPI().getCommonAPI().beeManager.getMutations(q.getRecessiveGenome().getSpecies(), q.getMate().getRecessiveGenome().getSpecies()));
             }
             if (!potentialMutations.isEmpty()) {
                 // If multiple possible mutations random roll one.
                 int selectMutation;
-                if (potentialMutations.size() == 1){
+                if (potentialMutations.size() == 1) {
                     selectMutation = 0;
-                }else{
+                } else {
                     selectMutation = r.nextInt(potentialMutations.size() - 1);
                 }
                 Mutation mut = potentialMutations.get(selectMutation);

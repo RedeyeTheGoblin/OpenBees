@@ -18,25 +18,31 @@ import info.inpureprojects.OpenBees.Common.Blocks.BlockHive;
 import info.inpureprojects.OpenBees.Common.Blocks.BlockMachine;
 import info.inpureprojects.OpenBees.Common.Blocks.ItemBlockMachine;
 import info.inpureprojects.OpenBees.Common.Blocks.Tiles.TileApiary;
+import info.inpureprojects.OpenBees.Common.Blocks.Tiles.TileCarpenter;
 import info.inpureprojects.OpenBees.Common.Config.ConfigHolder;
 import info.inpureprojects.OpenBees.Common.Events.EventSetupBlocks;
 import info.inpureprojects.OpenBees.Common.Events.EventSetupItems;
+import info.inpureprojects.OpenBees.Common.Events.EventSetupRecipes;
 import info.inpureprojects.OpenBees.Common.Events.ForgeHandler;
 import info.inpureprojects.OpenBees.Common.Genetics.*;
 import info.inpureprojects.OpenBees.Common.Items.ItemBee;
 import info.inpureprojects.OpenBees.Common.Items.ItemComb;
 import info.inpureprojects.OpenBees.Common.Items.ItemScoop;
-import info.inpureprojects.OpenBees.Common.Managers.ModifierBlockTest;
-import info.inpureprojects.OpenBees.Common.Managers.SpeciesImpl;
+import info.inpureprojects.OpenBees.Common.Managers.*;
+import info.inpureprojects.OpenBees.Common.Network.NetworkManager;
 import info.inpureprojects.OpenBees.Common.WorldGen.WorldGenHives;
 import info.inpureprojects.OpenBees.OpenBees;
 import info.inpureprojects.OpenBees.Proxy.Proxy;
 import info.inpureprojects.core.API.IINpureSubmodule;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.io.File;
 import java.util.HashMap;
@@ -49,12 +55,14 @@ public class ModuleOpenBees implements IINpureSubmodule {
     @SidedProxy(serverSide = modInfo.proxyCommon, clientSide = modInfo.proxyClient)
     public static Proxy proxy;
     public static ConfigHolder config;
+    public static NetworkManager networking;
 
     @Override
     public void pre(File configFolder) {
         proxy.setupAPI();
         proxy.setupConfig(configFolder);
         OpenBeesAPI.getAPI().getCommonAPI().events.register(this);
+        networking = new NetworkManager();
     }
 
     @Override
@@ -67,6 +75,7 @@ public class ModuleOpenBees implements IINpureSubmodule {
         OpenBeesAPI.getAPI().getCommonAPI().events.post(new EventRegisterBees());
         MinecraftForge.EVENT_BUS.register(new ForgeHandler());
         WorldGenHives.init();
+        OpenBeesAPI.getAPI().getCommonAPI().events.post(new EventSetupRecipes());
     }
 
     @Subscribe
@@ -84,6 +93,7 @@ public class ModuleOpenBees implements IINpureSubmodule {
     @Subscribe
     public void blockInit(EventSetupBlocks evt) {
         GameRegistry.registerTileEntity(TileApiary.class, TileApiary.class.getName());
+        GameRegistry.registerTileEntity(TileCarpenter.class, TileCarpenter.class.getName());
         evt.getApi().getCommonAPI().blocks.machine = new BlockMachine("openbees.apiary");
         GameRegistry.registerBlock(evt.getApi().getCommonAPI().blocks.machine, ItemBlockMachine.class, evt.getApi().getCommonAPI().blocks.machine.getUnlocalizedName());
         evt.getApi().getCommonAPI().blocks.apiary = new BlockWrapper(evt.getApi().getCommonAPI().blocks.machine, 0);
@@ -92,6 +102,7 @@ public class ModuleOpenBees implements IINpureSubmodule {
         evt.getApi().getCommonAPI().blocks.beehive = new BlockWrapper(new BlockHive("openbees.hive"), 0);
         GameRegistry.registerBlock(evt.getApi().getCommonAPI().blocks.beehive.getBlock(), evt.getApi().getCommonAPI().blocks.beehive.getBlock().getUnlocalizedName());
         evt.getApi().getCommonAPI().beeManager.registerModifierBlock(new ModifierBlockTest());
+        evt.getApi().getCommonAPI().carpenterRecipes = CarpenterCraftingManager.getInstance();
     }
 
     @Subscribe
@@ -148,5 +159,9 @@ public class ModuleOpenBees implements IINpureSubmodule {
         evt.getAlleleManager().registerAllele(new AlleleBoolean("openbees|BooleanFALSE", false));
         evt.getAlleleManager().registerAllele(new AlleleClimateTemperate("openbees|ClimateTEMPERATE"));
         proxy.print("Allele setup complete!");
+    }
+
+    @Subscribe
+    public void setupRecipes(EventSetupRecipes evt) {
     }
 }

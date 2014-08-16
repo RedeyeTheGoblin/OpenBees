@@ -2,7 +2,6 @@ package info.inpureprojects.OpenBees.Common.Genetics;
 
 import info.inpureprojects.OpenBees.API.Common.Bees.Genetics.Alleles.Allele;
 import info.inpureprojects.OpenBees.API.Common.Bees.IBee;
-import info.inpureprojects.OpenBees.Common.ModuleOpenBees;
 
 import java.util.*;
 

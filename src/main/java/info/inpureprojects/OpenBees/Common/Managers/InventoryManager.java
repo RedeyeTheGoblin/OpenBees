@@ -18,25 +18,25 @@ public class InventoryManager {
         this.inventory = inventory;
     }
 
-    public ItemStack addStack(ItemStack stack){
-        for (int i :slots){
-            if (inventory.isItemValidForSlot(i, stack)){
-                if (inventory.getStackInSlot(i) != null){
+    public ItemStack addStack(ItemStack stack) {
+        for (int i : slots) {
+            if (inventory.isItemValidForSlot(i, stack)) {
+                if (inventory.getStackInSlot(i) != null) {
                     ItemStack current = inventory.getStackInSlot(i);
-                    if (current.isItemEqual(stack)){
-                        if (ItemStack.areItemStackTagsEqual(current, stack)){
-                            if ((current.stackSize + stack.stackSize) <= current.getMaxStackSize()){
-                                current.stackSize+= stack.stackSize;
+                    if (current.isItemEqual(stack)) {
+                        if (ItemStack.areItemStackTagsEqual(current, stack)) {
+                            if ((current.stackSize + stack.stackSize) <= current.getMaxStackSize()) {
+                                current.stackSize += stack.stackSize;
                                 return null;
-                            }else{
+                            } else {
                                 int amt = current.getMaxStackSize() - current.stackSize;
-                                stack.stackSize-=amt;
-                                current.stackSize+=amt;
+                                stack.stackSize -= amt;
+                                current.stackSize += amt;
                                 return stack;
                             }
                         }
                     }
-                }else{
+                } else {
                     inventory.setInventorySlotContents(i, stack);
                     return null;
                 }

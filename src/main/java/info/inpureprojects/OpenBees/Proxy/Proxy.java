@@ -1,5 +1,7 @@
 package info.inpureprojects.OpenBees.Proxy;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 
 /**
@@ -18,5 +20,7 @@ public abstract class Proxy {
     public abstract boolean isShiftCtrlKey();
 
     public abstract boolean isCtrlKey();
+
+    public abstract Gson getJson();
 
 }

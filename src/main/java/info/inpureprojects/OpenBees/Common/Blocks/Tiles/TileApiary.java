@@ -9,18 +9,9 @@ import info.inpureprojects.OpenBees.API.Common.Bees.IBeeKeepingTile;
 import info.inpureprojects.OpenBees.API.Common.Tools.IFrameItem;
 import info.inpureprojects.OpenBees.API.Common.Tools.ModifierCompute;
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
-import info.inpureprojects.OpenBees.Common.Managers.InventoryManager;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -119,14 +110,6 @@ public class TileApiary extends TileBase implements IBeeKeepingTile {
         return OpenBeesAPI.getAPI().getCommonAPI().beeManager.convertStackToBee(this.getStackInSlot(queenSlot));
     }
 
-    public void onRemoval() {
-        for (ItemStack i : stacks) {
-            if (i != null) {
-                this.getWorldObj().spawnEntityInWorld(new EntityItem(this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord, i));
-            }
-        }
-    }
-
     public int getStatusCode() {
         return statusCode;
     }
@@ -161,7 +144,7 @@ public class TileApiary extends TileBase implements IBeeKeepingTile {
 
     @Override
     public void onSlotChanged(int slot) {
-        if (Arrays.asList(frameSlots).contains(slot)){
+        if (Arrays.asList(frameSlots).contains(slot)) {
             this.onNeighborsChanged();
         }
     }
@@ -309,26 +292,6 @@ public class TileApiary extends TileBase implements IBeeKeepingTile {
         tag.setInteger("breedingProgress", this.getBreedingProgress());
         tag.setInteger("lifeProgress", this.getLifeProgress());
         tag.setInteger("status", this.getStatusCode());
-    }
-
-    @Override
-    public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        if (side == ForgeDirection.UP.ordinal()){
-            if (this.isItemValidForSlot(slot, stack)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean canExtractItem(int slot, ItemStack stack, int side) {
-        if (side != ForgeDirection.UP.ordinal()){
-            if (this.getStackInSlot(slot) != null){
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

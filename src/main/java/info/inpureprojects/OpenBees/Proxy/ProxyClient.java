@@ -58,6 +58,8 @@ public class ProxyClient extends ProxyCommon {
         evt.getIconManager().registerTexture(modInfo.modid, "forestfire_machine_side", "forestfire_machine_side");
         evt.getIconManager().registerTexture(modInfo.modid, "forestfire_machine_top", "forestfire_machine_top");
         //
+        evt.getIconManager().registerIcon(modInfo.modid, "tabs/Icon_Energy", "IconEnergy");
+        //
         OpenBeesAPI.getAPI().getClientAPI().creativeTabBees = new CreativeTabBees();
         OpenBeesAPI.getAPI().getClientAPI().creativeTabBlocks = new CreativeTabBlocks();
     }

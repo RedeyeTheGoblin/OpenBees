@@ -5,10 +5,8 @@ package info.inpureprojects.OpenBees.API.Common.Tools;
  */
 public interface IFrameItem {
 
-    // For reference: 1.0f = double the current chance.
     public float getMutationModifer();
 
-    // This is in bee-ticks. There are 45 bee-ticks in the lowest life-span.
     public float getLifespanModifier();
 
     public float getFertilityModifier();

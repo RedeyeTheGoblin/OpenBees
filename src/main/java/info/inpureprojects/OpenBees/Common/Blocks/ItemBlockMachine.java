@@ -1,5 +1,6 @@
 package info.inpureprojects.OpenBees.Common.Blocks;
 
+import info.inpureprojects.core.API.Block.ItemBlockBase;
 import net.minecraft.block.Block;
 
 /**

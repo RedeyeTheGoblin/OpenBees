@@ -14,5 +14,6 @@ public class CommonAPI {
     public final ModSettings settings = new ModSettings();
     //----------------------------------------------------
     public IBeeManager beeManager;
+    public ICarpenterManager carpenterRecipes;
 
 }

@@ -2,9 +2,9 @@ package info.inpureprojects.OpenBees.Common.Blocks.Tiles;
 
 import cofh.lib.util.helpers.ServerHelper;
 import info.inpureprojects.OpenBees.Common.Managers.InventoryManager;
+import info.inpureprojects.OpenBees.Common.NeedsMovedToCore;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,12 +17,28 @@ import net.minecraftforge.common.util.ForgeDirection;
 /**
  * Created by den on 8/12/2014.
  */
-public abstract class TileBase extends TileEntity implements ISidedInventory {
+@NeedsMovedToCore
+public abstract class TileBase extends TileEntity implements ISidedInventory, IRemoveTile {
 
     public ItemStack[] stacks;
     public int size;
-    private boolean init = false;
     protected InventoryManager output;
+    private boolean init = false;
+
+    protected TileBase(int size) {
+        this.size = size;
+        this.stacks = new ItemStack[this.size];
+        output = new InventoryManager(this.getOutputSlotNumbers(), this);
+    }
+
+    public void onRemoval() {
+        for (ItemStack i : stacks) {
+            if (i != null) {
+                this.getWorldObj().spawnEntityInWorld(new EntityItem(this.getWorldObj(), this.xCoord, this.yCoord, this.zCoord, i));
+            }
+        }
+        this.invalidate();
+    }
 
     public abstract void init();
 
@@ -34,16 +50,10 @@ public abstract class TileBase extends TileEntity implements ISidedInventory {
             return;
         }
         //
-        if (!init){
+        if (!init) {
             this.init();
             init = true;
         }
-    }
-
-    protected TileBase(int size) {
-        this.size = size;
-        this.stacks = new ItemStack[this.size];
-        output = new InventoryManager(this.getOutputSlotNumbers(), this);
     }
 
     public abstract int[] getOutputSlotNumbers();
@@ -52,7 +62,7 @@ public abstract class TileBase extends TileEntity implements ISidedInventory {
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        switch(side){
+        switch (side) {
             case 1:
                 return this.getInputSlotForTop();
 
@@ -61,10 +71,24 @@ public abstract class TileBase extends TileEntity implements ISidedInventory {
     }
 
     @Override
-    public abstract boolean canInsertItem(int slot, ItemStack stack, int side);
+    public boolean canInsertItem(int slot, ItemStack stack, int side) {
+        if (side == ForgeDirection.UP.ordinal()) {
+            if (this.isItemValidForSlot(slot, stack)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
-    public abstract boolean canExtractItem(int slot, ItemStack stack, int side);
+    public boolean canExtractItem(int slot, ItemStack stack, int side) {
+        if (side != ForgeDirection.UP.ordinal()) {
+            if (this.getStackInSlot(slot) != null) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public int getSizeInventory() {

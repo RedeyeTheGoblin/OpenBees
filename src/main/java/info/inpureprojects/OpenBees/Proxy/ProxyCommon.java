@@ -1,5 +1,7 @@
 package info.inpureprojects.OpenBees.Proxy;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import cpw.mods.fml.common.FMLLog;
 import info.inpureprojects.OpenBees.API.Common.DefaultValue;
 import info.inpureprojects.OpenBees.API.IOpenBeesAPI;
@@ -18,6 +20,7 @@ import java.lang.reflect.Field;
 public class ProxyCommon extends Proxy {
 
     public static IOpenBeesAPI apiHandler;
+    public static Gson json = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
     public void setupAPI() {
@@ -61,5 +64,10 @@ public class ProxyCommon extends Proxy {
     @Override
     public boolean isCtrlKey() {
         return false;
+    }
+
+    @Override
+    public Gson getJson() {
+        return json;
     }
 }

@@ -1,6 +1,8 @@
 package info.inpureprojects.OpenBees.Common.Blocks;
 
 import info.inpureprojects.OpenBees.API.OpenBeesAPI;
+import info.inpureprojects.OpenBees.OpenBees;
+import info.inpureprojects.core.API.Block.BlockBase;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,6 +25,12 @@ public class BlockHive extends BlockBase {
         this.setIdShift(-1);
         this.setLightLevel(5.0f);
         this.setHarvestLevel("scoop", 1);
+    }
+
+    @Override
+    public void setup() {
+        this.setCreativeTab(OpenBeesAPI.getAPI().getClientAPI().creativeTabBlocks);
+        this.setModInstance(OpenBees.instance);
     }
 
     @Override
