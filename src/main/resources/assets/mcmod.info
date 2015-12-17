@@ -1,0 +1,16 @@
+[
+{
+  "modid": "openbees",
+  "name": "Open Bees",
+  "description": "Bees, bees and more bees!",
+  "version": "dev-1",
+  "mcversion": "1.7.10",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["denoflionsx","Trunks9809"],
+  "credits": "SirSengir and the Forestry team",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
