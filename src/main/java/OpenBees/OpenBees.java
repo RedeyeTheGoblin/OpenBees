@@ -14,6 +14,7 @@ import OpenBees.utility.beeHelper;
 import OpenBees.utility.blockRegistry;
 import OpenBees.utility.itemRegistry;
 import OpenBees.utility.logHelper;
+import OpenBees.worldgen.worldGenHives;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -64,6 +65,7 @@ public class OpenBees
     public void postInit(FMLPostInitializationEvent event)
     {
         modBees.registerMutations();
+        worldGenHives.init();
     }
 
 }
