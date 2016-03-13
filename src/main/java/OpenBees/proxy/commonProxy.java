@@ -1,7 +1,6 @@
 package OpenBees.proxy;
 
 
-public abstract class commonProxy implements IProxy
-{
+public abstract class commonProxy implements IProxy {
 
 }

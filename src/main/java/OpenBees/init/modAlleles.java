@@ -16,51 +16,42 @@ import net.minecraftforge.common.BiomeDictionary;
 
 public class modAlleles {
 
-    public static void init()
-    {
+    public static void init() {
 
-        for (alleleLifespan.Lifespans life : alleleLifespan.Lifespans.values())
-        {
+        for (alleleLifespan.Lifespans life : alleleLifespan.Lifespans.values()) {
             OpenBees.coreBeeHandler.getAlleleHandler().registerAllele(new alleleLifespan(life));
         }
 
-        for (alleleWorkspeed.Speeds speed : alleleWorkspeed.Speeds.values())
-        {
+        for (alleleWorkspeed.Speeds speed : alleleWorkspeed.Speeds.values()) {
             OpenBees.coreBeeHandler.getAlleleHandler().registerAllele(new alleleWorkspeed(speed));
         }
 
-        for (alleleTerritory.territoryMods territory : alleleTerritory.territoryMods.values())
-        {
+        for (alleleTerritory.territoryMods territory : alleleTerritory.territoryMods.values()) {
             OpenBees.coreBeeHandler.getAlleleHandler().registerAllele(new alleleTerritory(territory));
         }
 
-        for (allelePollination.PollinationMods pollination : allelePollination.PollinationMods.values())
-        {
+        for (allelePollination.PollinationMods pollination : allelePollination.PollinationMods.values()) {
             OpenBees.coreBeeHandler.getAlleleHandler().registerAllele(new allelePollination(pollination));
         }
 
-        for (flowersEnum flower : flowersEnum.values())
-        {
+        for (flowersEnum flower : flowersEnum.values()) {
             OpenBees.coreBeeHandler.getAlleleHandler().registerAllele(new alleleFlowerHandler("Flower." + flower.toString(), flower.getBlock(), flower.getMeta()));
         }
 
         OpenBees.coreBeeHandler.getAlleleHandler().registerAllele(new alleleFlowerStone());
 
-        for (BiomeDictionary.Type bType : BiomeDictionary.Type.values())
-        {
+        for (BiomeDictionary.Type bType : BiomeDictionary.Type.values()) {
             OpenBees.coreBeeHandler.getAlleleHandler().registerAllele(new alleleClimateHandler("Climate." + bType.toString(), new climateDefinition(bType.toString(), bType)));
         }
         OpenBees.coreBeeHandler.getAlleleHandler().registerAllele(new alleleClimateTemperate("Climate.TEMPERATE"));
 
-        for (alleleFertility.fertilityMods fertile : alleleFertility.fertilityMods.values())
-        {
+        for (alleleFertility.fertilityMods fertile : alleleFertility.fertilityMods.values()) {
             OpenBees.coreBeeHandler.getAlleleHandler().registerAllele(new alleleFertility(fertile));
         }
 
         OpenBees.coreBeeHandler.getAlleleHandler().registerAllele(new alleleEffectHandler("Effect.NONE") {
             @Override
-            public void doEffect(World world, int x, int y, int z, ItemStack bee)
-            {
+            public void doEffect(World world, int x, int y, int z, ItemStack bee) {
 
             }
         });

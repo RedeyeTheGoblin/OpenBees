@@ -6,8 +6,7 @@ import net.minecraft.world.World;
 
 public abstract class alleleEffectHandler extends Allele {
 
-    public alleleEffectHandler(String tag)
-    {
+    public alleleEffectHandler(String tag) {
         super(tag);
     }
 

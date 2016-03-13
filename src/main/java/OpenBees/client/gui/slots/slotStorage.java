@@ -5,14 +5,12 @@ import net.minecraft.item.ItemStack;
 
 public class slotStorage extends slotCustom {
 
-    public slotStorage(IInventory inventory, int index, int x, int y)
-    {
+    public slotStorage(IInventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
     }
 
     @Override
-    public boolean isItemValid(ItemStack stack)
-    {
+    public boolean isItemValid(ItemStack stack) {
         return true;
     }
 }

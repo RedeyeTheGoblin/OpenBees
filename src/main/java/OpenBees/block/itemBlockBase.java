@@ -6,26 +6,22 @@ import net.minecraft.item.ItemStack;
 
 public abstract class itemBlockBase extends ItemBlock {
 
-    public itemBlockBase(Block block)
-    {
+    public itemBlockBase(Block block) {
         super(block);
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack)
-    {
+    public String getUnlocalizedName(ItemStack stack) {
         return this.field_150939_a.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
     @Override
-    public boolean getHasSubtypes()
-    {
+    public boolean getHasSubtypes() {
         return true;
     }
 
     @Override
-    public int getMetadata(int meta)
-    {
+    public int getMetadata(int meta) {
         return meta;
     }
 }

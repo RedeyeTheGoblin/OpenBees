@@ -8,8 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.HashMap;
 
-public class baseBee implements IBee
-{
+public class baseBee implements IBee {
 
     private IBeeGenome dominant;
     private IBeeGenome recessive;
@@ -17,12 +16,10 @@ public class baseBee implements IBee
     private boolean isHybrid = false;
     private int lifeTicks = 45;
 
-    public baseBee(NBTTagCompound genome)
-    {
+    public baseBee(NBTTagCompound genome) {
         HashMap<Allele.AlleleTypes, Allele> primaryAlleleMap = new HashMap();
         HashMap<Allele.AlleleTypes, Allele> secondaryAlleleMap = new HashMap();
-        for (Allele.AlleleTypes types : Allele.AlleleTypes.values())
-        {
+        for (Allele.AlleleTypes types : Allele.AlleleTypes.values()) {
             primaryAlleleMap.put(types, OpenBees.coreBeeHandler.getAlleleHandler().getAlleleByTag(genome.getCompoundTag("PrimaryGenome").getString(types.toString())));
             secondaryAlleleMap.put(types, OpenBees.coreBeeHandler.getAlleleHandler().getAlleleByTag(genome.getCompoundTag("SecondaryGenome").getString(types.toString())));
         }
@@ -30,73 +27,61 @@ public class baseBee implements IBee
         this.dominant = new baseGenome(OpenBees.coreBeeHandler.getSpeciesByTag(genome.getString("PrimarySpecies")), primaryAlleleMap);
         this.recessive = new baseGenome(OpenBees.coreBeeHandler.getSpeciesByTag(genome.getString("SecondarySpecies")), secondaryAlleleMap);
 
-        if (genome.hasKey("mate"))
-        {
+        if (genome.hasKey("mate")) {
             this.mate = new baseBee(genome.getCompoundTag("mate"));
         }
 
-        if (genome.hasKey("hybrid"))
-        {
+        if (genome.hasKey("hybrid")) {
             isHybrid = genome.getBoolean("hybrid");
         }
 
-        if (genome.hasKey("life"))
-        {
+        if (genome.hasKey("life")) {
             lifeTicks = genome.getInteger("life");
         }
     }
 
     @Override
-    public IBee getMate()
-    {
+    public IBee getMate() {
         return this.mate;
     }
 
     @Override
-    public void setMate(IBee bee)
-    {
+    public void setMate(IBee bee) {
         this.mate = bee;
     }
 
     @Override
-    public IBeeGenome getDominantGenome()
-    {
+    public IBeeGenome getDominantGenome() {
         return this.dominant;
     }
 
     @Override
-    public IBeeGenome getRecessiveGenome()
-    {
+    public IBeeGenome getRecessiveGenome() {
         return this.recessive;
     }
 
     @Override
-    public NBTTagCompound getNBT()
-    {
+    public NBTTagCompound getNBT() {
         return beeHelper.instance.generateGenome(this);
     }
 
     @Override
-    public boolean isHybrid()
-    {
+    public boolean isHybrid() {
         return this.isHybrid;
     }
 
     @Override
-    public void setHybrid()
-    {
+    public void setHybrid() {
         this.isHybrid = true;
     }
 
     @Override
-    public int getLifeTicks()
-    {
+    public int getLifeTicks() {
         return this.lifeTicks;
     }
 
     @Override
-    public void setLifeTicks(int ticks)
-    {
+    public void setLifeTicks(int ticks) {
         this.lifeTicks = ticks;
     }
 }

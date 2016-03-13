@@ -87,12 +87,17 @@ item.openbees.bee.drone.name=Drone
 item.openbees.bee.princess.name=Princess
 item.openbees.bee.queen.name=Queen
 item.openbees.comb.name=Comb
+item.openbees.drop.name=Drop
 
 item.openbees.comb.honey.name=Honey
 item.openbees.comb.cocoa.name=Cocoa
 item.openbees.comb.parched.name=Parched
 item.openbees.comb.frozen.name=Frozen
 item.openbees.comb.silky.name=Silky
+
+item.openbees.drop.honey.name=Honey
+item.openbees.drop.sticky.name=Sticky
+item.openbees.drop.frosted.name=Frosted
 
 openbees.species.forest.name=Forest
 openbees.species.meadows.name=Meadows
@@ -102,7 +107,8 @@ openbees.species.wintry.name=Wintry
 openbees.species.tropical.name=Tropical
 openbees.species.common.name=Common
 
-tile.openbees.apiary.0.name=Apiary
+tile.openbees.machine.0.name=Apiary
+tile.openbees.machine.1.name=Honey Extractor
 tile.openbees.hive.name=Bee Hive
 
 item.openbees.scoop.0.name=Wooden Scoop

@@ -5,8 +5,7 @@ import net.minecraftforge.common.BiomeDictionary;
 
 public class climateDefinitionTemperate extends climateDefinitionCustom {
 
-    public climateDefinitionTemperate(String tag)
-    {
+    public climateDefinitionTemperate(String tag) {
         super(tag);
     }
 

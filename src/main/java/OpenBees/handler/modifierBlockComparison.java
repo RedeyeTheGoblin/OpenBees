@@ -5,62 +5,52 @@ import net.minecraft.block.Block;
 
 public class modifierBlockComparison extends modifierBlock {
 
-    public modifierBlockComparison(Block block, int meta)
-    {
+    public modifierBlockComparison(Block block, int meta) {
         super(block, meta);
     }
 
     @Override
-    public float getMutationModifier()
-    {
+    public float getMutationModifier() {
         return 0;
     }
 
     @Override
-    public float getLifespanModifier()
-    {
+    public float getLifespanModifier() {
         return 0;
     }
 
     @Override
-    public void damageItem(int damage)
-    {
+    public void damageItem(int damage) {
 
     }
 
     @Override
-    public float getFertilityModifier()
-    {
+    public float getFertilityModifier() {
         return 0;
     }
 
     @Override
-    public boolean canBypassNocturnal()
-    {
+    public boolean canBypassNocturnal() {
         return false;
     }
 
     @Override
-    public boolean canBypassRain()
-    {
+    public boolean canBypassRain() {
         return false;
     }
 
     @Override
-    public boolean canBypassFlowers()
-    {
+    public boolean canBypassFlowers() {
         return false;
     }
 
     @Override
-    public boolean canBypassCave()
-    {
+    public boolean canBypassCave() {
         return false;
     }
 
     @Override
-    public boolean canBypassBiome()
-    {
+    public boolean canBypassBiome() {
         return false;
     }
 }

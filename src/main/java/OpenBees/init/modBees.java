@@ -10,15 +10,12 @@ import java.util.HashMap;
 
 public class modBees {
 
-    public static void init()
-    {
+    public static void init() {
 
-        for (speciesEnum.Species species : speciesEnum.Species.values())
-        {
+        for (speciesEnum.Species species : speciesEnum.Species.values()) {
 
             HashMap<Allele.AlleleTypes, Allele> map = new HashMap();
-            for (Allele.AlleleTypes types : Allele.AlleleTypes.values())
-            {
+            for (Allele.AlleleTypes types : Allele.AlleleTypes.values()) {
 
                 Allele allele = OpenBees.coreBeeHandler.getAlleleHandler().getAlleleByTag(species.getGenome()[types.ordinal()]);
                 map.put(types, allele);
@@ -26,13 +23,10 @@ public class modBees {
             }
             OpenBees.coreBeeHandler.registerSpecies(new baseSpecies(species.toString(), species.getUnloc() ,species.getbodyColour(), species.getoutlineColour(), map, species.getProducts()));
             OpenBees.coreBeeHandler.registerBeeforHive(OpenBees.coreBeeHandler.getSpeciesByTag(species.toString()), species.getSpawnIn());
-
         }
-
     }
 
-    public static  void registerMutations()
-    {
+    public static  void registerMutations() {
         OpenBees.coreBeeHandler.registerMutation("FOREST", "MEADOWS", "COMMON", 0.60f);
         OpenBees.coreBeeHandler.registerMutation("FOREST", "MODEST", "COMMON", 0.60f);
         OpenBees.coreBeeHandler.registerMutation("FOREST", "MARSHY", "COMMON", 0.60f);

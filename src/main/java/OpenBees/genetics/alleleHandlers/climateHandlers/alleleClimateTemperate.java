@@ -5,8 +5,7 @@ import OpenBees.genetics.alleleHandlers.climateHandlers.climateDefinitions.clima
 
 public class alleleClimateTemperate extends alleleClimateHandler {
 
-    public alleleClimateTemperate(String tag)
-    {
+    public alleleClimateTemperate(String tag) {
         super(tag, new climateDefinitionTemperate("TEMPERATE"));
     }
 }

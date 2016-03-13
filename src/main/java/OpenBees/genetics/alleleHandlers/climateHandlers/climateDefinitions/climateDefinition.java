@@ -8,24 +8,20 @@ public class climateDefinition {
     private String tag;
     private BiomeDictionary.Type type;
 
-    public climateDefinition(String tag, BiomeDictionary.Type type)
-    {
+    public climateDefinition(String tag, BiomeDictionary.Type type) {
         this.tag = tag;
         this.type = type;
     }
 
-    public String getTag()
-    {
+    public String getTag() {
         return tag;
     }
 
-    public boolean isBiomeCompatible(BiomeGenBase biome)
-    {
+    public boolean isBiomeCompatible(BiomeGenBase biome) {
         return BiomeDictionary.isBiomeOfType(biome, this.type);
     }
 
-    public BiomeDictionary.Type getType()
-    {
+    public BiomeDictionary.Type getType() {
         return type;
     }
 }

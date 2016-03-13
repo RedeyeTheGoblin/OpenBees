@@ -13,8 +13,7 @@ import java.util.Locale;
 public class speciesEnum
 {
 
-    public enum Species
-    {
+    public enum Species {
         FOREST("openbees.species.forest.name", 0x00cc00, 0x006600, new String[]{
                 "Workspeed.SLOW",
                 "Lifespan.SHORT",
@@ -27,7 +26,7 @@ public class speciesEnum
                 "Cave.FALSE",
                 "Rain.FALSE",
                 "Territory.NORMAL"},
-                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1), 0.25f)}),
+                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1, 0), 0.25f)}),
                 Arrays.asList(new BiomeDictionary.Type[]{BiomeDictionary.Type.FOREST})),
         MEADOWS("openbees.species.meadows.name", 0xe0dc98, 0xcfbc83, new String[]{
                 "Workspeed.FAST",
@@ -41,7 +40,7 @@ public class speciesEnum
                 "Cave.FALSE",
                 "Rain.FALSE",
                 "Territory.NORMAL"},
-                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1), 0.25f)}),
+                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1, 0), 0.25f)}),
                 Arrays.asList(new BiomeDictionary.Type[]{BiomeDictionary.Type.PLAINS})),
         MODEST("openbees.species.modest.name", 0xffff32, 0x4c4c00, new String[]{
                 "Workspeed.FAST",
@@ -55,7 +54,7 @@ public class speciesEnum
                 "Cave.FALSE",
                 "Rain.FALSE",
                 "Territory.NORMAL"},
-                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1), 0.25f)}),
+                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1, 2), 0.25f)}),
                 Arrays.asList(new BiomeDictionary.Type[]{BiomeDictionary.Type.SANDY})),
         MARSHY("openbees.species.marshy.name", 0x556b2f, 0xa2cd5a, new String[]{
                 "Workspeed.FAST",
@@ -69,7 +68,7 @@ public class speciesEnum
                 "Cave.FALSE",
                 "Rain.FALSE",
                 "Territory.NORMAL"},
-                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1), 0.25f)}),
+                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1, 0), 0.25f)}),
                 Arrays.asList(new BiomeDictionary.Type[]{BiomeDictionary.Type.SWAMP})),
         WINTRY("openbees.species.wintry.name", 0x7fffd4, 0x53868b, new String[]{
                 "Workspeed.FAST",
@@ -83,7 +82,7 @@ public class speciesEnum
                 "Cave.FALSE",
                 "Rain.FALSE",
                 "Territory.NORMAL"},
-                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1), 0.25f)}),
+                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1, 3), 0.25f)}),
                 Arrays.asList(new BiomeDictionary.Type[]{BiomeDictionary.Type.SNOWY})),
         TROPICAL("openbees.species.tropical.name", 0x7fff00, 0x458b00, new String[]{
                 "Workspeed.FAST",
@@ -97,7 +96,7 @@ public class speciesEnum
                 "Cave.FALSE",
                 "Rain.FALSE",
                 "Territory.NORMAL"},
-                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1), 0.25f)}),
+                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1, 4), 0.25f)}),
                 Arrays.asList(new BiomeDictionary.Type[]{BiomeDictionary.Type.JUNGLE})),
         COMMON("openbees.species.common.name", 0x383838, 0x707070, new String[]{
                 "Workspeed.FAST",
@@ -111,7 +110,7 @@ public class speciesEnum
                 "Cave.FALSE",
                 "Rain.FALSE",
                 "Territory.NORMAL"},
-                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1), 0.25f)}),
+                Arrays.asList(new beeProduct[]{new beeProduct(OpenBees.items.honey_comb.getStack(1, 0), 0.25f)}),
                 Arrays.asList(new BiomeDictionary.Type[]{BiomeDictionary.Type.PLAINS}));
 
         private String unloc;
@@ -121,8 +120,7 @@ public class speciesEnum
         private List<beeProduct> products;
         private List<BiomeDictionary.Type> spawnIn;
 
-        Species(String unloc, int bodyColour, int outlineColour, String[] genome, List<beeProduct> products, List<BiomeDictionary.Type> spawnIn)
-        {
+        Species(String unloc, int bodyColour, int outlineColour, String[] genome, List<beeProduct> products, List<BiomeDictionary.Type> spawnIn) {
             this.unloc = unloc;
             this.bodyColour = bodyColour;
             this.outlineColour = outlineColour;
@@ -131,33 +129,27 @@ public class speciesEnum
             this.spawnIn = spawnIn;
         }
 
-        public String getUnloc()
-        {
+        public String getUnloc() {
             return unloc;
         }
 
-        public int getbodyColour()
-        {
+        public int getbodyColour() {
             return bodyColour;
         }
 
-        public int getoutlineColour()
-        {
+        public int getoutlineColour() {
             return outlineColour;
         }
 
-        public String[] getGenome()
-        {
+        public String[] getGenome() {
             return genome;
         }
 
-        public List<beeProduct> getProducts()
-        {
+        public List<beeProduct> getProducts() {
             return products;
         }
 
-        public List<BiomeDictionary.Type> getSpawnIn()
-        {
+        public List<BiomeDictionary.Type> getSpawnIn() {
             return spawnIn;
         }
     }

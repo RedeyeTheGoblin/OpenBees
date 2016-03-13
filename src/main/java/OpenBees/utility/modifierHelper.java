@@ -14,86 +14,70 @@ public class modifierHelper extends modifierBlock {
     private boolean night = false;
     private float totalFertilityMod = 0;
 
-    public modifierHelper(List<IFrameItem> modifiers)
-    {
+    public modifierHelper(List<IFrameItem> modifiers) {
         super(null, -1);
-        for (IFrameItem frame : modifiers)
-        {
-            if (frame.canBypassCave())
-            {
+        for (IFrameItem frame : modifiers) {
+            if (frame.canBypassCave()) {
                 outdoor = true;
             }
 
-            if (frame.canBypassBiome())
-            {
+            if (frame.canBypassBiome()) {
                 biome = true;
             }
 
-            if (frame.canBypassFlowers())
-            {
+            if (frame.canBypassFlowers()) {
                 flower = true;
             }
 
-            if (frame.canBypassNocturnal())
-            {
+            if (frame.canBypassNocturnal()) {
                 night = true;
             }
-
             totalFertilityMod += frame.getFertilityModifier();
         }
     }
 
     @Override
-    public float getMutationModifier()
-    {
+    public float getMutationModifier() {
         return 0;
     }
 
     @Override
-    public float getLifespanModifier()
-    {
+    public float getLifespanModifier() {
         return 0;
     }
 
     @Override
-    public float getFertilityModifier()
-    {
+    public float getFertilityModifier() {
         return this.totalFertilityMod;
     }
 
     @Override
-    public void damageItem(int damage)
-    {
+    public void damageItem(int damage) {
 
     }
 
     @Override
-    public boolean canBypassNocturnal()
-    {
+    public boolean canBypassNocturnal() {
         return night;
     }
 
     @Override
-    public boolean canBypassRain()
-    {
+    public boolean canBypassRain() {
         return rain;
     }
 
     @Override
-    public boolean canBypassFlowers()
-    {
+    public boolean canBypassFlowers() {
         return flower;
     }
 
     @Override
-    public boolean canBypassCave()
-    {
+    public boolean canBypassCave() {
         return outdoor;
     }
 
     @Override
-    public boolean canBypassBiome()
-    {
+    public boolean canBypassBiome() {
         return biome;
     }
 

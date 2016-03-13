@@ -15,20 +15,16 @@ public class alleleFlowerStone extends alleleFlowerHandler {
 
     private ArrayList<blockIdentifier> validBlocks = new ArrayList();
 
-    public alleleFlowerStone()
-    {
+    public alleleFlowerStone() {
         super("Flower.STONE", null, 0);
     }
 
     @Override
-    public boolean isValid(World world, int x, int y, int z, IBee bee)
-    {
-        for (ItemStack iStack : OreDictionary.getOres("stone"))
-        {
+    public boolean isValid(World world, int x, int y, int z, IBee bee) {
+        for (ItemStack iStack : OreDictionary.getOres("stone")) {
             blockIdentifier blockID = new blockIdentifier(GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(iStack.getItem())).toString(), iStack.getItemDamage());
 
-            if (validBlocks.contains(blockID))
-            {
+            if (validBlocks.contains(blockID)) {
                 return true;
             }
         }

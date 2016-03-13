@@ -18,55 +18,42 @@ public class textureHandler implements IIconManager {
     private HashMap<String, IIcon> icons = new HashMap();
     private ArrayList<iconData> data = new ArrayList();
 
-    public textureHandler()
-    {
+    public textureHandler() {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
-    public void registerIcon(String domain, String path, String tag)
-    {
+    public void registerIcon(String domain, String path, String tag) {
         data.add(new iconData(domain, path, tag, false));
     }
 
     @Override
-    public IIcon getIcon(String tag)
-    {
-        if (icons.containsKey(tag))
-        {
+    public IIcon getIcon(String tag) {
+        if (icons.containsKey(tag)) {
             return icons.get(tag);
-        } else
-        {
+        } else {
             return null;
         }
     }
 
     @Override
-    public void registerTexture(String domain, String path, String tag)
-    {
+    public void registerTexture(String domain, String path, String tag) {
         data.add(new iconData(domain, path, tag, true));
     }
 
     @SubscribeEvent
     @Mod.EventHandler
-    public void onEvent(TextureStitchEvent.Pre event)
-    {
-        if (event.map.getTextureType() == 1)
-        {
-            for (iconData iData : data)
-            {
-                if (!iData.isBlock())
-                {
+    public void onEvent(TextureStitchEvent.Pre event) {
+        if (event.map.getTextureType() == 1) {
+            for (iconData iData : data) {
+                if (!iData.isBlock()) {
                     ResourceLocation location = new ResourceLocation(iData.getDomain(), iData.getPath());
                     icons.put(iData.getTag(), event.map.registerIcon(location.toString()));
                 }
             }
-        } else
-        {
-            for (iconData iconData : data)
-            {
-                if (iconData.isBlock())
-                {
+        } else {
+            for (iconData iconData : data) {
+                if (iconData.isBlock()) {
                     ResourceLocation location = new ResourceLocation(iconData.getDomain(), iconData.getPath());
                     icons.put(iconData.getTag(), event.map.registerIcon(location.toString()));
                 }

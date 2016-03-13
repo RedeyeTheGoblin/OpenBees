@@ -11,20 +11,17 @@ public class alleleHandler implements IalleleHandler {
     private HashMap<String, Allele> alleles = new HashMap();
 
     @Override
-    public void registerAllele(Allele allele)
-    {
+    public void registerAllele(Allele allele) {
         alleles.put(allele.getTag(), allele);
     }
 
     @Override
-    public Allele getAlleleByTag(String tag)
-    {
+    public Allele getAlleleByTag(String tag) {
         return alleles.get(tag);
     }
 
     @Override
-    public Map<String, Allele> getAlleleMap()
-    {
+    public Map<String, Allele> getAlleleMap() {
         return Collections.unmodifiableMap(this.alleles);
     }
 }

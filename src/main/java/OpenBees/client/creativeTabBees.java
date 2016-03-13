@@ -8,20 +8,17 @@ import net.minecraft.item.ItemStack;
 
 public class creativeTabBees extends CreativeTabs {
 
-    public creativeTabBees()
-    {
+    public creativeTabBees() {
         super("openbees.bees");
     }
 
     @Override
-    public Item getTabIconItem()
-    {
+    public Item getTabIconItem() {
         return null;
     }
 
     @Override
-    public ItemStack getIconItemStack()
-    {
+    public ItemStack getIconItemStack() {
         return OpenBees.instance.coreBeeHandler.getBeeBySpeciesTag("FOREST", typeEnum.Types.QUEEN);
     }
 }

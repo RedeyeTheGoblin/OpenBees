@@ -10,8 +10,7 @@ import java.util.List;
 
 public abstract class itemBase extends Item {
 
-    public itemBase(String unloc, int maxStack)
-    {
+    public itemBase(String unloc, int maxStack) {
         this.setUnlocalizedName(unloc);
         this.setMaxStackSize(maxStack);
     }
@@ -26,8 +25,7 @@ public abstract class itemBase extends Item {
     public abstract void getSubItems(Item item, CreativeTabs tabs, List list);
 
     @Override
-    public boolean requiresMultipleRenderPasses()
-    {
+    public boolean requiresMultipleRenderPasses() {
         return true;
     }
 

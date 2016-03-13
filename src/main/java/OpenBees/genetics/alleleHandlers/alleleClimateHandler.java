@@ -9,14 +9,12 @@ public class alleleClimateHandler extends Allele {
     // OpenBees registers one of these labeled TEMPERATE that counts as between hot and cold.
     private climateDefinition requiredClimate;
 
-    public alleleClimateHandler(String tag, climateDefinition requiredClimate)
-    {
+    public alleleClimateHandler(String tag, climateDefinition requiredClimate) {
         super(tag);
         this.requiredClimate = requiredClimate;
     }
 
-    public climateDefinition getRequiredClimate()
-    {
+    public climateDefinition getRequiredClimate() {
         return requiredClimate;
     }
 }

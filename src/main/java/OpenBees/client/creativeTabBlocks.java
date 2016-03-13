@@ -8,20 +8,17 @@ import net.minecraft.item.ItemStack;
 
 public class creativeTabBlocks extends CreativeTabs {
 
-    public creativeTabBlocks()
-    {
+    public creativeTabBlocks() {
         super("openbees.blocks");
     }
 
     @Override
-    public Item getTabIconItem()
-    {
+    public Item getTabIconItem() {
         return null;
     }
 
     @Override
-    public ItemStack getIconItemStack()
-    {
+    public ItemStack getIconItemStack() {
         return OpenBees.blocks.apiary.getStack(1);
     }
 }

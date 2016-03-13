@@ -7,14 +7,12 @@ public class alleleBooleanHandler extends Allele
 
     private boolean bool;
 
-    public alleleBooleanHandler(String tag, boolean bool)
-    {
+    public alleleBooleanHandler(String tag, boolean bool) {
         super(tag);
         this.bool = bool;
     }
 
-    public boolean isBool()
-    {
+    public boolean isBool() {
         return bool;
     }
 }

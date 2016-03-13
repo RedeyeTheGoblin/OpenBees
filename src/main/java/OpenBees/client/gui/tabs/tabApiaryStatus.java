@@ -12,35 +12,31 @@ public class tabApiaryStatus extends TabBase {
 
     private String text = "";
 
-    public tabApiaryStatus(GuiBase guiBase)
-    {
+    public tabApiaryStatus(GuiBase guiBase) {
         super(guiBase);
         this.backgroundColor = 0x00ccff;
         this.maxHeight = 92;
         this.maxWidth = 100;
         this.textColor = 0xffffff;
+        this.side = 0;
     }
 
     @Override
-    public void draw()
-    {
+    public void draw() {
         drawBackground();
         drawTabIcon("scoop");
-        if (!isFullyOpened())
-        {
+        if (!isFullyOpened()) {
             return;
         }
     }
 
     @Override
-    public void addTooltip(List<String> strings)
-    {
+    public void addTooltip(List<String> strings) {
         super.addTooltip(strings);
         strings.add(LanguageRegistry.instance().getStringLocalization(this.text));
     }
 
-    public void setText(String text)
-    {
+    public void setText(String text) {
         this.text = text;
     }
 

@@ -16,69 +16,55 @@ public class imageScanner {
     public static final pixelData target = new pixelData(-1, -1, -6075996);
     private ArrayList<pixelData> data = new ArrayList();
 
-    public void load(String path)
-    {
-        try
-        {
+    public void load(String path) {
+        try {
             this.loadImage(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream(path)));
-        } catch (Throwable t)
-        {
+        } catch (Throwable t) {
             t.printStackTrace();
         }
     }
 
-    public void loadImage(BufferedImage image)
-    {
+    public void loadImage(BufferedImage image) {
         int w = image.getWidth();
         int h = image.getHeight();
 
-        for (int i = 0; i < h; i++)
-        {
-            for (int j = 0; j < w; j++)
-            {
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
                 int pixel = image.getRGB(j, i);
                 data.add(new pixelData(j, i, pixel));
             }
         }
     }
 
-    public void drawMeAMap(BufferedImage image)
-    {
+    public void drawMeAMap(BufferedImage image) {
         BufferedImage copy = this.deepCopy(image);
         Graphics graphics = copy.getGraphics();
         this.loadImage(image);
         int index = 0;
 
-        for (pixelData data: this.findTargets())
-        {
+        for (pixelData data: this.findTargets()) {
             graphics.drawString(String.valueOf(index++), data.getX(), data.getY());
         }
 
-        try
-        {
+        try {
             ImageIO.write(copy, "png", new File("map.png"));
-        } catch (Throwable t)
-        {
+        } catch (Throwable t) {
             t.printStackTrace();
         }
     }
 
-    public BufferedImage deepCopy(BufferedImage buffImg)
-    {
+    public BufferedImage deepCopy(BufferedImage buffImg) {
         ColorModel model = buffImg.getColorModel();
         boolean isAlphaPremultiplied = model.isAlphaPremultiplied();
         WritableRaster raster = buffImg.copyData(null);
         return new BufferedImage(model, raster, isAlphaPremultiplied, null);
     }
 
-    public List<pixelData> findTargets()
-    {
+    public List<pixelData> findTargets() {
         ArrayList<pixelData> find = new ArrayList();
 
-        for (pixelData pix : data)
-        {
-            if (pix.isEqual(target))
-            {
+        for (pixelData pix : data) {
+            if (pix.isEqual(target)) {
                 find.add(pix);
             }
         }

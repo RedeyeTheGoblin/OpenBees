@@ -16,19 +16,16 @@ public enum flowersEnum {
     private Block block;
     private int meta;
 
-    flowersEnum(Block block, int meta)
-    {
+    flowersEnum(Block block, int meta) {
         this.block = block;
         this.meta = meta;
     }
 
-    public Block getBlock()
-    {
+    public Block getBlock() {
         return block;
     }
 
-    public int getMeta()
-    {
+    public int getMeta() {
         return meta;
     }
 

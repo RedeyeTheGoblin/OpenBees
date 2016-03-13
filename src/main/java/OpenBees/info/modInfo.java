@@ -1,7 +1,6 @@
 package OpenBees.info;
 
-public class modInfo
-{
+public class modInfo {
 
     public static final String modid = "openbees";
     public static final String modname = "Open Bees";

@@ -13,10 +13,8 @@ public class itemRegistry {
     //Combs
     public Item base_comb;
     public itemWrapper honey_comb;
-    public itemWrapper cocoa_comb;
-    public itemWrapper parched_comb;
-    public itemWrapper frozen_comb;
-    public itemWrapper silky_comb;
+    public Item base_drop;
+    public itemWrapper bee_drop;
 
     //Tools
     public itemWrapper scoop_wood;

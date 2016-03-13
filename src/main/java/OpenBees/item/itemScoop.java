@@ -12,15 +12,13 @@ public class itemScoop extends itemToolBase {
 
    private String icon;
 
-    public itemScoop(String unloc, ToolMaterial material, String icon)
-    {
+    public itemScoop(String unloc, ToolMaterial material, String icon) {
         super(unloc, material, Sets.newHashSet(new Block[] {OpenBees.blocks.beehive.getBlock()}), "scoop", 1);
         this.icon = icon;
     }
 
     @Override
-    public IIcon getIcon(ItemStack stack, int pass)
-    {
+    public IIcon getIcon(ItemStack stack, int pass) {
         return OpenBees.coreTexHandler.getIcon(this.icon);
     }
 }

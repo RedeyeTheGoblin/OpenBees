@@ -15,8 +15,7 @@ import java.util.List;
 
 public class blockHive extends blockBase {
 
-    public blockHive(String unloc)
-    {
+    public blockHive(String unloc) {
         super(unloc);
         this.setHasGUI(false);
         this.setIdShift(-1);
@@ -25,43 +24,36 @@ public class blockHive extends blockBase {
     }
 
     @Override
-    public void setup()
-    {
+    public void setup() {
         this.setCreativeTab(creativeTabHandler.creativeTabBlocks);
         this.setModInstance(OpenBees.instance);
     }
 
     @Override
-    public IIcon getIcon(int side, int meta)
-    {
-        if (side == ForgeDirection.DOWN.ordinal() || side == ForgeDirection.UP.ordinal())
-        {
+    public IIcon getIcon(int side, int meta) {
+        if (side == ForgeDirection.DOWN.ordinal() || side == ForgeDirection.UP.ordinal()) {
             return OpenBees.coreTexHandler.getIcon("beehive_top");
         }
         return OpenBees.coreTexHandler.getIcon("beehive_side");
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta)
-    {
+    public TileEntity createNewTileEntity(World world, int meta) {
         return null;
     }
 
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
-    {
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         return new ArrayList();
     }
 
     @Override
-    protected boolean canSilkHarvest()
-    {
+    protected boolean canSilkHarvest() {
         return false;
     }
 
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List validHives)
-    {
+    public void getSubBlocks(Item item, CreativeTabs tab, List validHives) {
         validHives.add(new ItemStack( this, 1, 0));
     }
 }

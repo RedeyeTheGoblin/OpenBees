@@ -1,8 +1,7 @@
 package OpenBees.proxy;
 
 
-public interface IProxy
-{
+public interface IProxy {
 
     public boolean isShiftKey();
 

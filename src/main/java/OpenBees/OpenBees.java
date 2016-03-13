@@ -10,10 +10,8 @@ import OpenBees.init.*;
 import OpenBees.proxy.IProxy;
 import OpenBees.info.modInfo;
 import OpenBees.proxy.clientProxy;
-import OpenBees.utility.beeHelper;
-import OpenBees.utility.blockRegistry;
-import OpenBees.utility.itemRegistry;
-import OpenBees.utility.logHelper;
+import OpenBees.utility.*;
+import OpenBees.utility.craftingHelpers.IExtractorManager;
 import OpenBees.worldgen.worldGenHives;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -23,12 +21,12 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Map;
 
 @Mod(modid = modInfo.modid, name = modInfo.modname, version = modInfo.modversion, guiFactory = modInfo.GuiFactoryClass)
-public class OpenBees
-{
+public class OpenBees {
 
     @Mod.Instance (modInfo.modid)
     public static OpenBees instance = new OpenBees();
@@ -37,13 +35,13 @@ public class OpenBees
     public static textureHandler coreTexHandler = new textureHandler();
     public static itemRegistry items = new itemRegistry();
     public static blockRegistry blocks = new blockRegistry();
+    public extractorCraftingManager extractorRecipes = new extractorCraftingManager();
 
     @SidedProxy(clientSide = modInfo.clientproxyname, serverSide = modInfo.serverproxyname)
     public static IProxy proxy;
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent event) {
         configurationHandler.init(event.getSuggestedConfigurationFile());
         modIcons.init();
         FMLCommonHandler.instance().bus().register(new configurationHandler());
@@ -53,8 +51,7 @@ public class OpenBees
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event)
-    {
+    public void init(FMLInitializationEvent event) {
         modBlocks.init();
         modItems.init();
         modAlleles.init();
@@ -62,10 +59,9 @@ public class OpenBees
     }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
+    public void postInit(FMLPostInitializationEvent event) {
         modBees.registerMutations();
+        modRecipes.init();
         worldGenHives.init();
     }
-
 }

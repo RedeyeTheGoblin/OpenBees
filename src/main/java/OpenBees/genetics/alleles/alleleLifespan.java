@@ -9,14 +9,13 @@ public class alleleLifespan  extends alleleIntHandler {
         super("Lifespan." + lifespan.toString(), lifespan.getMult());
     }
 
-    public static enum Lifespans
-    {
+    public static enum Lifespans {
         SHORT,
         NORMAL,
         LONG,
         LONGER,
         LONGEST,
-        AEON;
+        AEONS;
 
         public int getMult()
         {

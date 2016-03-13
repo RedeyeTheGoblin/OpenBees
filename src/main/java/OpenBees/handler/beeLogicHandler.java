@@ -17,8 +17,7 @@ public class beeLogicHandler implements IBeeLogic
     public static boolean recessiveCanTriggerMutations = true;
 
     @Override
-    public ItemStack combine(IBeeKeepingTile tile)
-    {
+    public ItemStack combine(IBeeKeepingTile tile) {
         IBee princess = tile.getQueen();
 
         IBee drone = tile.getDrone();
@@ -26,13 +25,11 @@ public class beeLogicHandler implements IBeeLogic
         princess.setMate(drone);
 
         float lifeModifier = 0.0f;
-        for (IFrameItem i : tile.getFrames())
-        {
+        for (IFrameItem i : tile.getFrames()) {
             lifeModifier += i.getLifespanModifier();
         }
 
-        for (modifierBlock block : OpenBees.coreBeeHandler.getModifierBlocksNear(tile))
-        {
+        for (modifierBlock block : OpenBees.coreBeeHandler.getModifierBlocksNear(tile)) {
             lifeModifier += block.getLifespanModifier();
         }
 
@@ -46,8 +43,7 @@ public class beeLogicHandler implements IBeeLogic
     }
 
     @Override
-    public ItemStack produceOffspring(IBeeKeepingTile tile, List<IFrameItem> allModifiers, boolean princess)
-    {
+    public ItemStack produceOffspring(IBeeKeepingTile tile, List<IFrameItem> allModifiers, boolean princess) {
         ItemStack base;
         NBTTagCompound newBee;
         Random rand = new Random();
@@ -55,8 +51,7 @@ public class beeLogicHandler implements IBeeLogic
         beeMutation selectedMutation = null;
 
         //Check if there is actually a mate attached to the queen to prevent crashes.
-        if (queen.getMate() == null)
-        {
+        if (queen.getMate() == null) {
             queen.setMate(queen);
         }
 
@@ -64,20 +59,16 @@ public class beeLogicHandler implements IBeeLogic
         List<beeMutation> potentialMutations = new ArrayList();
         logHelper.info("queen: " + queen.getDominantGenome().getSpecies().toString() + ", drone: " + queen.getMate().getDominantGenome().getSpecies().toString());
         potentialMutations.addAll(OpenBees.coreBeeHandler.getMutations(queen.getDominantGenome().getSpecies(), queen.getMate().getDominantGenome().getSpecies()));
-        if (recessiveCanTriggerMutations)
-        {
+        if (recessiveCanTriggerMutations) {
             potentialMutations.addAll(OpenBees.coreBeeHandler.getMutations(queen.getRecessiveGenome().getSpecies(), queen.getMate().getRecessiveGenome().getSpecies()));
         }
 
-        if (!potentialMutations.isEmpty())
-        {
+        if (!potentialMutations.isEmpty()) {
             //If we have more than one possible mutation, randomly pick one to win.
             int selectMutation;
-            if (potentialMutations.size() == 1)
-            {
+            if (potentialMutations.size() == 1) {
                 selectMutation = 0;
-            } else
-            {
+            } else {
                 selectMutation = rand.nextInt(potentialMutations.size() -1);
             }
 
@@ -85,15 +76,13 @@ public class beeLogicHandler implements IBeeLogic
             float chance = mutation.getChance();
 
             //Check if frames can modify the mutation chance.
-            for (IFrameItem frame : allModifiers)
-            {
+            for (IFrameItem frame : allModifiers) {
                 chance = chance + (chance * frame.getMutationModifier());
             }
 
             //Check to see if we make the mutation chance threshold
             float mutationRoll = rand.nextFloat();
-            if (mutationRoll <= chance)
-            {
+            if (mutationRoll <= chance) {
                 selectedMutation = mutation;
             }
         }
@@ -102,8 +91,7 @@ public class beeLogicHandler implements IBeeLogic
         HashMap<Allele.AlleleTypes, Allele> dominantAlleles = new HashMap();
         HashMap<Allele.AlleleTypes, Allele> recessiveAlleles = new HashMap();
 
-        for (Allele.AlleleTypes aTypes : map.keySet())
-        {
+        for (Allele.AlleleTypes aTypes : map.keySet()) {
             int roll = rand.nextInt(map.get(aTypes).getPotential().size() - 1);
 
             dominantAlleles.put(aTypes, (Allele) map.get(aTypes).getPotential().get(roll)[0]);
@@ -111,11 +99,9 @@ public class beeLogicHandler implements IBeeLogic
         }
 
         punnettSquare speciesCheck;
-        if (selectedMutation == null)
-        {
+        if (selectedMutation == null) {
             speciesCheck = new punnettSquare(new Object[]{queen.getDominantGenome().getSpecies(), queen.getRecessiveGenome().getSpecies()},new Object[]{queen.getMate().getDominantGenome().getSpecies(), queen.getMate().getRecessiveGenome().getSpecies()});
-        } else
-        {
+        } else {
             speciesCheck = new punnettSquare(new Object[]{queen.getDominantGenome().getSpecies(),selectedMutation.getOutcome()}, new Object[]{queen.getMate().getDominantGenome().getSpecies(),selectedMutation.getOutcome()});
         }
 
@@ -123,11 +109,9 @@ public class beeLogicHandler implements IBeeLogic
         ISpecies dominantSpecies = (ISpecies) speciesCheck.getPotential().get(rollForSpecies)[0];
         ISpecies recessiveSpecies = (ISpecies) speciesCheck.getPotential().get(rollForSpecies)[1];
         newBee = OpenBees.coreBeeHelper.generateGenome(dominantSpecies, recessiveSpecies, dominantAlleles, recessiveAlleles, dominantSpecies != recessiveSpecies, beeHelper.generateNewLifeFlag, null);
-        if (princess)
-        {
+        if (princess) {
             base = typeEnum.Types.PRINCESS.createStack();
-        } else
-        {
+        } else {
             base = typeEnum.Types.DRONE.createStack();
         }
         base.setTagCompound(newBee);
@@ -135,15 +119,12 @@ public class beeLogicHandler implements IBeeLogic
     }
 
     @Override
-    public List<ItemStack> produceItemsOnTick(IBeeKeepingTile tile)
-    {
+    public List<ItemStack> produceItemsOnTick(IBeeKeepingTile tile) {
         ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
         Random rand = new Random();
-        for (beeProduct product : tile.getQueen().getDominantGenome().getSpecies().getPotentialProducts())
-        {
+        for (beeProduct product : tile.getQueen().getDominantGenome().getSpecies().getPotentialProducts()) {
             float odds = rand.nextFloat();
-            if (odds <= product.getChance())
-            {
+            if (odds <= product.getChance()) {
                 stacks.add(product.getStack().copy());
             }
         }

@@ -6,30 +6,25 @@ public class pixelData {
     private int y;
     private int pixel;
 
-    public pixelData(int x, int y, int pixel)
-    {
+    public pixelData(int x, int y, int pixel) {
         this.x = x;
         this.y = y;
         this.pixel = pixel;
     }
 
-    public int getX()
-    {
+    public int getX() {
         return x;
     }
 
-    public int getY()
-    {
+    public int getY() {
         return y;
     }
 
-    public int getPixel()
-    {
+    public int getPixel() {
         return pixel;
     }
 
-    public boolean isEqual(Object obj)
-    {
+    public boolean isEqual(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof pixelData)) return true;
 
@@ -41,8 +36,7 @@ public class pixelData {
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof pixelData)) return false;
 
@@ -56,8 +50,7 @@ public class pixelData {
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int result = x;
         result = 31 * result + y;
         result = 31 * result + pixel;

@@ -18,8 +18,7 @@ public abstract class blockBase extends BlockContainer {
     private int idShift = 0;
     private Object modInstance;
 
-    public blockBase(String unloc)
-    {
+    public blockBase(String unloc) {
         super(Material.clay);
         this.setHardness(1.0f);
         this.setBlockName(unloc);
@@ -27,20 +26,17 @@ public abstract class blockBase extends BlockContainer {
         this.setCreativeTab(creativeTabHandler.creativeTabBlocks);
     }
 
-    public void setModInstance(Object modInstance)
-    {
+    public void setModInstance(Object modInstance) {
         this.modInstance = modInstance;
     }
 
     public abstract void setup();
 
-    public void setHasGUI(boolean hasGUI)
-    {
+    public void setHasGUI(boolean hasGUI) {
         this.hasGUI = hasGUI;
     }
 
-    public void setIdShift(int idShift)
-    {
+    public void setIdShift(int idShift) {
         this.idShift = idShift;
     }
 
@@ -51,21 +47,18 @@ public abstract class blockBase extends BlockContainer {
     public abstract TileEntity createNewTileEntity(World world, int meta);
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
-    {
-        if (this.hasGUI)
-        {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+        if (this.hasGUI) {
             player.openGui(modInstance, (this.idShift + world.getBlockMetadata(x, y, z)), world, x, y, z);
         }
-        return super.onBlockActivated(world, x, y, z, player, p_149727_6_, p_149727_7_, p_149727_8_, p_149727_9_);
+        return true;
     }
 
     @Override
     public abstract void getSubBlocks(Item item, CreativeTabs tabs, List list);
 
     @Override
-    public int damageDropped(int meta)
-    {
+    public int damageDropped(int meta) {
         return meta;
     }
 }

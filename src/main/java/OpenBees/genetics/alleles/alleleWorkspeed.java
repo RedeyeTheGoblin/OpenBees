@@ -4,13 +4,11 @@ import OpenBees.genetics.alleleHandlers.alleleIntHandler;
 
 public class alleleWorkspeed extends alleleIntHandler {
 
-    public alleleWorkspeed(Speeds speed)
-    {
+    public alleleWorkspeed(Speeds speed) {
         super("Workspeed." + speed.toString(), speed.getMult());
     }
 
-    public static enum Speeds
-    {
+    public static enum Speeds {
 
         GLACIAL,
         SLOW,

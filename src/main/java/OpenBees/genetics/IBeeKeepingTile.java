@@ -10,7 +10,7 @@ public interface IBeeKeepingTile {
 
     public List<BlockPosition> getSurroundingBlocks();
 
-//    public List<BlockPosition> getSurroundingBlocks(int distance);
+    public List<BlockPosition> getSurroundingBlocks(int distance);
 
     public List<IFrameItem> getFrames();
 

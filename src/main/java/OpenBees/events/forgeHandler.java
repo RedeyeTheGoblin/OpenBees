@@ -17,24 +17,19 @@ import java.util.Random;
 public class forgeHandler {
 
     @SubscribeEvent
-    public void onBlockBroken(BlockEvent.HarvestDropsEvent event)
-    {
-        if (event.block instanceof blockHive)
-        {
-            if (event.harvester.getCurrentEquippedItem() == null)
-            {
+    public void onBlockBroken(BlockEvent.HarvestDropsEvent event) {
+        if (event.block instanceof blockHive) {
+            if (event.harvester.getCurrentEquippedItem() == null) {
                 return;
             }
 
-            if (!event.harvester.getCurrentEquippedItem().getItem().getClass().isAnnotationPresent(scoopItem.class))
-            {
+            if (!event.harvester.getCurrentEquippedItem().getItem().getClass().isAnnotationPresent(scoopItem.class)) {
                 return;
             }
 
             List<ISpecies> potential = OpenBees.coreBeeHandler.getSpeciesForBiome(event.world.getBiomeGenForCoords(event.x, event.y));
 
-            if (potential.isEmpty())
-            {
+            if (potential.isEmpty()) {
                 return;
             }
 
@@ -45,14 +40,12 @@ public class forgeHandler {
             ItemStack drone = OpenBees.coreBeeHandler.getBeeBySpecies(potential.get(index), typeEnum.Types.DRONE);
 
             int drones = rand.nextInt(4);
-            if (drones == 0)
-            {
+            if (drones == 0) {
                 drones++;
             }
 
             int princesses = rand.nextInt(event.fortuneLevel + 1);
-            if (princesses == 0)
-            {
+            if (princesses == 0) {
                 princesses++;
             }
 
@@ -62,11 +55,9 @@ public class forgeHandler {
             event.drops.add(princess);
             event.drops.add(drone);
 
-            for (beeProduct prod : potential.get(index).getPotentialProducts())
-            {
+            for (beeProduct prod : potential.get(index).getPotentialProducts()) {
                 float odds = rand.nextFloat();
-                if (odds <= prod.getChance())
-                {
+                if (odds <= prod.getChance()) {
                     event.drops.add(prod.getStack().copy());
                 }
             }

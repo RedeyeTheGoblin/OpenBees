@@ -15,8 +15,7 @@ public abstract class containerBase extends Container {
     public int hotbarAdjustY = 0;
     public int invSize = 0;
 
-    protected  containerBase(EntityPlayer player, int adjustX, int adjustY, int hotbarAdjustX, int hotbarAdjustY, int invSize)
-    {
+    protected  containerBase(EntityPlayer player, int adjustX, int adjustY, int hotbarAdjustX, int hotbarAdjustY, int invSize) {
         this.adjustX = adjustX;
         this.adjustY = adjustY;
         this.hotbarAdjustX = hotbarAdjustX;
@@ -26,43 +25,35 @@ public abstract class containerBase extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer p_75145_1_)
-    {
+    public boolean canInteractWith(EntityPlayer p_75145_1_) {
         return true;
     }
 
-    protected void bindPlayerInventory(InventoryPlayer inventoryPlayer)
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
+    protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 9; j++) {
                 addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9,
                         8 + j * 18 + adjustX, 90 + i *18 + adjustY));
             }
         }
 
-        for (int i = 0; i < 9; i++)
-        {
+        for (int i = 0; i < 9; i++) {
             addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i *18 + hotbarAdjustX, 142 + hotbarAdjustY));
         }
     }
 
     @Override
-    public void addCraftingToCrafters(ICrafting player)
-    {
+    public void addCraftingToCrafters(ICrafting player) {
         super.addCraftingToCrafters(player);
     }
 
     @Override
-    public void detectAndSendChanges()
-    {
+    public void detectAndSendChanges() {
         super.detectAndSendChanges();
     }
 
     @Override
-    public void updateProgressBar(int c, int d)
-    {
+    public void updateProgressBar(int c, int d) {
         super.updateProgressBar(c, d);
     }
 

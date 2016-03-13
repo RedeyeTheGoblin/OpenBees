@@ -58,14 +58,12 @@ public class tileApiary extends blockBaseTile implements IBeeKeepingTile {
     }
 
     @Override
-    public int[] getInputSlotForTop()
-    {
+    public int[] getInputSlotForTop() {
         return new int[]{queenSlot, droneSlot, frameSlots[0], frameSlots[1], frameSlots[2]};
     }
 
     @Override
-    public void onNeighboursChanged()
-    {
+    public void onNeighboursChanged() {
         recheckFlowers = true;
         modifiers.clear();
         modifiers.trimToSize();
@@ -75,73 +73,46 @@ public class tileApiary extends blockBaseTile implements IBeeKeepingTile {
     }
 
     @Override
-    public IBee getDrone()
-    {
+    public IBee getDrone() {
         return OpenBees.coreBeeHandler.convertStacktoBee(this.getStackInSlot(droneSlot));
     }
 
     @Override
-    public List<BlockPosition> getSurroundingBlocks()
-    {
+    public List<BlockPosition> getSurroundingBlocks() {
         return this.getPosition().getAdjacent(true);
     }
 
-    /*@Override
-    public List<BlockPosition> getSurroundingBlocks(int distance)
-    {
-        List closeBlocks = null;
-        if (distance == 1)
-        {
-            closeBlocks = this.getPosition().getAdjacent(true);
-        } else
-        {
-            for (int i = 1; 1 <= distance; i++)
-            {
-                if (i == 1)
-                {
-                    closeBlocks.addAll(this.getPosition().getAdjacent(true));
-                } else
-                {
-                    closeBlocks.add(this.getPosition().copy(ForgeDirection.NORTH).moveForwards(i));
+    @Override
+    public List<BlockPosition> getSurroundingBlocks(int distance) {
+        ArrayList closeBlocks = new ArrayList();
 
-
-                    closeBlocks.add(this.getPosition().copy(ForgeDirection.EAST).moveForwards(i));
-                    closeBlocks.add(this.getPosition().copy(ForgeDirection.WEST).moveForwards(i));
-                    closeBlocks.add(this.getPosition().copy(ForgeDirection.SOUTH).moveForwards(i));
-
-                    closeBlocks.add(this.getPosition().copy(ForgeDirection.UP).moveForwards(i));
-                    closeBlocks.add(this.getPosition().copy(ForgeDirection.DOWN).moveForwards(i));
+        for (int yCount = this.yCoord; yCount <= this.yCoord + distance; yCount++ ) {
+            for (int xCount = this.xCoord - distance; xCount <= this.xCoord + distance; xCount++) {
+                for (int zCount = this.zCoord - distance; zCount <= this.zCoord + distance; zCount++) {
+                    closeBlocks.add(new BlockPosition(xCount, yCount, zCount));
                 }
-
             }
         }
-
         return closeBlocks;
-    }*/
+    }
 
     @Override
-    public World getWorld()
-    {
+    public World getWorld() {
         return this.getWorldObj();
     }
 
     @Override
-    public BlockPosition getPosition()
-    {
+    public BlockPosition getPosition() {
         return new BlockPosition(this.xCoord, this.yCoord, this.zCoord);
     }
 
     @Override
-    public List<IFrameItem> getFrames()
-    {
+    public List<IFrameItem> getFrames() {
         ArrayList<IFrameItem> frames = new ArrayList();
-        for (int i = 1; i < this.size; i++)
-        {
+        for (int i = 1; i < this.size; i++) {
             //If on a frame slot
-            if (i == 0 || i == 4 || i ==11)
-            {
-                if (this.getStackInSlot(i) != null)
-                {
+            if (i == 0 || i == 4 || i ==11) {
+                if (this.getStackInSlot(i) != null) {
                     frames.add((IFrameItem) this.getStackInSlot(i).getItem());
                 }
             }
@@ -150,66 +121,53 @@ public class tileApiary extends blockBaseTile implements IBeeKeepingTile {
     }
 
     @Override
-    public IBee getQueen()
-    {
+    public IBee getQueen() {
         return OpenBees.coreBeeHandler.convertStacktoBee(this.getStackInSlot(queenSlot));
     }
 
-    public int getStatusCode()
-    {
+    public int getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode)
-    {
+    public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
-        if (this.getWorld() != null)
-        {
+        if (this.getWorld() != null) {
             this.getWorld().markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         }
     }
 
-    public int getLifeProgress()
-    {
+    public int getLifeProgress() {
         return lifeProgress;
     }
 
-    public void setLifeProgress(int lifeProgress)
-    {
+    public void setLifeProgress(int lifeProgress) {
         this.lifeProgress = lifeProgress;
     }
 
-    public int getBreedingProgress()
-    {
+    public int getBreedingProgress() {
         return this.breedingProgress;
     }
 
-    public void setBreedingProgress(int breedingProgress)
-    {
+    public void setBreedingProgress(int breedingProgress) {
         this.breedingProgress = breedingProgress;
     }
 
     @Override
-    public void init()
-    {
+    public void init() {
         this.onNeighboursChanged();
     }
 
     @Override
-    public void onSlotChanged(int slot)
-    {
-        if (Arrays.asList(frameSlots).contains(slot))
-        {
+    public void onSlotChanged(int slot) {
+        if (Arrays.asList(frameSlots).contains(slot)) {
             this.onNeighboursChanged();
         }
     }
 
     @Override
-    public void updateEntity()
-    {
+    public void updateEntity() {
         super.updateEntity();
-        if (ServerHelper.isClientWorld(this.worldObj))
-        {
+        if (ServerHelper.isClientWorld(this.worldObj)) {
             return;
         }
 
@@ -219,56 +177,44 @@ public class tileApiary extends blockBaseTile implements IBeeKeepingTile {
         boolean hasDrone = false;
 
         //Check if there is a queen in the slot, or a princess to be combined
-        if (this.getStackInSlot(queenSlot) == null)
-        {
+        if (this.getStackInSlot(queenSlot) == null) {
             this.setStatusCode(code_missingBee);
-        } else
-        {
-            if (OpenBees.coreBeeHelper.isPrincess(this.getStackInSlot(queenSlot)))
-            {
+        } else {
+            if (OpenBees.coreBeeHelper.isPrincess(this.getStackInSlot(queenSlot))) {
                 hasPrincess = true;
-            } else if (OpenBees.coreBeeHelper.isQueen(this.getStackInSlot(queenSlot)))
-            {
+            } else if (OpenBees.coreBeeHelper.isQueen(this.getStackInSlot(queenSlot))) {
                 hasQueen = true;
             }
         }
 
-        if (OpenBees.coreBeeHelper.isDrone(this.getStackInSlot(droneSlot)))
-        {
+        if (OpenBees.coreBeeHelper.isDrone(this.getStackInSlot(droneSlot))) {
             hasDrone = true;
         }
 
         //Checking for empty output slots
         boolean emptySlot = false;
-        for (int slot : outputSlots)
-        {
-            if (this.getStackInSlot(slot) == null)
-            {
+        for (int slot : outputSlots) {
+            if (this.getStackInSlot(slot) == null) {
                 emptySlot = true;
                 break;
             }
         }
-        if (!emptySlot)
-        {
+        if (!emptySlot) {
             this.setStatusCode(code_inventoryFull);
             return;
         }
 
-        if (hasQueen && emptySlot)
-        {
+        if (hasQueen && emptySlot) {
             this.setStatusCode(code_allGood);
         }
 
         //If no queen, combine princess and drone to make one... hopefully.
-        if (!hasQueen)
-        {
+        if (!hasQueen) {
             this.lifeProgress = 0;
         }
-        if (hasPrincess && hasDrone)
-        {
+        if (hasPrincess && hasDrone) {
             breedingProgress++;
-            if (breedingProgress > breedingDelay)
-            {
+            if (breedingProgress > breedingDelay) {
                 this.setInventorySlotContents(queenSlot, OpenBees.coreBeeHandler.getCurrentLogic().combine(this));
                 this.decrStackSize(droneSlot, 1);
                 breedingProgress = 0;
@@ -278,10 +224,8 @@ public class tileApiary extends blockBaseTile implements IBeeKeepingTile {
 
         //Bee ticks are slower than server ticks, so add delay
         count++;
-        if (count >= delay)
-        {
-            if(!hasQueen)
-            {
+        if (count >= delay) {
+            if(!hasQueen) {
                 return;
             }
 
@@ -290,49 +234,47 @@ public class tileApiary extends blockBaseTile implements IBeeKeepingTile {
             //Check external conditions
 
             //Night
-            if (!this.getWorldObj().isDaytime())
-            {
-                if (!queen.getDominantGenome().getNocturnal().isBool() && !mods.canBypassNocturnal())
-                {
+            if (!this.getWorldObj().isDaytime()) {
+                if (!queen.getDominantGenome().getNocturnal().isBool() && !mods.canBypassNocturnal()) {
                     this.setStatusCode(code_Night);
                     return;
                 }
             }
 
             //Climate
-            if (!queen.getDominantGenome().getClimate().getRequiredClimate().isBiomeCompatible(this.getWorldObj().getBiomeGenForCoords(this.xCoord, this.yCoord)) && !mods.canBypassBiome())
-            {
+            if (!queen.getDominantGenome().getClimate().getRequiredClimate().isBiomeCompatible(this.getWorldObj().getBiomeGenForCoords(this.xCoord, this.yCoord)) && !mods.canBypassBiome()) {
                 this.setStatusCode(code_wrongBiome);
                 return;
             }
 
             //Rain
-            if (this.getWorldObj().isRaining() & !mods.canBypassRain())
-            {
-                if (!queen.getDominantGenome().getRain().isBool())
-                {
+            if (this.getWorldObj().isRaining() & !mods.canBypassRain()) {
+                if (!queen.getDominantGenome().getRain().isBool()) {
                     this.setStatusCode(code_Rain);
                     return;
                 }
             }
 
             //Sky
-            if (!this.getWorldObj().canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && !mods.canBypassCave())
-            {
-                if (!queen.getDominantGenome().getCave().isBool())
-                {
+            if (!this.getWorldObj().canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord) && !mods.canBypassCave()) {
+                if (!queen.getDominantGenome().getCave().isBool()) {
                     this.setStatusCode(code_NoSky);
                     return;
                 }
             }
 
             //Flowers
-            if (this.recheckFlowers)
-            {
-                if (!hasFlowers(queen, this.getSurroundingBlocks()) && !mods.canBypassFlowers())
-                {
-                    this.setStatusCode(code_NoFlower);
-                    return;
+            if (this.recheckFlowers) {
+                if (this.getStackInSlot(queenSlot) != null) {
+                    if (!hasFlowers(queen, this.getSurroundingBlocks(this.getQueen().getDominantGenome().getTerritory().getNumber())) && !mods.canBypassFlowers()) {
+                        this.setStatusCode(code_NoFlower);
+                        return;
+                    }
+                } else {
+                    if (!hasFlowers(queen, this.getSurroundingBlocks()) && !mods.canBypassFlowers()) {
+                        this.setStatusCode(code_NoFlower);
+                        return;
+                    }
                 }
                 this.recheckFlowers = false;
             }
@@ -344,25 +286,21 @@ public class tileApiary extends blockBaseTile implements IBeeKeepingTile {
             this.setLifeProgress(ticks / queen.getDominantGenome().getLifespan().getNumber());
 
             //Produce combs etc
-            for (ItemStack stack : OpenBees.coreBeeHandler.getCurrentLogic().produceItemsOnTick(this))
-            {
+            for (ItemStack stack : OpenBees.coreBeeHandler.getCurrentLogic().produceItemsOnTick(this)) {
                 this.throwStacks(output.addStack(stack));
             }
 
             //Check if queen is still alive...
-            if (ticks <= 0)
-            {
+            if (ticks <= 0) {
                 int drones = (3 * Math.round(queen.getDominantGenome().getFertility().getNumber() * mods.getFertilityModifier()));
                 if (drones == 0) drones++;
-                for (int i = 0; i < drones; i++)
-                {
+                for (int i = 0; i < drones; i++) {
                     throwStacks(output.addStack(OpenBees.coreBeeHandler.getCurrentLogic().produceOffspring(this, modifiers, false)));
                 }
                 throwStacks(output.addStack(OpenBees.coreBeeHandler.getCurrentLogic().produceOffspring(this, modifiers, true)));
                 this.setInventorySlotContents(queenSlot, null);
                 this.lifeProgress = 0;
-            } else
-            {
+            } else {
                 queen.setLifeTicks(ticks);
                 this.getStackInSlot(queenSlot).setTagCompound(queen.getNBT());
                 this.getStackInSlot(queenSlot).getTagCompound().setInteger("life", ticks);
@@ -371,14 +309,10 @@ public class tileApiary extends blockBaseTile implements IBeeKeepingTile {
         }
     }
 
-    public boolean hasFlowers(IBee queen, List<BlockPosition> blocks)
-    {
-        for (BlockPosition pos : blocks)
-        {
-            if (pos.blockExists(this.worldObj))
-            {
-                if (queen.getDominantGenome().getFlower().isValid(this.worldObj, pos.x, pos.y, pos.z, queen))
-                {
+    public boolean hasFlowers(IBee queen, List<BlockPosition> blocks) {
+        for (BlockPosition pos : blocks) {
+            if (pos.blockExists(this.worldObj)) {
+                if (queen.getDominantGenome().getFlower().isValid(this.worldObj, pos.x, pos.y, pos.z, queen)) {
                     return true;
                 }
             }
@@ -387,8 +321,7 @@ public class tileApiary extends blockBaseTile implements IBeeKeepingTile {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag)
-    {
+    public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         this.setLifeProgress(tag.getInteger("lifeProgress"));
         this.setBreedingProgress(tag.getInteger("breedingProgress"));
@@ -396,8 +329,7 @@ public class tileApiary extends blockBaseTile implements IBeeKeepingTile {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag)
-    {
+    public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setInteger("lifeProgress", this.getLifeProgress());
         tag.setInteger("breedingProgress", this.getBreedingProgress());
@@ -405,42 +337,31 @@ public class tileApiary extends blockBaseTile implements IBeeKeepingTile {
     }
 
     @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack)
-    {
-        if (slot == outputSlots[0] || slot == outputSlots[1] || slot == outputSlots[2] || slot == outputSlots[3] || slot == outputSlots[4] || slot == outputSlots[5] || slot == outputSlots[6])
-        {
-            if (stack.getItem().getClass().isAnnotationPresent(combItem.class))
-            {
+    public boolean isItemValidForSlot(int slot, ItemStack stack) {
+        if (slot == outputSlots[0] || slot == outputSlots[1] || slot == outputSlots[2] || slot == outputSlots[3] || slot == outputSlots[4] || slot == outputSlots[5] || slot == outputSlots[6]) {
+            if (stack.getItem().getClass().isAnnotationPresent(combItem.class)) {
                 return true;
-            } else
-            {
-                if (OpenBees.coreBeeHelper.isDrone(stack) || OpenBees.coreBeeHelper.isPrincess(stack))
-                {
+            } else {
+                if (OpenBees.coreBeeHelper.isDrone(stack) || OpenBees.coreBeeHelper.isPrincess(stack)) {
                     return true;
                 }
             }
         }
 
-        if (slot == queenSlot)
-        {
-            if (OpenBees.coreBeeHelper.isQueen(stack) || OpenBees.coreBeeHelper.isPrincess(stack))
-            {
+        if (slot == queenSlot) {
+            if (OpenBees.coreBeeHelper.isQueen(stack) || OpenBees.coreBeeHelper.isPrincess(stack)) {
                 return true;
             }
         }
 
-        if (Arrays.asList(frameSlots).contains(slot))
-        {
-            if (stack.getItem() instanceof IFrameItem)
-            {
+        if (Arrays.asList(frameSlots).contains(slot)) {
+            if (stack.getItem() instanceof IFrameItem) {
                 return true;
             }
         }
 
-        if (slot == droneSlot)
-        {
-            if (OpenBees.coreBeeHelper.isDrone(stack))
-            {
+        if (slot == droneSlot) {
+            if (OpenBees.coreBeeHelper.isDrone(stack)) {
                 return true;
             }
         }
@@ -449,8 +370,7 @@ public class tileApiary extends blockBaseTile implements IBeeKeepingTile {
     }
 
     @Override
-    public int getSizeInventory()
-    {
+    public int getSizeInventory() {
         return this.size;
     }
 }

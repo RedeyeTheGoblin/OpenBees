@@ -4,8 +4,7 @@ import java.util.Locale;
 
 public class combEnum {
 
-    public enum Combs
-    {
+    public enum Combs {
         HONEY(0xf3c503, 0xffff99, "item.openbees.comb.honey.name"),
         COCOA(0x674016, 0xffb26b, "item.openbees.comb.cocoa.name"),
         PARCHED(0x4c4c00, 0xffff32, "item.openbees.comb.parched.name"),
@@ -16,25 +15,21 @@ public class combEnum {
         private int secondary;
         private String unloc;
 
-        Combs(int primary, int secondary, String unloc)
-        {
+        Combs(int primary, int secondary, String unloc) {
             this.primary = primary;
             this.secondary = secondary;
             this.unloc = unloc;
         }
 
-        public int getPrimary()
-        {
+        public int getPrimary() {
             return primary;
         }
 
-        public int getSecondary()
-        {
+        public int getSecondary() {
             return secondary;
         }
 
-        public String getUnloc()
-        {
+        public String getUnloc() {
             return unloc;
         }
 

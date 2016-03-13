@@ -20,8 +20,7 @@ import java.util.Set;
 
 public abstract class itemToolBase extends ItemTool {
 
-    protected itemToolBase(String unloc, ToolMaterial material, Set set, String toolClass, int level)
-    {
+    protected itemToolBase(String unloc, ToolMaterial material, Set set, String toolClass, int level) {
         super(2.0f, material, set);
         this.setUnlocalizedName(unloc);
         this.setHarvestLevel(toolClass, level);
@@ -32,26 +31,22 @@ public abstract class itemToolBase extends ItemTool {
     public abstract IIcon getIcon(ItemStack stack, int pass);
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool)
-    {
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
         list.add("Durability: " + String.valueOf(this.toolMaterial.getMaxUses() - stack.getItemDamage()) + "\\" + String.valueOf(this.toolMaterial.getMaxUses()));
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tabs, List tools)
-    {
+    public void getSubItems(Item item, CreativeTabs tabs, List tools) {
         tools.add(new ItemStack(this, 1, 0));
     }
 
     @Override
-    public boolean requiresMultipleRenderPasses()
-    {
+    public boolean requiresMultipleRenderPasses() {
         return true;
     }
 
     @Override
-    public int getRenderPasses(int metadata)
-    {
+    public int getRenderPasses(int metadata) {
         return 1;
     }
 

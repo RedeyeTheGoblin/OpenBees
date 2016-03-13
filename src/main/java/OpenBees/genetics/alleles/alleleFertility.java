@@ -9,8 +9,7 @@ public class alleleFertility extends alleleIntHandler {
         super("Fertility." + mods.toString(), mods.getMult());
     }
 
-    public static enum fertilityMods
-    {
+    public static enum fertilityMods {
         LOW,
         NORMAL,
         HIGH;

@@ -6,8 +6,7 @@ import net.minecraft.item.ItemStack;
 
 public abstract class slotCustom extends Slot {
 
-    public slotCustom(IInventory inventory, int index, int x, int y)
-    {
+    public slotCustom(IInventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
     }
 

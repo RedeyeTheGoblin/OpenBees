@@ -6,16 +6,13 @@ import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 
-public class configurationHandler
-{
+public class configurationHandler {
     public static Configuration configuration;
     public static boolean configValue = false;
 
-    public static void init(File configFile)
-    {
+    public static void init(File configFile) {
 
-        if (configuration == null)
-        {
+        if (configuration == null) {
             configuration = new Configuration(configFile);
             loadConfiguration();
         }
@@ -23,20 +20,16 @@ public class configurationHandler
     }
 
     @SubscribeEvent
-    public void OnConfigurationChangedEvent(ConfigChangedEvent event)
-    {
-        if (event.modID.equalsIgnoreCase(OpenBees.info.modInfo.modid))
-        {
+    public void OnConfigurationChangedEvent(ConfigChangedEvent event) {
+        if (event.modID.equalsIgnoreCase(OpenBees.info.modInfo.modid)) {
             loadConfiguration();
         }
     }
 
-    public static void loadConfiguration()
-    {
+    public static void loadConfiguration() {
         configValue = configuration.getBoolean("configValue", Configuration.CATEGORY_GENERAL, false, "Testing config values!");
 
-        if (configuration.hasChanged())
-        {
+        if (configuration.hasChanged()) {
             configuration.save();
         }
     }

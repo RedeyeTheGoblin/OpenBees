@@ -16,8 +16,7 @@ public class baseSpecies implements ISpecies {
     private HashMap<Allele.AlleleTypes, Allele> alleles;
     private List<beeProduct> products;
 
-    public baseSpecies(String tag, String unloc, int bodyColour, int outlineColour, HashMap<Allele.AlleleTypes, Allele> alleles, List<beeProduct> products)
-    {
+    public baseSpecies(String tag, String unloc, int bodyColour, int outlineColour, HashMap<Allele.AlleleTypes, Allele> alleles, List<beeProduct> products) {
         this.tag = tag;
         this.unloc = unloc;
         this.bodyColour = bodyColour;
@@ -27,50 +26,42 @@ public class baseSpecies implements ISpecies {
     }
 
     @Override
-    public String getTag()
-    {
+    public String getTag() {
         return this.tag;
     }
 
     @Override
-    public String getUnlocalizedName()
-    {
+    public String getUnlocalizedName() {
         return this.unloc;
     }
 
     @Override
-    public int getBodyColour()
-    {
+    public int getBodyColour() {
         return this.bodyColour;
     }
 
     @Override
-    public int getOutlineColour()
-    {
+    public int getOutlineColour() {
         return this.outlineColour;
     }
 
     @Override
-    public HashMap<Allele.AlleleTypes, Allele> getGenome()
-    {
+    public HashMap<Allele.AlleleTypes, Allele> getGenome() {
         return this.alleles;
     }
 
     @Override
-    public NBTTagCompound generateGenericGenome()
-    {
+    public NBTTagCompound generateGenericGenome() {
         return OpenBees.coreBeeHelper.generateGenome(this, this, this.getGenome(), this.getGenome(), false, beeHelper.generateNewLifeFlag, null);
     }
 
     @Override
-    public List<beeProduct> getPotentialProducts()
-    {
+    public List<beeProduct> getPotentialProducts() {
         return this.products;
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         if (this == obj) return true;
         if(!(obj instanceof baseSpecies)) return true;
 
@@ -87,8 +78,7 @@ public class baseSpecies implements ISpecies {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "baseSpecies{" + "tag'=" + tag + '\'' + '}';
     }
 

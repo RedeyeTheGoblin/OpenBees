@@ -14,6 +14,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.oredict.OreDictionary;
+
 import java.util.List;
 
 @combItem
@@ -21,24 +23,21 @@ public class itemComb extends itemBase {
 
     private String unloc;
 
-    public itemComb(String unloc, int maxStack)
-    {
+    public itemComb(String unloc, int maxStack) {
         super(unloc, maxStack);
         this.unloc = unloc;
         this.setCreativeTab(creativeTabHandler.creativeTabBees);
+        this.setHasSubtypes(true);
     }
 
     @Override
-    public String getItemStackDisplayName(ItemStack stack)
-    {
+    public String getItemStackDisplayName(ItemStack stack) {
         return LanguageRegistry.instance().getStringLocalization(combEnum.Combs.values()[stack.getItemDamage()].getUnloc()) + " " + LanguageRegistry.instance().getStringLocalization("item." + this.unloc + ".name");
     }
 
     @Override
-    public IIcon getIcon(ItemStack stack, int pass)
-    {
-        switch (pass)
-        {
+    public IIcon getIcon(ItemStack stack, int pass) {
+        switch (pass) {
             case 0:
                 return OpenBees.coreTexHandler.getIcon("comb_base");
 
@@ -50,10 +49,8 @@ public class itemComb extends itemBase {
     }
 
     @Override
-    public int getColorFromItemStack(ItemStack stack, int pass)
-    {
-        switch (pass)
-        {
+    public int getColorFromItemStack(ItemStack stack, int pass) {
+        switch (pass) {
             case 0:
                 return combEnum.Combs.values()[stack.getItemDamage()].getPrimary();
 
@@ -65,23 +62,20 @@ public class itemComb extends itemBase {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool)
-    {
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tabs, List validCombs)
-    {
-        for (combEnum.Combs comb : combEnum.Combs.values())
-        {
+    public void getSubItems(Item item, CreativeTabs tabs, List validCombs) {
+        for (combEnum.Combs comb : combEnum.Combs.values()) {
             validCombs.add(new ItemStack(this, 1, comb.ordinal()));
+            OreDictionary.registerOre("beeComb", OpenBees.items.honey_comb.getStack(1, comb.ordinal()));
         }
     }
 
     @Override
-    public int getRenderPasses(int metadata)
-    {
+    public int getRenderPasses(int metadata) {
         return 2;
     }
 }

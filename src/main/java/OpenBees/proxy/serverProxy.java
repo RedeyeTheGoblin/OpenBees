@@ -1,7 +1,6 @@
 package OpenBees.proxy;
 
-public class serverProxy extends commonProxy
-{
+public class serverProxy extends commonProxy {
 
     public boolean isShiftKey() {
         return false;

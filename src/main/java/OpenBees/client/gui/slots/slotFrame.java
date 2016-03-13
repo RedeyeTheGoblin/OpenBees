@@ -12,10 +12,8 @@ public class slotFrame extends slotCustom {
     }
 
     @Override
-    public boolean isItemValid(ItemStack stack)
-    {
-        if (stack.getItem() instanceof IFrameItem)
-        {
+    public boolean isItemValid(ItemStack stack) {
+        if (stack.getItem() instanceof IFrameItem) {
             return true;
         }
 

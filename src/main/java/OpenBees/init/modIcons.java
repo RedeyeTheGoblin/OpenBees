@@ -10,8 +10,7 @@ import static OpenBees.info.modInfo.modid;
 
 public class modIcons {
 
-    public static void init()
-    {
+    public static void init() {
 
         OpenBees.coreTexHandler.registerIcon(modid, "bees/default/body1", "bee_body");
         OpenBees.coreTexHandler.registerIcon(modid, "bees/default/drone.body2", "drone_body");
@@ -26,6 +25,8 @@ public class modIcons {
         OpenBees.coreTexHandler.registerIcon(modid, "beeCombs.0", "comb_base");
         OpenBees.coreTexHandler.registerIcon(modid, "beeCombs.1", "comb_overlay");
 
+        OpenBees.coreTexHandler.registerTexture(modid, "forestfire_machine_bottom", "machine_bottom");
+
         OpenBees.coreTexHandler.registerTexture(modid, "apiary.0", "apiary_bottom");
         OpenBees.coreTexHandler.registerTexture(modid, "apiary.1", "apiary_top");
         OpenBees.coreTexHandler.registerTexture(modid, "apiary.4", "apiary_side");
@@ -33,11 +34,16 @@ public class modIcons {
         OpenBees.coreTexHandler.registerTexture(modid, "beehives/beehive.2.top", "beehive_top");
         OpenBees.coreTexHandler.registerTexture(modid, "beehives/beehive.2.side", "beehive_side");
 
+        OpenBees.coreTexHandler.registerTexture(modid, "extractor_top_off", "extractor_top_off");
+        OpenBees.coreTexHandler.registerTexture(modid, "extractor_side_off", "extractor_side_off");
+
         OpenBees.coreTexHandler.registerIcon(modid, "scoop", "scoop");
         OpenBees.coreTexHandler.registerIcon(modid, "scoop_iron", "scoop_iron");
         OpenBees.coreTexHandler.registerIcon(modid, "scoop_diamond", "scoop_diamond");
 
-        OpenBees.coreTexHandler.registerIcon(modid, "tabs/Icon_Energy", "IconEnergy");
+        OpenBees.coreTexHandler.registerIcon(modid, "beeDrop.0", "drop_base");
+        OpenBees.coreTexHandler.registerIcon(modid, "beeDrop.1", "drop_outline");
 
+        OpenBees.coreTexHandler.registerIcon(modid, "tabs/Icon_Energy", "IconEnergy");
     }
 }

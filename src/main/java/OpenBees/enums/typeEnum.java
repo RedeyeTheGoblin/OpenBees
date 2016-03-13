@@ -9,28 +9,23 @@ import java.util.Locale;
 public class typeEnum
 {
 
-    public enum Types
-    {
+    public enum Types {
         QUEEN,
         PRINCESS,
         DRONE;
 
         private String name;
 
-        Types()
-        {
+        Types() {
             this.name = toString().toLowerCase(Locale.ENGLISH);
         }
 
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
-        public ItemStack createStack()
-        {
-            switch (this.ordinal())
-            {
+        public ItemStack createStack() {
+            switch (this.ordinal()) {
                 case 2:
                     return OpenBees.items.drone.getStack(1);
 

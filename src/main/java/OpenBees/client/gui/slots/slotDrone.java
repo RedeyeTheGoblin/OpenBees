@@ -12,10 +12,8 @@ public class slotDrone extends slotCustom {
     }
 
     @Override
-    public boolean isItemValid(ItemStack stack)
-    {
-        if (OpenBees.coreBeeHelper.isDrone(stack))
-        {
+    public boolean isItemValid(ItemStack stack) {
+        if (OpenBees.coreBeeHelper.isDrone(stack)) {
             return true;
         }
 

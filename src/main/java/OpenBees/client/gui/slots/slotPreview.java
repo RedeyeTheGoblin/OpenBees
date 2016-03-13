@@ -6,20 +6,17 @@ import net.minecraft.item.ItemStack;
 
 public class slotPreview extends slotCustom {
 
-    public slotPreview (IInventory inventory, int index, int x, int y)
-    {
+    public slotPreview (IInventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
     }
 
     @Override
-    public boolean isItemValid(ItemStack stack)
-    {
+    public boolean isItemValid(ItemStack stack) {
         return false;
     }
 
     @Override
-    public boolean canTakeStack(EntityPlayer p_82869_1_)
-    {
+    public boolean canTakeStack(EntityPlayer p_82869_1_) {
         return false;
     }
 }
